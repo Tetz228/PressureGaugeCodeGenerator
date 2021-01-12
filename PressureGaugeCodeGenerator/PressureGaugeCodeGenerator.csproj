@@ -98,9 +98,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\" />
     <Folder Include="Models\" />
     <Folder Include="Sevices\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\logo_small.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
