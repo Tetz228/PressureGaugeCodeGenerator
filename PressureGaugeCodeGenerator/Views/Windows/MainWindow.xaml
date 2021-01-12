@@ -14,7 +14,16 @@
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
-    <Grid>
-        
-    </Grid>
+    <DockPanel>
+        <Menu VerticalAlignment="Top" HorizontalAlignment="Left" Height="19" Width="488">
+            <MenuItem Header="Файл" KeyboardNavigation.TabIndex="0">
+                <!--<MenuItem Header="Открыть" Click="MenuItem_Click_Open"/>-->
+                <MenuItem Header="Выход" Command="{Binding CloseApplicationCommand}"/>
+            </MenuItem>
+            <!--<MenuItem Header="Справка" Height="19" KeyboardNavigation.TabIndex="1">
+                <MenuItem Header="Помощь" Click="MenuItem_Click_2" />
+                <MenuItem Header="О программе" Click="MenuItem_Click_3" />
+            </MenuItem>-->
+        </Menu>
+    </DockPanel>
 </Window>
