@@ -1,5 +1,6 @@
 ﻿using PressureGaugeCodeGenerator.Infrastructure.Commands;
 using PressureGaugeCodeGenerator.ViewModels.Base;
+using PressureGaugeCodeGenerator.Views.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,13 +41,27 @@ namespace PressureGaugeCodeGenerator.ViewModels
 
         #endregion
 
+        #region OpenAboutProgramCommand
+
+        public ICommand OpenAboutProgramCommand { get; }
+
+        private void OnOpenAboutProgramCommandExecuted(object p)
+        {
+            AboutProgram aboutProgram = new AboutProgram();
+            aboutProgram.ShowDialog();
+        }
+
+        private bool CanOpenAboutProgramCommandExecuted(object p) => true;
+
+        #endregion
+
         #endregion
 
         public MainWindowViewModel()
         {
             #region Команды
             CloseApplicationCommand = new CheckCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecuted);
-            
+            OpenAboutProgramCommand = new CheckCommand(OnOpenAboutProgramCommandExecuted, CanOpenAboutProgramCommandExecuted);
             #endregion
         }
     }
