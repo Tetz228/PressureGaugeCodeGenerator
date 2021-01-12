@@ -55,6 +55,20 @@ namespace PressureGaugeCodeGenerator.ViewModels
 
         #endregion
 
+        #region OpenHelpWindowCommand
+
+        public ICommand OpenHelpWindowCommand { get; }
+
+        private void OnOpenHelpWindowCommandExecuted(object p)
+        {
+            HelpWindow helpWindow = new HelpWindow();
+            helpWindow.ShowDialog();
+        }
+
+        private bool CanOpenHelpWindowCommandExecuted(object p) => true;
+
+        #endregion
+
         #endregion
 
         public MainWindowViewModel()
@@ -62,6 +76,7 @@ namespace PressureGaugeCodeGenerator.ViewModels
             #region Команды
             CloseApplicationCommand = new CheckCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecuted);
             OpenAboutProgramCommand = new CheckCommand(OnOpenAboutProgramCommandExecuted, CanOpenAboutProgramCommandExecuted);
+            OpenHelpWindowCommand = new CheckCommand(OnOpenHelpWindowCommandExecuted, CanOpenHelpWindowCommandExecuted);
             #endregion
         }
     }
