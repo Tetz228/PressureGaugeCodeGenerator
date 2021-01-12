@@ -21,8 +21,8 @@
                 <MenuItem Header="Выход" Command="{Binding CloseApplicationCommand}"/>
             </MenuItem>
             <MenuItem Header="Справка" Height="19" KeyboardNavigation.TabIndex="1">
-                <MenuItem Header="Помощь" Command="{Binding}"/>
-                <MenuItem Header="О программе" Command="{Binding OpenAboutProgramCommand}"/>
+                <MenuItem Header="Поддержка" Command="{Binding OpenHelpWindowCommand}"/>
+                <MenuItem Header="О программе..." Command="{Binding OpenAboutProgramCommand}"/>
             </MenuItem>
         </Menu>
     </DockPanel>
