@@ -4,48 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:PressureGaugeCodeGenerator.ViewModels"
+        xmlns:com="clr-namespace:PressureGaugeCodeGenerator.Infrastructure.Commands"
         xmlns:local="clr-namespace:PressureGaugeCodeGenerator.Views.Windows"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="636.066" Width="566.591" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="{Binding Title}" Height="626.066" Width="566.591" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Window.DataContext>
         <vm:HelpWindowViewModel/>
     </Window.DataContext>
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="550" Width="530">
-        Программа предназначена для генерации кодов манометров и QR-кодов.
-        <LineBreak/>
-        <LineBreak/>
-        В начале работы необходимо выбрать номер участка, для которого будет производиться генерация кодов.
-        <LineBreak/>
-        <LineBreak/>
-        В поле "Начальный номер" необходимо указать номер, с которого будет начинаться нумерация манометров. 
-        Номер должен состоять из цифр и содержать 9 символов.
-        Первые две цифры программа устанавливают автоматически и они соответсвуют последним двум цифрам года. 
-        Третья цифра соответствует номеру участка и устанавливается автоматически, в зависимости от выбранного участка.
-        Если номера для выбранного участка ранее сгенерированы не были, программа предложит начать генерацию с первого номера.
-        Можно указать начальный номер вручную в поле "Начальный номер".               
-        Если номера были сгенерированы в программе ранее, они считаются из файла и программа автоматически вставит в поле "Начальный номер", следующий по порядку номер после последнего сгенерированного.
-        <LineBreak/>
-        <LineBreak/>
-        В поле "Количество номеров" нужно указать количество номеров, которые необходимо сгенерировать.
-        Количество номеров должно быть в диапазоне от 1-го до 1000.
-        <LineBreak/>   
-        <LineBreak/>
-        В поле "Путь к файлу" программа автоматически подставляет файлы, соотвествующие номеру участка: "numbers1_20ХХ.txt", "numbers2_20ХХ.txt", "numbers3_20ХХ.txt", "numbers4_20ХХ.txt".
-        Путь к файлу можно указать вручную, нажав кнопку "Открыть" и выбрать в появившемся диалоговом окне, необходимый файл. 
-        Файлы должны иметь расширение "*.txt".
-        <LineBreak/> 
-        <LineBreak/>
-        После заполнения всех обязательных полей, необходимо нажать кнопку "Генерировать".
-        Произойдет генерация номеров в указанный файл, о чём программа выдаст сообщение.
-        Кнопка "Показать номера", позволяет просмотреть номера, сгенерированные в файле.
-        Если необходимо отключить автоматическую генерацию года в начале номера, необходимо снять галочку "Установить года автоматически".
-        <LineBreak/>
-        <LineBreak/>
-        Для того, чтобы создать QR-код из сгенерированных номеров, нужно перейти на вкладку "QR-код", выбрать формат файла и указать разрешение, затем нажать кнопку "Генерировать QR".
-        Сгенерированные изображения QR-кодов будут находиться в каталоге "qrcode".
-        После этого программу можно закрыть, нажав кнопку "Выход".
-        </TextBlock>
-        <Button Content="OK" Margin="0,0,21,10" Height="29" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Command=""/>
+        <TextBlock HorizontalAlignment="Left" Text="{Binding Support}" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="550" Width="530"/>
+        <Button x:Name="OKButton" Click="OKButton_Click" Content="OK" Margin="0,0,10,10" Height="29" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75"/>
     </Grid>
 </Window>
