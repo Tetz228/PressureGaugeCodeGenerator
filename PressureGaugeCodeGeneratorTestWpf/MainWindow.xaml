@@ -16,30 +16,188 @@
               Height="19" 
               Width="558" Grid.ColumnSpan="2">
             <MenuItem Header="Файл" 
-                      KeyboardNavigation.TabIndex="0" FontFamily="Verdana">
-                <!--<MenuItem Header="Открыть" Click="MenuItem_Click_Open"/>-->
+                      KeyboardNavigation.TabIndex="0"
+                      Style="{StaticResource menuItem}">
+                <MenuItem Header="Открыть"/>
                 <MenuItem Header="Выход" 
                           Command="{Binding CloseApplicationCommand}"/>
             </MenuItem>
             <MenuItem Header="Справка" 
                       Height="19" 
-                      KeyboardNavigation.TabIndex="1" FontFamily="Verdana">
+                      KeyboardNavigation.TabIndex="1"
+                      Style="{StaticResource menuItem}">
                 <MenuItem Header="Поддержка" 
                           Command="{Binding OpenHelpWindowCommand}"/>
                 <MenuItem Header="О программе..." 
                           Command="{Binding OpenAboutProgramCommand}"/>
             </MenuItem>
         </Menu>
-        <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Margin="0,55,0,0" TextWrapping="NoWrap" Text="Номера" VerticalAlignment="Top" FontSize="14" FontFamily="Verdana" Width="70"/>
-        <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" Margin="0,55,0,0" TextWrapping="NoWrap" Text="QR-коды" VerticalAlignment="Top" FontSize="14" FontFamily="Verdana" Width="79"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="110,22,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="332" Grid.ColumnSpan="2"/>
         <Label Content="Путь к файлу:"
-               HorizontalAlignment="Left"
-               Margin="6,24,0,0" 
-               VerticalAlignment="Top" 
-               FontFamily="Verdana"/>
+               Margin="3,19,0,0" 
+               Style="{StaticResource labels}"/>
+        <Label Content="Начальный номер" 
+               Margin="10,150,0,0" 
+               Height="26" 
+               Width="138"
+               Style="{StaticResource labels}"/>
+        <Label Content="Количество номеров" 
+               Margin="10,233,0,0" 
+               Height="26" 
+               Width="148"
+               Style="{StaticResource labels}"/>
+        <Label Content="Участок" 
+               Margin="10,86,0,0" 
+               Width="125"
+               Style="{StaticResource labels}"/>
+        <Label Grid.Column="1" 
+               Grid.Row="0" 
+               Margin="13,86,0,0" 
+               Width="260" 
+               Height="46" 
+               FontWeight="Bold" 
+               Style="{StaticResource labels}">
+            <Label.Content>
+                <TextBlock TextWrapping="Wrap" 
+                           Width="250">
+                    Будут сгенерированы QR-коды для номеров:
+                </TextBlock>
+            </Label.Content>
 
-        <Separator Margin="119,173,118,123" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2">
+        </Label>
+        <Label x:Name="label_numbers"  
+               Grid.Column="1" 
+               Grid.Row="0"                
+               Margin="10,132,0,0" 
+               Width="243"
+               FontWeight="Bold"  
+               Style="{StaticResource labels}" 
+               Height="25"/>
+        <Label Content="Формат файла" 
+               Grid.Column="1" 
+               Grid.Row="0" 
+               x:Name="label_format"           
+               Margin="10,200,0,0" 
+               Width="120"
+               Style="{StaticResource labels}"/>
+        <Label Content="Высота" 
+               Grid.Column="1" 
+               Grid.Row="0" 
+               Margin="140,197,0,0" 
+               Style="{StaticResource labels}"/>
+        <Label Content="Ширина" 
+               Grid.Column="1" 
+               Grid.Row="0" 
+               Margin="209,197,0,0"
+                Style="{StaticResource labels}"/>
+        <Label Content="BMP:" 
+               Grid.Column="1" 
+               Grid.Row="0" 
+               x:Name="label_bmp"  
+               Margin="86,251,0,0" 
+               Height="23"
+                Style="{StaticResource labels}"/>
+        <Button Content="Сгенерировать" 
+                x:Name="button_generate"             
+                Width="107"                
+                Margin="10,0,0,10"              
+                KeyboardNavigation.TabIndex="7" 
+                FontFamily="Verdana" 
+                FontSize="13"
+                Style="{StaticResource buttons}"/>
+        <Button Content="Показать номера"
+                x:Name="button_show"  
+                Width="122" 
+                KeyboardNavigation.TabIndex="8"
+                Margin="147,0,0,10" 
+                Style="{StaticResource buttons}"/>
+        <Button Content="Сгенерировать QR"
+                x:Name="button_generate_qr"             
+                Margin="81,0,0,10" 
+                VerticalAlignment="Bottom" 
+                Width="135"
+                KeyboardNavigation.TabIndex="9" 
+                Grid.Column="1" 
+                Style="{StaticResource buttons}"/>
+        <Button Content="Открыть" 
+                x:Name="button_open"  
+                Width="100" 
+                Height="23" 
+                KeyboardNavigation.TabIndex="6" 
+                Margin="166,22,0,0" 
+                Grid.Column="1"                
+                Style="{StaticResource buttons}" 
+                VerticalAlignment="Top"/>
+        <TextBox Grid.ColumnSpan="2" 
+                 Height="23" 
+                 Margin="110,22,0,0" 
+                 TextAlignment="Left" 
+                 Width="332" 
+                 Style="{StaticResource textBoxs}"/>
+        <TextBox x:Name="textBox_begin"  
+                 Height="23" 
+                 Margin="10,176,0,0" 
+                 Width="259" 
+                 MaxLength="9" 
+                 KeyboardNavigation.TabIndex="3" 
+                 Style="{StaticResource textBoxs}"/>
+        <TextBox x:Name="textBox_quantity"  
+                 Height="22" 
+                 Margin="10,259,0,0"
+                 Width="259" 
+                 MaxLength="4" 
+                 KeyboardNavigation.TabIndex="4"
+                 Style="{StaticResource textBoxs}"/>
+        <TextBox x:Name="textBox_height"
+                 Grid.Column="1" 
+                 Grid.Row="0"               
+                 Height="23" 
+                 Margin="140,223,0,0" 
+                 Text="21" 
+                 Width="64" 
+                 KeyboardNavigation.TabIndex="3"
+                 Style="{StaticResource textBoxs}"/>
+        <TextBox x:Name="textBox_width" 
+                 Grid.Column="1" 
+                 Grid.Row="0" 
+                 Height="23"  
+                 Margin="209,223,0,0" 
+                 Text="21" 
+                 Width="64" 
+                 KeyboardNavigation.TabIndex="4"
+                 Style="{StaticResource textBoxs}"/>
+        <TextBox x:Name="textBox_height_bmp" 
+                 Grid.Column="1" 
+                 Grid.Row="0" 
+                 Height="23" 
+                 Margin="140,251,0,0" 
+                 Text="21"  
+                 Width="64"
+                 KeyboardNavigation.TabIndex="5"
+                 Style="{StaticResource textBoxs}"/>
+        <TextBox x:Name="textBox_width_bmp" 
+                 Grid.Column="1" 
+                 Grid.Row="0" 
+                 Height="23"  
+                 Margin="209,251,0,0" 
+                 Text="21" 
+                 Width="64" 
+                 KeyboardNavigation.TabIndex="6"
+                 Style="{StaticResource textBoxs}"/>
+        <TextBlock Text="Номера" 
+                   Grid.Column="0" 
+                   Grid.Row="0" 
+                   Margin="0,55,0,0"                  
+                   Width="70"
+                   Style="{StaticResource textBlocks}"/>
+        <TextBlock Text="QR-коды"
+                   Grid.Column="1" 
+                   Grid.Row="0" 
+                   Margin="0,55,0,0"                   
+                   Width="79"
+                   Style="{StaticResource textBlocks}"/>
+        <Separator RenderTransformOrigin="0.5,0.5" 
+            Margin="124,204,122,150"            
+            Grid.ColumnSpan="2">
             <Separator.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -49,43 +207,47 @@
                 </TransformGroup>
             </Separator.RenderTransform>
         </Separator>
-        <Button x:Name="button_generate" Content="Сгенерировать" Width="107" Height="33" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom"  KeyboardNavigation.TabIndex="7" FontFamily="Verdana" FontSize="13"/>
-        <Button x:Name="button_show" Content="Показать номера" Width="122" Height="33" KeyboardNavigation.TabIndex="8"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="147,0,0,10" FontFamily="Verdana" FontSize="13"/>
-        <TextBox x:Name="textBox_begin" HorizontalAlignment="Left" TextAlignment="Center" Height="23" Margin="10,176,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="259" MaxLength="9" KeyboardNavigation.TabIndex="3"/>
-        <TextBox x:Name="textBox_quantity" HorizontalAlignment="Left" TextAlignment="Center" Height="22" Margin="10,259,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="259" MaxLength="4" KeyboardNavigation.TabIndex="4"/>
-        <Label x:Name="label_begin" Content="Начальный номер" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top" Height="26" Width="138" FontFamily="Verdana" FontSize="13"/>
-        <Label x:Name="label_quantity" Content="Количество номеров" HorizontalAlignment="Left" Margin="10,233,0,0" VerticalAlignment="Top" Height="26" Width="148" FontFamily="Verdana" FontSize="13"/>
-        <Label x:Name="label_department" Content="Участок" HorizontalAlignment="Left" Margin="10,86,0,0" VerticalAlignment="Top" Width="125" FontFamily="Verdana" FontSize="13"/>
-        <ComboBox x:Name="comboBox_department" HorizontalAlignment="Left" Margin="10,112,0,0" VerticalAlignment="Top" Width="259" KeyboardNavigation.TabIndex="2">
+        <Separator Grid.ColumnSpan="2" 
+                   HorizontalAlignment="Left" 
+                   Height="14" 
+                   Margin="0,72,-2,0" 
+                   VerticalAlignment="Top" 
+                   Width="564"/>
+        <Separator Grid.ColumnSpan="2" 
+                   HorizontalAlignment="Left" 
+                   Height="14" 
+                   Margin="0,43,-2,0" 
+                   VerticalAlignment="Top" 
+                   Width="564"/>
+        <ComboBox x:Name="comboBox_department" 
+                  Margin="10,112,0,0"
+                  Width="259" 
+                  KeyboardNavigation.TabIndex="2"
+                  Style="{StaticResource comboBoxs}">
             <ComboBoxItem Content="1 - Литография (ППШ)"/>
             <ComboBoxItem Content="2 - Безрегулировка"/>
             <ComboBoxItem Content="3 - Безрегулировка (штучный циферблат)"/>
             <ComboBoxItem Content="4 - ПНП"/>
         </ComboBox>
-        <CheckBox x:Name="checkBox_setYear" Content="Установить год автоматически" HorizontalAlignment="Left" Margin="10,204,0,0" VerticalAlignment="Top" FontFamily="Verdana" FontSize="13" />
-        <Button x:Name="button_open" Content="Открыть" Width="100" Height="22" HorizontalAlignment="Right" VerticalAlignment="Top" KeyboardNavigation.TabIndex="6" Margin="0,23,10,0" Grid.Column="1" FontFamily="Verdana" FontSize="13"/>
-        <!--Grid.Column="0" Grid.Row="0"-->
-        <Label Grid.Column="1" Grid.Row="0" x:Name="label" HorizontalAlignment="Left" Margin="13,86,0,0" VerticalAlignment="Top" Width="260" Height="46" FontWeight="Bold" FontSize="14">
-            <Label.Content>
-                <TextBlock TextWrapping="Wrap" Width="250" FontFamily="Verdana" FontSize="13">Будут сгенерированы QR-коды для номеров:</TextBlock>
-            </Label.Content>
-        </Label>
-        <Label Grid.Row="0" x:Name="label_numbers" Content="" HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Top" Width="243" FontWeight="Bold" FontSize="14" Grid.Column="1"/>
-        <Label Grid.Column="1" Grid.Row="0" x:Name="label_format" Content="Формат файла" HorizontalAlignment="Left" Margin="10,200,0,0" VerticalAlignment="Top" Width="120" FontFamily="Verdana" FontSize="13"/>
-        <TextBox Grid.Column="1" Grid.Row="0" x:Name="textBox_height" HorizontalAlignment="Left" Height="23" TextAlignment="Center" Margin="140,223,0,0" TextWrapping="Wrap" Text="21" VerticalAlignment="Top" Width="64" KeyboardNavigation.TabIndex="3"/>
-        <TextBox Grid.Column="1" Grid.Row="0" x:Name="textBox_width" HorizontalAlignment="Left" Height="23" TextAlignment="Center" Margin="209,223,0,0" TextWrapping="Wrap" Text="21" VerticalAlignment="Top" Width="64" KeyboardNavigation.TabIndex="4"/>
-        <Label Grid.Column="1" Grid.Row="0" x:Name="label_height" Content="Высота" HorizontalAlignment="Left" Margin="140,197,0,0" VerticalAlignment="Top" FontFamily="Verdana" FontSize="13"/>
-        <Label Grid.Column="1" Grid.Row="0" x:Name="label_width" Content="Ширина" HorizontalAlignment="Left" Margin="209,197,0,0" VerticalAlignment="Top" FontFamily="Verdana" FontSize="13"/>
-        <TextBox Grid.Column="1" Grid.Row="0" x:Name="textBox_height_bmp" HorizontalAlignment="Left" Height="23" TextAlignment="Center" Margin="140,251,0,0" TextWrapping="Wrap" Text="21" VerticalAlignment="Top" Width="64" KeyboardNavigation.TabIndex="5"/>
-        <TextBox Grid.Column="1" Grid.Row="0" x:Name="textBox_width_bmp" HorizontalAlignment="Left" Height="23" TextAlignment="Center" Margin="209,251,0,0" TextWrapping="Wrap" Text="21" VerticalAlignment="Top" Width="64" KeyboardNavigation.TabIndex="6"/>
-        <Label Grid.Column="1" Grid.Row="0" x:Name="label_bmp" Content="BMP:" HorizontalAlignment="Left" Margin="86,251,0,0" VerticalAlignment="Top" Height="23" FontFamily="Verdana" FontSize="13"/>
-        <Button x:Name="button_generate_qr" Content="Сгенерировать QR" HorizontalAlignment="Left" Margin="81,0,0,10" VerticalAlignment="Bottom" Width="135" Height="33" KeyboardNavigation.TabIndex="9" Grid.Column="1" FontSize="13" FontFamily="Verdana"/>
-        <ComboBox Grid.Column="1" Grid.Row="0" x:Name="comboBox_format" SelectedIndex="0" HorizontalAlignment="Left" Margin="10,223,0,0" VerticalAlignment="Top" Width="120" Height="23" KeyboardNavigation.TabIndex="2">
+        <ComboBox x:Name="comboBox_format" 
+                  Grid.Column="1" 
+                  Grid.Row="0"      
+                  Margin="10,223,0,0" 
+                  Width="120" 
+                  Height="23" 
+                  KeyboardNavigation.TabIndex="2"
+                  Style="{StaticResource comboBoxs}">
             <ComboBoxItem Content="BMP"/>
             <ComboBoxItem Content="PNG"/>
             <ComboBoxItem Content="JPEG"/>
             <ComboBoxItem Content="BMP + PNG"/>
         </ComboBox>
-        <Separator Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="100" Margin="0,27,-2,0" VerticalAlignment="Top" Width="564"/>
+        <CheckBox Content="Установить год автоматически"
+                  x:Name="checkBox_setYear" 
+                  HorizontalAlignment="Left" 
+                  Margin="10,204,0,0" 
+                  VerticalAlignment="Top" 
+                  FontFamily="Verdana" 
+                  FontSize="13" />
     </Grid>
 </Window>
