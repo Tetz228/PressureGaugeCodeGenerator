@@ -9,7 +9,7 @@
         Title="{Binding Title}" 
         Height="355" Width="495" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Icon="/PressureGaugeCodeGenerator;component/Data/Pictures/logo_small.ico">
     <Window.Resources>
-
+        
     </Window.Resources>
     <Window.DataContext>
         <vm:MainWindowViewModel/>
@@ -22,14 +22,14 @@
               Height="19" 
               Width="488">
             <MenuItem Header="Файл" 
-                      KeyboardNavigation.TabIndex="0">
-                <!--<MenuItem Header="Открыть" Click="MenuItem_Click_Open"/>-->
+                      KeyboardNavigation.TabIndex="0" FontFamily="Verdana">
+                <MenuItem Header="Открыть" />
                 <MenuItem Header="Выход" 
                           Command="{Binding CloseApplicationCommand}"/>
             </MenuItem>
             <MenuItem Header="Справка" 
                       Height="19" 
-                      KeyboardNavigation.TabIndex="1">
+                      KeyboardNavigation.TabIndex="1" FontFamily="Verdana">
                 <MenuItem Header="Поддержка" 
                           Command="{Binding OpenHelpWindowCommand}"/>
                 <MenuItem Header="О программе..." 
@@ -41,35 +41,41 @@
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Numbers}"/>
+                        <TextBlock Text="{Binding Numbers}" FontFamily="Verdana"/>
                     </StackPanel>
                 </TabItem.Header>
                 <Grid Background="#FFE5E5E5" 
                       HorizontalAlignment="Stretch">
                     <Label Content="{Binding Department}" 
                            HorizontalAlignment="Left"
-                           Margin="10,10,0,0" 
-                           VerticalAlignment="Top"/>
+                           Margin="10,8,0,0" 
+                           VerticalAlignment="Top" FontFamily="Verdana"/>
                     <ComboBox HorizontalAlignment="Left" 
-                              Margin="10,36,0,0" 
+                              Margin="10,34,0,0" 
                               VerticalAlignment="Top" 
-                              Width="218"/>
+                              Width="218" FontFamily="Verdana"/>
                     <Label Content="{Binding StartNumber}" 
                            HorizontalAlignment="Left" 
-                           Margin="10,63,0,0" 
-                           VerticalAlignment="Top"/>
-                    <TextBox x:Name="TextBox" TextWrapping="NoWrap" Margin="10,89,254,169"/>
-                    <CheckBox x:Name="checkBox_setYear" Content="Установить год автоматически" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top" />
-                    <Label Content="{Binding Department}" 
+                           Margin="10,55,0,0" 
+                           VerticalAlignment="Top" FontFamily="Verdana"/>
+                    <TextBox x:Name="TextBoxStartNumber" TextWrapping="NoWrap" Margin="10,80,0,0" Height="21" VerticalAlignment="Top" HorizontalAlignment="Left" Width="218" FontFamily="Verdana"/>
+                    <CheckBox x:Name="CheckBoxSetYear" Content="Установить год автоматически" HorizontalAlignment="Left" Margin="10,106,0,0" VerticalAlignment="Top" FontFamily="Verdana" />
+                    <Label Content="{Binding CountNumbers}" 
                         HorizontalAlignment="Left"
-                        Margin="10,135,0,0" 
-                        VerticalAlignment="Top"/>
+                        Margin="10,126,0,0" 
+                        VerticalAlignment="Top" FontFamily="Verdana"/>
+                    <TextBox x:Name="TextBoxCountNumbers" TextWrapping="NoWrap" Margin="10,151,0,0" HorizontalAlignment="Left" Width="218" Height="21" VerticalAlignment="Top" FontFamily="Verdana"/>
+                    <Label Content="{Binding PathToFile}"
+                        HorizontalAlignment="Left"
+                        Margin="10,177,0,0" 
+                        VerticalAlignment="Top" FontFamily="Verdana"/>
+                    <TextBox x:Name="TextBoxPathToFile" TextWrapping="NoWrap" Margin="10,202,0,0" Height="21" VerticalAlignment="Top" HorizontalAlignment="Left" Width="218" FontFamily="Verdana"/>
                 </Grid>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding QRСodes}"/>
+                        <TextBlock Text="{Binding QRСodes}" FontFamily="Verdana"/>
                     </StackPanel>
                 </TabItem.Header>
             </TabItem>
