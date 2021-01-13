@@ -37,6 +37,45 @@ namespace PressureGaugeCodeGenerator.ViewModels
             set => Set(ref _Number, value);
         }
 
+        #region Участок
+
+        private string _Department = "Участок";
+
+        /// <summary>Участок</summary>
+        public string Department
+        {
+            get => _Department;
+            set => Set(ref _Department, value);
+        }
+
+        #endregion
+
+        #region Начальный номер
+
+        private string _StartNumber = "Начальный номер";
+
+        /// <summary>Начальный номер</summary>
+        public string StartNumber
+        {
+            get => _StartNumber;
+            set => Set(ref _StartNumber, value);
+        }
+
+        #endregion
+
+        #region Количество номеров
+
+        private string _CountNumbers = "Количество номеров";
+
+        /// <summary>Количество номеров</summary>
+        public string CountNumbers
+        {
+            get => _CountNumbers;
+            set => Set(ref _CountNumbers, value);
+        }
+
+        #endregion
+
         #endregion
 
         #region QR-коды
@@ -51,7 +90,7 @@ namespace PressureGaugeCodeGenerator.ViewModels
         }
 
         #endregion
-
+      
         #region Команды
 
         #region CloseApplicationCommand
