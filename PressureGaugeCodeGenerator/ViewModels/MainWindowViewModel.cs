@@ -26,6 +26,32 @@ namespace PressureGaugeCodeGenerator.ViewModels
 
         #endregion
 
+        #region Номера
+
+        private string _Number = "     Номера     ";
+
+        /// <summary>Номера</summary>
+        public string Numbers
+        {
+            get => _Number;
+            set => Set(ref _Number, value);
+        }
+
+        #endregion
+
+        #region QR-коды
+
+        private string _QRСodes = "     QR-коды     ";
+
+        /// <summary>QR-коды</summary>
+        public string QRСodes
+        {
+            get => _QRСodes;
+            set => Set(ref _QRСodes, value);
+        }
+
+        #endregion
+
         #region Команды
 
         #region CloseApplicationCommand

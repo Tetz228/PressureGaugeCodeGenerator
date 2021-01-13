@@ -6,7 +6,7 @@ namespace PressureGaugeCodeGenerator
     {
         public MainWindow()
         {
-            InitializeComponent();           
+            InitializeComponent();
         }
     }
 }

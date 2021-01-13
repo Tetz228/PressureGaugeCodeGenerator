@@ -9,21 +9,51 @@
         Title="{Binding Title}" 
         Height="355" Width="495" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Icon="/PressureGaugeCodeGenerator;component/Data/Pictures/logo_small.ico">
     <Window.Resources>
-        
+
     </Window.Resources>
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
-    <DockPanel>
-        <Menu VerticalAlignment="Top" HorizontalAlignment="Left" Height="19" Width="488">
-            <MenuItem Header="Файл" KeyboardNavigation.TabIndex="0">
+    <Grid ShowGridLines="True" 
+          HorizontalAlignment="Stretch" 
+          VerticalAlignment="Stretch">
+        <Menu VerticalAlignment="Top" 
+              HorizontalAlignment="Left" 
+              Height="19" 
+              Width="488">
+            <MenuItem Header="Файл" 
+                      KeyboardNavigation.TabIndex="0">
                 <!--<MenuItem Header="Открыть" Click="MenuItem_Click_Open"/>-->
-                <MenuItem Header="Выход" Command="{Binding CloseApplicationCommand}"/>
+                <MenuItem Header="Выход" 
+                          Command="{Binding CloseApplicationCommand}"/>
             </MenuItem>
-            <MenuItem Header="Справка" Height="19" KeyboardNavigation.TabIndex="1">
-                <MenuItem Header="Поддержка" Command="{Binding OpenHelpWindowCommand}"/>
-                <MenuItem Header="О программе..." Command="{Binding OpenAboutProgramCommand}"/>
+            <MenuItem Header="Справка" 
+                      Height="19" 
+                      KeyboardNavigation.TabIndex="1">
+                <MenuItem Header="Поддержка" 
+                          Command="{Binding OpenHelpWindowCommand}"/>
+                <MenuItem Header="О программе..." 
+                          Command="{Binding OpenAboutProgramCommand}"/>
             </MenuItem>
         </Menu>
-    </DockPanel>
+        <TabControl x:Name="TabControlNumberAndQRcode" 
+                    Margin="0,19,1,0">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Numbers}"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Background="#FFE5E5E5" 
+                      HorizontalAlignment="Stretch"/>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding QRСodes}"/>
+                    </StackPanel>
+                </TabItem.Header>
+            </TabItem>
+        </TabControl>
+    </Grid>
 </Window>
