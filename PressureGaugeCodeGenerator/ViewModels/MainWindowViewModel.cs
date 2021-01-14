@@ -1,4 +1,5 @@
-﻿using PressureGaugeCodeGenerator.Infrastructure.Commands;
+﻿using PressureGaugeCodeGenerator.Infrastructure;
+using PressureGaugeCodeGenerator.Infrastructure.Commands;
 using PressureGaugeCodeGenerator.Models;
 using PressureGaugeCodeGenerator.ViewModels.Base;
 using PressureGaugeCodeGenerator.Views.Windows;
@@ -147,6 +148,19 @@ namespace PressureGaugeCodeGenerator.ViewModels
 
         #endregion
 
+        #region SavingSettingsCloseWindowCommand
+
+        public IDelegateCommand SavingSettingsCloseWindowCommand { get; set; }
+
+        private void OnSavingSettingsCloseWindowCommandExecuted(object p)
+        {
+            
+        }
+
+        private bool CanSavingSettingsCloseWindowCommandExecuted(object p) => true;
+
+        #endregion
+
         #endregion
 
         public MainWindowViewModel()
@@ -155,6 +169,7 @@ namespace PressureGaugeCodeGenerator.ViewModels
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecuted);
             OpenAboutProgramCommand = new LambdaCommand(OnOpenAboutProgramCommandExecuted, CanOpenAboutProgramCommandExecuted);
             OpenHelpWindowCommand = new LambdaCommand(OnOpenHelpWindowCommandExecuted, CanOpenHelpWindowCommandExecuted);
+            //SavingSettingsCloseWindowCommand = new LambdaCommand(OnSavingSettingsCloseWindowCommandExecuted, CanSavingSettingsCloseWindowCommandExecuted);
             #endregion
 
             ListDepartments = new List<Departments>
@@ -164,7 +179,6 @@ namespace PressureGaugeCodeGenerator.ViewModels
                 new Departments{ NumberDepartment = 3 ,Name = "Безрегулировка (штучный циферблат)"},
                 new Departments{ NumberDepartment = 4 ,Name = "ПНП"}
             };
-
             ListQr_codes = new List<Qr_codes>
             {
                 new Qr_codes{ Format = "BMP"},
