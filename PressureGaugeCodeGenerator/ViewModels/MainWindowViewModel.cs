@@ -1,17 +1,14 @@
 ﻿using PressureGaugeCodeGenerator.Infrastructure.Commands;
+using PressureGaugeCodeGenerator.Models;
 using PressureGaugeCodeGenerator.ViewModels.Base;
 using PressureGaugeCodeGenerator.Views.Windows;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
 namespace PressureGaugeCodeGenerator.ViewModels
 {
-    class MainWindowViewModel: ViewModel
+    class MainWindowViewModel : ViewModel
     {
         #region Заголовок окна
 
@@ -28,7 +25,7 @@ namespace PressureGaugeCodeGenerator.ViewModels
 
         #region Путь к файлу
 
-        private string _PathToFile = "Путь к файлу";
+        private string _PathToFile = "Путь к файлу:";
 
         /// <summary>Путь к файлу</summary>
         public string PathToFile
@@ -61,6 +58,8 @@ namespace PressureGaugeCodeGenerator.ViewModels
             set => Set(ref _Department, value);
         }
 
+        public List<Departments> ListDepartments { get; set; }
+
         #endregion
 
         #region Начальный номер
@@ -88,11 +87,8 @@ namespace PressureGaugeCodeGenerator.ViewModels
         }
 
         #endregion
-
-
-
         #endregion
-        
+
         #region QR-коды
 
         private string _QRСodes = "QR-коды";
@@ -105,7 +101,7 @@ namespace PressureGaugeCodeGenerator.ViewModels
         }
 
         #endregion
-      
+
         #region Команды
 
         #region CloseApplicationCommand
@@ -154,10 +150,18 @@ namespace PressureGaugeCodeGenerator.ViewModels
         public MainWindowViewModel()
         {
             #region Команды
-            CloseApplicationCommand = new CheckCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecuted);
-            OpenAboutProgramCommand = new CheckCommand(OnOpenAboutProgramCommandExecuted, CanOpenAboutProgramCommandExecuted);
-            OpenHelpWindowCommand = new CheckCommand(OnOpenHelpWindowCommandExecuted, CanOpenHelpWindowCommandExecuted);
+            CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecuted);
+            OpenAboutProgramCommand = new LambdaCommand(OnOpenAboutProgramCommandExecuted, CanOpenAboutProgramCommandExecuted);
+            OpenHelpWindowCommand = new LambdaCommand(OnOpenHelpWindowCommandExecuted, CanOpenHelpWindowCommandExecuted);
             #endregion
+
+            ListDepartments = new List<Departments>
+            {
+                new Departments{ Number = 1 ,Name = "Литография (ППШ)"},
+                new Departments{ Number = 2 ,Name = "Безрегулировка"},
+                new Departments{ Number = 3 ,Name = "Безрегулировка (штучный циферблат)"},
+                new Departments{ Number = 4 ,Name = "ПНП"}
+            };
         }
     }
 }

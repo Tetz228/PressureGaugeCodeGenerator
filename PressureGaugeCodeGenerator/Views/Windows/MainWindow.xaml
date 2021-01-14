@@ -227,12 +227,10 @@
                   Margin="10,112,0,0"
                   Width="259" 
                   KeyboardNavigation.TabIndex="2"
-                  Style="{StaticResource comboBoxs}">
-            <ComboBoxItem Content="1 - Литография (ППШ)"/>
-            <ComboBoxItem Content="2 - Безрегулировка"/>
-            <ComboBoxItem Content="3 - Безрегулировка (штучный циферблат)"/>
-            <ComboBoxItem Content="4 - ПНП"/>
-        </ComboBox>
+                  Style="{StaticResource comboBoxs}"
+                  SelectedIndex="0"
+                  ItemsSource="{Binding ListDepartments}"
+                  DisplayMemberPath="Name"/>
         <ComboBox x:Name="comboBox_format" 
                   Grid.Column="1" 
                   Grid.Row="0"      
