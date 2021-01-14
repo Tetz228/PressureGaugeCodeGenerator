@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PressureGaugeCodeGenerator.Models
 {
-    internal class Manometers: INotifyPropertyChanged
+    internal class Manometers : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -17,17 +12,17 @@ namespace PressureGaugeCodeGenerator.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        #region Номер участка
-        private int _Number;
+        #region Номер манометра
+        private int _NumberManometer;
 
-        /// <summary>Номер участка</summary>
-        public int Number
+        /// <summary>Номер манометра</summary>
+        public int NumberManometer
         {
-            get => _Number;
+            get => _NumberManometer;
             set
             {
-                _Number = value;
-                OnPropertyChanged("Number");
+                _NumberManometer = value;
+                OnPropertyChanged("NumberManometer");
             }
         }
         #endregion

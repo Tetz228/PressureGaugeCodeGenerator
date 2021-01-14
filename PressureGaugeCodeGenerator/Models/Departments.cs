@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PressureGaugeCodeGenerator.Models
 {
-    internal class Departments: INotifyPropertyChanged
+    internal class Departments : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -18,17 +13,17 @@ namespace PressureGaugeCodeGenerator.Models
         }
 
         #region Номер участка
-        private int _Number;
+        private int _NumberDepartment;
 
         /// <summary>Номер участка</summary>
-        public int Number 
+        public int NumberDepartment
         {
-            get=> _Number; 
-            set 
+            get => _NumberDepartment;
+            set
             {
-                _Number = value;
-                OnPropertyChanged("Number");
-            } 
+                _NumberDepartment = value;
+                OnPropertyChanged("NumberDepartment");
+            }
         }
         #endregion
 
@@ -44,7 +39,7 @@ namespace PressureGaugeCodeGenerator.Models
                 _Name = value;
                 OnPropertyChanged("Name");
             }
-        } 
+        }
         #endregion
     }
 }
