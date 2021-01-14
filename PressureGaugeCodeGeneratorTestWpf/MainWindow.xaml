@@ -59,10 +59,9 @@
             <Label.Content>
                 <TextBlock TextWrapping="Wrap" 
                            Width="250">
-                    Будут сгенерированы QR-коды для номеров:
+                           Будут сгенерированы QR-коды для номеров:
                 </TextBlock>
             </Label.Content>
-
         </Label>
         <Label x:Name="label_numbers"  
                Grid.Column="1" 
@@ -248,6 +247,6 @@
                   Margin="10,204,0,0" 
                   VerticalAlignment="Top" 
                   FontFamily="Verdana" 
-                  FontSize="13" />
+                  FontSize="13"/>
     </Grid>
 </Window>

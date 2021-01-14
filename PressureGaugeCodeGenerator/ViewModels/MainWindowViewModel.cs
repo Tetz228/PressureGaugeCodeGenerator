@@ -26,9 +26,22 @@ namespace PressureGaugeCodeGenerator.ViewModels
 
         #endregion
 
+        #region Путь к файлу
+
+        private string _PathToFile = "Путь к файлу";
+
+        /// <summary>Путь к файлу</summary>
+        public string PathToFile
+        {
+            get => _PathToFile;
+            set => Set(ref _PathToFile, value);
+        }
+
+        #endregion
+
         #region Номера
 
-        private string _Number = "     Номера     ";
+        private string _Number = "Номера";
 
         /// <summary>Номера</summary>
         public string Numbers
@@ -76,24 +89,13 @@ namespace PressureGaugeCodeGenerator.ViewModels
 
         #endregion
 
-        #region Путь к файлу
 
-        private string _PathToFile = "Путь к файлу";
-
-        /// <summary>Путь к файлу</summary>
-        public string PathToFile
-        {
-            get => _PathToFile;
-            set => Set(ref _PathToFile, value);
-        }
 
         #endregion
-
-        #endregion
-
+        
         #region QR-коды
 
-        private string _QRСodes = "     QR-коды     ";
+        private string _QRСodes = "QR-коды";
 
         /// <summary>QR-коды</summary>
         public string QRСodes
