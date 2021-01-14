@@ -100,6 +100,8 @@ namespace PressureGaugeCodeGenerator.ViewModels
             set => Set(ref _QRСodes, value);
         }
 
+        public List<Qr_codes> ListQr_codes { get; set; }
+
         #endregion
 
         #region Команды
@@ -157,10 +159,18 @@ namespace PressureGaugeCodeGenerator.ViewModels
 
             ListDepartments = new List<Departments>
             {
-                new Departments{ Number = 1 ,Name = "Литография (ППШ)"},
-                new Departments{ Number = 2 ,Name = "Безрегулировка"},
-                new Departments{ Number = 3 ,Name = "Безрегулировка (штучный циферблат)"},
-                new Departments{ Number = 4 ,Name = "ПНП"}
+                new Departments{ NumberDepartment = 1 ,Name = "Литография (ППШ)"},
+                new Departments{ NumberDepartment = 2 ,Name = "Безрегулировка"},
+                new Departments{ NumberDepartment = 3 ,Name = "Безрегулировка (штучный циферблат)"},
+                new Departments{ NumberDepartment = 4 ,Name = "ПНП"}
+            };
+
+            ListQr_codes = new List<Qr_codes>
+            {
+                new Qr_codes{ Format = "BMP"},
+                new Qr_codes{ Format = "PNG"},
+                new Qr_codes{ Format = "JPEG"},
+                new Qr_codes{ Format = "BMP + PNG"}
             };
         }
     }

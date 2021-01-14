@@ -71,10 +71,11 @@
         <Label x:Name="label_numbers"  
                Grid.Column="1" 
                Grid.Row="0"                
-               Margin="10,132,0,0" 
-               Width="243"
+               Margin="13,132,0,0" 
+               Width="253"
                FontWeight="Bold"  
                Style="{StaticResource labels}" 
+               Content="Нет номеров для генерации"
                Height="25"/>
         <Label Content="Формат файла" 
                Grid.Column="1" 
@@ -99,7 +100,7 @@
                x:Name="label_bmp"  
                Margin="86,251,0,0" 
                Height="23"
-                Style="{StaticResource labels}"/>
+               Style="{StaticResource labels}"/>
         <Button Content="Сгенерировать" 
                 x:Name="button_generate"             
                 Width="107"                
@@ -185,7 +186,7 @@
                  Margin="209,251,0,0" 
                  Text="21" 
                  Width="64" 
-                 KeyboardNavigation.TabIndex="6"
+                 KeyboardNavigation.TabIndex="6"                 
                  Style="{StaticResource textBoxs}"/>
         <TextBlock Text="{Binding Numbers}" 
                    Grid.Column="0" 
@@ -238,13 +239,11 @@
                   Width="120" 
                   Height="23" 
                   KeyboardNavigation.TabIndex="2"
-                  Style="{StaticResource comboBoxs}">
-            <ComboBoxItem Content="BMP"/>
-            <ComboBoxItem Content="PNG"/>
-            <ComboBoxItem Content="JPEG"/>
-            <ComboBoxItem Content="BMP + PNG"/>
-        </ComboBox>
-        <CheckBox Content="Установить год автоматически"
+                  Style="{StaticResource comboBoxs}"
+                  SelectedIndex="0"
+                  ItemsSource="{Binding ListQr_codes}"
+                  DisplayMemberPath="Format"/>
+            <CheckBox Content="Установить год автоматически"
                   x:Name="checkBox_setYear" 
                   HorizontalAlignment="Left" 
                   Margin="10,204,0,0" 

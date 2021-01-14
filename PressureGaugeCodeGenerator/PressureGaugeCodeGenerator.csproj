@@ -77,6 +77,7 @@
     <Compile Include="Infrastructure\Commands\LambdaCommand.cs" />
     <Compile Include="Models\Departments.cs" />
     <Compile Include="Models\Manometers.cs" />
+    <Compile Include="Models\Qr_codes.cs" />
     <Compile Include="ViewModels\Base\ViewModel.cs" />
     <Compile Include="ViewModels\HelpWindowViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
