@@ -73,7 +73,5 @@
                 Value="Verdana"/>
         <Setter Property="ItemsControl.FontSize" 
                 Value="13"/>
-        <Setter Property="SelectedIndex" 
-                Value="0"/>
     </Style>
 </ResourceDictionary>
