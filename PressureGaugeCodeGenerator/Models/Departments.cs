@@ -12,21 +12,6 @@ namespace PressureGaugeCodeGenerator.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        #region Номер участка
-        private int _NumberDepartment;
-
-        /// <summary>Номер участка</summary>
-        public int NumberDepartment
-        {
-            get => _NumberDepartment;
-            set
-            {
-                _NumberDepartment = value;
-                OnPropertyChanged("NumberDepartment");
-            }
-        }
-        #endregion
-
         #region Название участка
         private string _Name;
 
