@@ -97,7 +97,7 @@ namespace PressureGaugeCodeGenerator.ViewModels
 
         private string _QRСodes = "QR-коды";
 
-        /// <summary>QR-коды</summary> 42342
+        /// <summary>QR-коды</summary>
         public string QRСodes
         {
             get => _QRСodes;
