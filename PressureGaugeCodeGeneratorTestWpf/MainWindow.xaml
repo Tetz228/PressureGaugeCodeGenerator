@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PressureGaugeCodeGeneratorTestWpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="401" Width="572">
+        Title="MainWindow" Height="401" Width="572" Closing="Window_Closing" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="280"/>
@@ -18,9 +18,10 @@
             <MenuItem Header="Файл" 
                       KeyboardNavigation.TabIndex="0"
                       Style="{StaticResource menuItem}">
-                <MenuItem Header="Открыть"/>
+                <MenuItem Header="Открыть"
+                          Click="MenuItemOpen_Click"/>
                 <MenuItem Header="Выход" 
-                          Command="{Binding CloseApplicationCommand}"/>
+                          Click="MenuItemExit_Click"/>
             </MenuItem>
             <MenuItem Header="Справка" 
                       Height="19" 
@@ -220,7 +221,8 @@
                    Width="564"/>
         <ComboBox x:Name="comboBox_department" 
                   Margin="10,112,0,0"
-                  Width="259" 
+                  Width="259"
+                  SelectedIndex="0"
                   KeyboardNavigation.TabIndex="2"
                   Style="{StaticResource comboBoxs}">
             <ComboBoxItem Content="1 - Литография (ППШ)"/>

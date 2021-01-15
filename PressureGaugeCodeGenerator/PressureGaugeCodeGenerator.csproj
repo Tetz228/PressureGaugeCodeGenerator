@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -75,8 +76,6 @@
     </Compile>
     <Compile Include="Infrastructure\Commands\Base\Command.cs" />
     <Compile Include="Infrastructure\Commands\LambdaCommand.cs" />
-    <Compile Include="Infrastructure\Commands\DelegateCommand.cs" />
-    <Compile Include="Infrastructure\Commands\IDelegateCommand.cs" />
     <Compile Include="Models\Departments.cs" />
     <Compile Include="Models\Manometers.cs" />
     <Compile Include="Models\Qr_codes.cs" />
