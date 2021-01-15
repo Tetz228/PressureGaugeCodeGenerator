@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PressureGaugeCodeGeneratorTestWpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="401" Width="572" Closing="Window_Closing" Loaded="Window_Loaded">
+        Title="Генератор кодов манометров" Height="401" Width="572" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Closing="Window_Closing" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="280"/>
@@ -28,9 +28,9 @@
                       KeyboardNavigation.TabIndex="1"
                       Style="{StaticResource menuItem}">
                 <MenuItem Header="Поддержка" 
-                          Command="{Binding OpenHelpWindowCommand}"/>
+                          Click="MenuItemSupport_Click"/>
                 <MenuItem Header="О программе..." 
-                          Command="{Binding OpenAboutProgramCommand}"/>
+                          Click="MenuItemAboutProgram_Click"/>
             </MenuItem>
         </Menu>
         <Label Content="Путь к файлу:"
@@ -97,7 +97,7 @@
                Height="23"
                 Style="{StaticResource labels}"/>
         <Button Content="Сгенерировать" 
-                x:Name="button_generate"             
+                x:Name="ButtonGenerate"             
                 Width="107"                
                 Margin="10,0,0,10"              
                 KeyboardNavigation.TabIndex="7" 
@@ -105,13 +105,13 @@
                 FontSize="13"
                 Style="{StaticResource buttons}"/>
         <Button Content="Показать номера"
-                x:Name="button_show"  
+                x:Name="ButtonShowNumbers"  
                 Width="122" 
                 KeyboardNavigation.TabIndex="8"
                 Margin="147,0,0,10" 
                 Style="{StaticResource buttons}"/>
         <Button Content="Сгенерировать QR"
-                x:Name="button_generate_qr"             
+                x:Name="ButtonGenerateQr"             
                 Margin="81,0,0,10" 
                 VerticalAlignment="Bottom" 
                 Width="135"
@@ -119,7 +119,7 @@
                 Grid.Column="1" 
                 Style="{StaticResource buttons}"/>
         <Button Content="Открыть" 
-                x:Name="button_open"  
+                x:Name="ButtonOpen"  
                 Width="100" 
                 Height="23" 
                 KeyboardNavigation.TabIndex="6" 
@@ -133,21 +133,21 @@
                  TextAlignment="Left" 
                  Width="332" 
                  Style="{StaticResource textBoxs}"/>
-        <TextBox x:Name="textBox_begin"  
+        <TextBox x:Name="TextBoxStartNumber"  
                  Height="23" 
                  Margin="10,176,0,0" 
                  Width="259" 
                  MaxLength="9" 
                  KeyboardNavigation.TabIndex="3" 
                  Style="{StaticResource textBoxs}"/>
-        <TextBox x:Name="textBox_quantity"  
+        <TextBox x:Name="TextBoxCountNumbers"  
                  Height="22" 
                  Margin="10,259,0,0"
                  Width="259" 
                  MaxLength="4" 
                  KeyboardNavigation.TabIndex="4"
                  Style="{StaticResource textBoxs}"/>
-        <TextBox x:Name="textBox_height"
+        <TextBox x:Name="TextBoxHeight"
                  Grid.Column="1" 
                  Grid.Row="0"               
                  Height="23" 
@@ -156,7 +156,7 @@
                  Width="64" 
                  KeyboardNavigation.TabIndex="3"
                  Style="{StaticResource textBoxs}"/>
-        <TextBox x:Name="textBox_width" 
+        <TextBox x:Name="TextBoxWidth" 
                  Grid.Column="1" 
                  Grid.Row="0" 
                  Height="23"  
@@ -165,7 +165,7 @@
                  Width="64" 
                  KeyboardNavigation.TabIndex="4"
                  Style="{StaticResource textBoxs}"/>
-        <TextBox x:Name="textBox_height_bmp" 
+        <TextBox x:Name="TextBoxHeightBmp" 
                  Grid.Column="1" 
                  Grid.Row="0" 
                  Height="23" 
@@ -174,7 +174,7 @@
                  Width="64"
                  KeyboardNavigation.TabIndex="5"
                  Style="{StaticResource textBoxs}"/>
-        <TextBox x:Name="textBox_width_bmp" 
+        <TextBox x:Name="TextBoxWidthBmp" 
                  Grid.Column="1" 
                  Grid.Row="0" 
                  Height="23"  
@@ -219,7 +219,7 @@
                    Margin="0,43,-2,0" 
                    VerticalAlignment="Top" 
                    Width="564"/>
-        <ComboBox x:Name="comboBox_department" 
+        <ComboBox x:Name="ComboBoxDepartment" 
                   Margin="10,112,0,0"
                   Width="259"
                   SelectedIndex="0"
@@ -230,25 +230,26 @@
             <ComboBoxItem Content="3 - Безрегулировка (штучный циферблат)"/>
             <ComboBoxItem Content="4 - ПНП"/>
         </ComboBox>
-        <ComboBox x:Name="comboBox_format" 
+        <ComboBox x:Name="ComboBoxFormat" 
                   Grid.Column="1" 
                   Grid.Row="0"      
                   Margin="10,223,0,0" 
                   Width="120" 
                   Height="23" 
+                  SelectedIndex="0"
                   KeyboardNavigation.TabIndex="2"
-                  Style="{StaticResource comboBoxs}">
+                  Style="{StaticResource comboBoxs}" SelectionChanged="ComboBoxFormatSelectionChanged">
             <ComboBoxItem Content="BMP"/>
             <ComboBoxItem Content="PNG"/>
             <ComboBoxItem Content="JPEG"/>
-            <ComboBoxItem Content="BMP + PNG"/>
+            <ComboBoxItem Content="PNG и BMP"/>
         </ComboBox>
         <CheckBox Content="Установить год автоматически"
-                  x:Name="checkBox_setYear" 
+                  x:Name="CheckBoxAutoSetYear" 
                   HorizontalAlignment="Left" 
                   Margin="10,204,0,0" 
                   VerticalAlignment="Top" 
                   FontFamily="Verdana" 
-                  FontSize="13"/>
+                  FontSize="13" Unchecked="CheckBoxAutoSetYear_Unchecked"/>
     </Grid>
 </Window>
