@@ -17,7 +17,18 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
 
         private void MenuItemOpen_Click(object sender, RoutedEventArgs e)
         {
+            Open();
+        }
 
+        private void ButtonOpen_Click(object sender, RoutedEventArgs e)
+        {
+            Open();
+        }
+
+        private void Open()
+        {
+            OperationsFiles.OpenFile(out string path);
+            TextBoxPath.Text = path;
         }
 
         #region При клике на кнопку в меню "Выход"
@@ -236,7 +247,8 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
             }
 
             //OperationsFiles.Generate(TextBoxStartNumber.Text, TextBoxCountNumbers.Text, TextBoxPath.Text, GlobalVar.DIGITS);
-        } 
+        }
+
         #endregion
     }
 }
