@@ -1,7 +1,10 @@
-﻿using System;
+﻿using PressureGaugeCodeGeneratorTestWpf.Data;
+using System;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
+using System.Reflection;
+using System.Windows;
+using form = System.Windows.Forms;
 
 namespace PressureGaugeCodeGeneratorTestWpf.Commands
 {
@@ -136,5 +139,79 @@ namespace PressureGaugeCodeGeneratorTestWpf.Commands
         //                MessageBoxImage.Error);
         //    }
         //}
+
+        #region Открытие .txt файла
+        /// <summary>Открытие .txt файла</summary>
+        /// <param name="path">Путь до файла</param>
+        public static void OpenFile(out string path)
+        {
+            form.OpenFileDialog openFileDialog;
+            string _path = path = Assembly.GetExecutingAssembly().Location;
+
+            try
+            {
+                openFileDialog = new form.OpenFileDialog
+                {
+                    Title = "Выберите файл",
+                    InitialDirectory = Path.GetDirectoryName(path),
+                    Filter = "Файлы с расширением .txt|*.txt"
+                };
+                openFileDialog.ShowDialog();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Ошибка при выборе файла!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (openFileDialog.FileName != "")
+            {
+                if (!EmptyFile(openFileDialog.FileName))
+                {
+                    if (IsNumber(File.ReadLines(openFileDialog.FileName).Last()))
+                        SetStartNumber(path = openFileDialog.FileName, GlobalVar.DIGITS);
+                    else
+                        MessageBox.Show($"Неверный формат файла - {openFileDialog.FileName}\nФайл должен содержать " + GlobalVar.DIGITS + "-значные номера", "Некорректный формат файла", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                    path = openFileDialog.FileName;
+            }
+
+            if (string.Equals(_path, path))
+                path = "";
+        } 
+        #endregion
+
+        public static void SetStartNumber(string _path, int _count/*GlobalVar.DIGITS*/)
+        {
+            int lastNumber = int.Parse(File.ReadLines(_path).Last());
+            if (int.Parse(GetYear()) == int.Parse(lastNumber.ToString().Substring(0, 2)))
+                lastNumber++;
+
+            else
+            {
+                //if (checkBox_setYear.IsChecked == true)
+                //{
+                //    textBox_begin.Text = GetYear() + GetDepartment() + "000001";
+                //    using (StreamWriter streamWriter = new StreamWriter(_path))
+                //    {
+                //        string newpath = Directory.GetCurrentDirectory() + "\\numbers" + GetDepartment() + "_20" + GetYear() + ".txt"; //текущая директория + новое имя файла
+                //        File.Create(newpath);
+                //        textBox_begin.Text = GetYear() + GetDepartment() + "000001";
+                //        streamWriter.Write(GetYear() + GetDepartment() + "000000");
+                //    }
+                //    MessageBox.Show(
+                //    "Настал следующий год\n" +
+                //    "Первые цифры номера теперь - " + Int32.Parse(num.ToString().Substring(0, 2)),
+                //    "Информация",
+                //    MessageBoxButton.OK,
+                //    MessageBoxImage.Information);
+                //}
+            }
+        }
+
     }
+
 }
+
+
