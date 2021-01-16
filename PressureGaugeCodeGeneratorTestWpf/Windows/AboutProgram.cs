@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PressureGaugeCodeGeneratorTestWpf.Windows
@@ -102,7 +97,7 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
         }
         #endregion
 
-        private void okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             Close();
         }
