@@ -20,8 +20,8 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
 
         }
 
-        #region При клике на кноку в меню "Выход"
-        /// <summary>При клике на "Выход"</summary>
+        #region При клике на кнопку в меню "Выход"
+        /// <summary>При клике на кнопку в меню "Выход"</summary>
         private void MenuItemExit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
@@ -136,7 +136,7 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
         }
         #endregion
 
-        #region Открытие окна"Поддержка"
+        #region Открытие окна "Поддержка"
         /// <summary>Открытие окна "Поддержка"</summary>
         private void MenuItemSupport_Click(object sender, RoutedEventArgs e)
         {
@@ -180,40 +180,64 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
         }
         #endregion
 
+        #region При клике на кнопку "Сгенерировать"
+        /// <summary>При клике на кнопку "Сгенерировать"</summary>
         private void ButtonGenerate_Click(object sender, RoutedEventArgs e)
         {
             if (TextBoxStartNumber.Text.Length < GlobalVar.DIGITS)
-                MessageBox.Show($"В номере должно быть {GlobalVar.DIGITS} цифр", "Некорректный начальный номер!", MessageBoxButton.OK, MessageBoxImage.Error);
-            else
             {
-                if (!int.TryParse(TextBoxStartNumber.Text, out _))
-                    MessageBox.Show("Введите корректный начальный номер", "Некорректный начальный номер!", MessageBoxButton.OK, MessageBoxImage.Error);
-                else
-                {
-                    if (OperationsFiles.FileExist(TextBoxPath.Text) &&
-                        OperationsFiles.EmptyFile(TextBoxPath.Text) &&
-                        OperationsFiles.IsNumber(File.ReadLines(TextBoxPath.Text).Last()) &&
-                        !OperationsFiles.ValidNumber(TextBoxPath.Text, TextBoxStartNumber.Text))
-                    {
-                        MessageBox.Show("Номер должен быть больше последнего сгенерированного.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    else
-                    {
+                MessageBox.Show($"В номере должно быть {GlobalVar.DIGITS} цифр", "Некорректный начальный номер!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
-                    }
+            if (!int.TryParse(TextBoxCountNumbers.Text, out _))
+            {
+                MessageBox.Show("Введите корректное количество номеров", "Некорректное количество номеров!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (!int.TryParse(TextBoxStartNumber.Text, out _))
+            {
+                MessageBox.Show("Введите корректный начальный номер", "Некорректный начальный номер!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (int.Parse(TextBoxCountNumbers.Text) < 1 || int.Parse(TextBoxCountNumbers.Text) > 1000)
+            {
+                MessageBox.Show("Количество номеров должно быть в диапазоне от 1 до 1000", "Некорректное количество номеров!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (int.Parse(TextBoxStartNumber.Text) + int.Parse(TextBoxCountNumbers.Text) >= 1_000_000_000)
+            {
+                MessageBox.Show("Последнее генерируемое число должно быть не более 999999999", "Некорректное генерируемое число!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (!OperationsFiles.FileExist(TextBoxPath.Text))
+            {
+                MessageBox.Show("Введите корректный путь", "Некорректный путь!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (!OperationsFiles.EmptyFile(TextBoxPath.Text))
+            {
+                if (!OperationsFiles.IsNumber(File.ReadLines(TextBoxPath.Text).Last()))
+                {
+                    MessageBox.Show("В файле последний номер содержит недопустимые знаки", "Некорректный последний номер в файле!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                if (!OperationsFiles.ValidNumber(TextBoxPath.Text, TextBoxStartNumber.Text))
+                {
+                    MessageBox.Show("Номер должен быть больше, чем уже сгенерированное число в файле", "Некорректный начальный номер!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
                 }
             }
 
-
-
-            /*
-            TextBoxStartNumber.Text;
-            TextBoxCountNumbers.Text;
-            TextBoxPath.Text;
-            GlobalVar.DIGITS;
-            */
-
-
-        }
+            //OperationsFiles.Generate(TextBoxStartNumber.Text, TextBoxCountNumbers.Text, TextBoxPath.Text, GlobalVar.DIGITS);
+        } 
+        #endregion
     }
 }
+
