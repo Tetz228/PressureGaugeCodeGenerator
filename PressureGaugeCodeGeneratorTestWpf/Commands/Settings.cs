@@ -8,6 +8,7 @@ namespace PressureGaugeCodeGeneratorTestWpf.Commands
     {
         #region Чтение настроек
         /// <summary>Чтение настроек</summary>
+        /// <returns>Возвращает словарь с настройками</returns>
         public static Dictionary<string, string> ReadSettings()
         {
             Dictionary<string, string> settings = new Dictionary<string, string>();
@@ -32,6 +33,7 @@ namespace PressureGaugeCodeGeneratorTestWpf.Commands
 
         #region Сохранение настроек
         /// <summary>Сохранение настроек</summary>
+        /// <param name="dictionarySettings">Словарь с настройками</param>
         public static void SaveSettings(Dictionary<string, string> dictionarySettings)
         {
             try
