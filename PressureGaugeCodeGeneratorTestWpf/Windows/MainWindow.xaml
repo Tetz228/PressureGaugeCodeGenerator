@@ -127,6 +127,7 @@
                 Margin="166,22,0,0" 
                 Grid.Column="1"                
                 Style="{StaticResource buttons}" 
+                Click="ButtonOpen_Click"
                 VerticalAlignment="Top"/>
         <TextBox x:Name="TextBoxPath"
                  Grid.ColumnSpan="2" 
