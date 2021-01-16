@@ -128,7 +128,8 @@
                 Grid.Column="1"                
                 Style="{StaticResource buttons}" 
                 VerticalAlignment="Top"/>
-        <TextBox Grid.ColumnSpan="2" 
+        <TextBox x:Name="TextBoxPath"
+                 Grid.ColumnSpan="2" 
                  Height="23" 
                  Margin="110,22,0,0" 
                  TextAlignment="Left" 
