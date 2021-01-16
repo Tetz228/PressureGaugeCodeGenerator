@@ -1,17 +1,10 @@
 ﻿using PressureGaugeCodeGeneratorTestWpf.Commands;
-using System;
+using PressureGaugeCodeGeneratorTestWpf.Data;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PressureGaugeCodeGeneratorTestWpf.Windows
 {
@@ -189,6 +182,37 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
 
         private void ButtonGenerate_Click(object sender, RoutedEventArgs e)
         {
+            if (TextBoxStartNumber.Text.Length < GlobalVar.DIGITS)
+                MessageBox.Show($"В номере должно быть {GlobalVar.DIGITS} цифр", "Некорректный начальный номер!", MessageBoxButton.OK, MessageBoxImage.Error);
+            else
+            {
+                if (!int.TryParse(TextBoxStartNumber.Text, out _))
+                    MessageBox.Show("Введите корректный начальный номер", "Некорректный начальный номер!", MessageBoxButton.OK, MessageBoxImage.Error);
+                else
+                {
+                    if (OperationsFiles.FileExist(TextBoxPath.Text) &&
+                        OperationsFiles.EmptyFile(TextBoxPath.Text) &&
+                        OperationsFiles.IsNumber(File.ReadLines(TextBoxPath.Text).Last()) &&
+                        !OperationsFiles.ValidNumber(TextBoxPath.Text, TextBoxStartNumber.Text))
+                    {
+                        MessageBox.Show("Номер должен быть больше последнего сгенерированного.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
+
+
+
+            /*
+            TextBoxStartNumber.Text;
+            TextBoxCountNumbers.Text;
+            TextBoxPath.Text;
+            GlobalVar.DIGITS;
+            */
+
 
         }
     }
