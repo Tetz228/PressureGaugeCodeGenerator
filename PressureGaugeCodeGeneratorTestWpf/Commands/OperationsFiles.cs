@@ -143,75 +143,71 @@ namespace PressureGaugeCodeGeneratorTestWpf.Commands
         #region Открытие .txt файла
         /// <summary>Открытие .txt файла</summary>
         /// <param name="path">Путь до файла</param>
-        public static void OpenFile(out string path)
+        public static bool OpenFile(out string path)
         {
+            path = "";
             form.OpenFileDialog openFileDialog;
-            string _path = path = Assembly.GetExecutingAssembly().Location;
-
             try
             {
                 openFileDialog = new form.OpenFileDialog
                 {
                     Title = "Выберите файл",
-                    InitialDirectory = Path.GetDirectoryName(path),
+                    InitialDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                     Filter = "Файлы с расширением .txt|*.txt"
                 };
-                openFileDialog.ShowDialog();
+                if (openFileDialog.ShowDialog() == form.DialogResult.OK)
+                {
+                    if (!EmptyFile(openFileDialog.FileName))
+                        if (!IsNumber(File.ReadLines(openFileDialog.FileName).Last()))
+                        {
+                            MessageBox.Show($"Неверный формат файла - {openFileDialog.FileName}\nФайл должен содержать " + GlobalVar.DIGITS + "-значные номера", "Некорректный формат файла", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return false;
+                        }
+
+                    path = openFileDialog.FileName;
+                    return true;
+                }
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, "Ошибка при выборе файла!", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
             }
 
-            if (openFileDialog.FileName != "")
-            {
-                if (!EmptyFile(openFileDialog.FileName))
-                {
-                    if (IsNumber(File.ReadLines(openFileDialog.FileName).Last()))
-                        SetStartNumber(path = openFileDialog.FileName, GlobalVar.DIGITS);
-                    else
-                        MessageBox.Show($"Неверный формат файла - {openFileDialog.FileName}\nФайл должен содержать " + GlobalVar.DIGITS + "-значные номера", "Некорректный формат файла", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                else
-                    path = openFileDialog.FileName;
-            }
-
-            if (string.Equals(_path, path))
-                path = "";
-        } 
+            return false;
+        }
         #endregion
 
-        public static void SetStartNumber(string _path, int _count/*GlobalVar.DIGITS*/)
+        public static void SetStartNumber((string path, bool? autoSetYear, string department) data, out string startNumber)
         {
-            int lastNumber = int.Parse(File.ReadLines(_path).Last());
-            if (int.Parse(GetYear()) == int.Parse(lastNumber.ToString().Substring(0, 2)))
-                lastNumber++;
+            startNumber = "";
+            if(EmptyFile(data.path))
+            {
 
+            }
             else
             {
-                //if (checkBox_setYear.IsChecked == true)
-                //{
-                //    textBox_begin.Text = GetYear() + GetDepartment() + "000001";
-                //    using (StreamWriter streamWriter = new StreamWriter(_path))
-                //    {
-                //        string newpath = Directory.GetCurrentDirectory() + "\\numbers" + GetDepartment() + "_20" + GetYear() + ".txt"; //текущая директория + новое имя файла
-                //        File.Create(newpath);
-                //        textBox_begin.Text = GetYear() + GetDepartment() + "000001";
-                //        streamWriter.Write(GetYear() + GetDepartment() + "000000");
-                //    }
-                //    MessageBox.Show(
-                //    "Настал следующий год\n" +
-                //    "Первые цифры номера теперь - " + Int32.Parse(num.ToString().Substring(0, 2)),
-                //    "Информация",
-                //    MessageBoxButton.OK,
-                //    MessageBoxImage.Information);
-                //}
-            }
+                int lastNumber = int.Parse(File.ReadLines(data.path).Last());
+                if (int.Parse(GetYear()) == int.Parse(lastNumber.ToString().Substring(0, 2)))
+                    startNumber = lastNumber++.ToString();
+                else
+                {
+                    if (data.autoSetYear == true)
+                    {
+                        using (StreamWriter streamWriter = new StreamWriter(data.path))
+                        {
+                            string newPath = Directory.GetCurrentDirectory() + $"\\numbers{data.department}_20{GetYear()}.txt";
+                            File.Create(newPath);
+                            startNumber = $"{GetYear()}{data.department}000001";
+                            streamWriter.Write($"{GetYear()}{data.department}000000");
+                        }
+                        MessageBox.Show($"Настал следующий год\nПервые цифры номера теперь - {Int32.Parse(lastNumber.ToString().Substring(0, 2))}", "Информация",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+                    }
+                }
+            }            
         }
-
     }
-
 }
 
 
