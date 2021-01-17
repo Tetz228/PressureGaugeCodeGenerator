@@ -27,8 +27,13 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
 
         private void Open()
         {
-            OperationsFiles.OpenFile(out string path);
-            TextBoxPath.Text = path;
+            if (OperationsFiles.OpenFile(out string _path))
+            {
+                OperationsFiles.SetStartNumber((_path, CheckBoxAutoSetYear.IsChecked, ComboBoxDepartment.Text), out string startNumber);
+                TextBoxStartNumber.Text = startNumber;
+                TextBoxCountNumbers.Clear();
+            }
+            TextBoxPath.Text = _path;
         }
 
         #region При клике на кнопку в меню "Выход"
