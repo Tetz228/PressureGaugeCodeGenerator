@@ -159,8 +159,8 @@ namespace PressureGaugeCodeGeneratorTestWpf.Commands
         }
         #endregion
 
-        #region Вывод номеров, которые будут сгенерированные для QR-кодов
-        /// <summary>Вывод номеров, которые будут сгенерированные для QR-кодов</summary>
+        #region Вывод номеров в интерфейсе, которые будут сгенерированные для QR-кодов
+        /// <summary>Вывод номеров в интерфейсе, которые будут сгенерированные для QR-кодов</summary>
         /// <param name="path">Путь до файла</param>
         /// <returns>Вывод первого и последнего номера,или одно номера, если первый и последний номер совпадают, или вывод "Нет номеров для генерации!"</returns>
         public static string DrawNumbers(string path)
