@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace PressureGaugeCodeGeneratorTestWpf.Commands
 {
-    static class Settings
+    internal static class Settings
     {
         #region Чтение настроек
         /// <summary>Чтение настроек</summary>
