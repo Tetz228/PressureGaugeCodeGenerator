@@ -118,7 +118,7 @@ namespace PressureGaugeCodeGeneratorTestWpf.Commands
                     {
                         using (StreamWriter streamWriter = new StreamWriter(data.path))
                         {
-                            string newPath = Directory.GetCurrentDirectory() + $"\\numbers{data.department}_20{GetYear()}.txt";
+                            string newPath = $"{Directory.GetCurrentDirectory()}\\numbers{data.department}_20{GetYear()}.txt";
                             File.Create(newPath);
                             startNumber = $"{GetYear()}{data.department}000001";
                             streamWriter.Write($"{GetYear()}{data.department}000000");
@@ -179,7 +179,6 @@ namespace PressureGaugeCodeGeneratorTestWpf.Commands
             return "Нет номеров для генерации!";
         }
         #endregion
-
 
         //public void Generate(int _begin, int _quantity, string path, int _count)
         //{
@@ -289,6 +288,73 @@ namespace PressureGaugeCodeGeneratorTestWpf.Commands
             //SetStartNumber(_path, _count);
         }
         #endregion
+
+        public static string Handle(string department)
+        {
+            string path = "";
+
+            switch (department)
+            {
+                case "1 - Литография (ППШ)":
+                    ComboBoxOpenFile(path = $"{Directory.GetCurrentDirectory()}\\numbers1_20{GetYear()}.txt");
+                    break;
+                case "2 - Безрегулировка":
+                    ComboBoxOpenFile(path = $"{Directory.GetCurrentDirectory()}\\numbers2_20{GetYear()}.txt");
+                    break;
+                case "3 - Безрегулировка (штучный циферблат)":
+                    ComboBoxOpenFile(path = $"{Directory.GetCurrentDirectory()}\\numbers3_20{GetYear()}.txt");
+                    break;
+                case "4 - ПНП":
+                    ComboBoxOpenFile(path = $"{Directory.GetCurrentDirectory()}\\numbers4_20{GetYear()}.txt");
+                    break;
+            }
+
+            return path;
+        }
+
+        public static void ComboBoxOpenFile(string path)
+        {
+            //if (CheckFullPathAndFile(path))
+            //{
+            //    textBox_path.Text = path;
+            //    SetBeginNumber(textBox_path.Text, GlobalVar.DIGITS);
+            //}
+            //else if (CheckPath(path) && FileExist(path) && EmptyFile(path))
+            //{
+            //    textBox_begin.Text = GetYear() + GetDepartment() + "000001";
+            //}
+            //else if (!FileExist(path))
+            //{
+            //    MessageBoxResult result = MessageBox.Show(
+            //        "Файл " + path + " не существует\nСоздать файл?",
+            //        "Ошибка",
+            //        MessageBoxButton.YesNo,
+            //        MessageBoxImage.Error);
+
+            //    switch (result)
+            //    {
+            //        case MessageBoxResult.Yes:
+            //            using (FileStream fs = File.Create(path))
+            //            {
+            //                textBox_begin.Text = GetYear() + GetDepartment() + "000001";
+            //                MessageBox.Show("Создан файл" + path, "Информация");
+            //            }
+            //            break;
+            //        case MessageBoxResult.No:
+            //            break;
+            //    }
+            //}
+            //else
+            //{
+            //    MessageBox.Show(
+            //        "Файл " + path + " содержит некорректные данные\n" +
+            //        "Файл должен содержать " + GlobalVar.DIGITS + "-значные номера",
+            //        "Ошибка",
+            //        MessageBoxButton.OK,
+            //        MessageBoxImage.Error);
+            //    textBox_begin.Text = GetYear() + GetDepartment() + "000001";
+            //}
+        }
     }
 }
 
