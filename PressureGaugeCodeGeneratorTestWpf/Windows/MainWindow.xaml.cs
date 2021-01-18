@@ -15,26 +15,36 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
             InitializeComponent();
         }
 
+        #region При клике на кнопку в меню "Открыть"
+        /// <summary>При клике на кнопку в меню "Открыть"</summary>
         private void MenuItemOpen_Click(object sender, RoutedEventArgs e)
         {
             Open();
         }
+        #endregion
 
+        #region При клике на кнопку "Открыть"
+        /// <summary>При клике на кнопку "Открыть"</summary>
         private void ButtonOpen_Click(object sender, RoutedEventArgs e)
         {
             Open();
         }
+        #endregion
 
+        #region Вызов данного метода при нажатии на кнопки "Открыть"
+        /// <summary>Вызов данного метода при нажатии на кнопки "Открыть"</summary>
         private void Open()
         {
-            if (OperationsFiles.OpenFile(out string _path))
+            if (OperationsFiles.OpenFile(out string path))
             {
-                OperationsFiles.SetStartNumber((_path, CheckBoxAutoSetYear.IsChecked, ComboBoxDepartment.Text), out string startNumber);
+                OperationsFiles.SetStartNumber((path, CheckBoxAutoSetYear.IsChecked, ComboBoxDepartment.Text), out string startNumber);
                 TextBoxStartNumber.Text = startNumber;
+                TextBoxPath.Text = path;
+                LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(path);
                 TextBoxCountNumbers.Clear();
             }
-            TextBoxPath.Text = _path;
         }
+        #endregion
 
         #region При клике на кнопку в меню "Выход"
         /// <summary>При клике на кнопку в меню "Выход"</summary>
@@ -129,8 +139,8 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
         }
         #endregion
 
-        #region Автоматическая установка года
-        /// <summary>Автоматическая установка года</summary>
+        #region При выключении автоматической установки года
+        /// <summary>При выключении автоматической установки года</summary>
         private void CheckBoxAutoSetYear_Unchecked(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("Вы уверены, что хотите отключить автоматическую установку года?",
@@ -254,6 +264,23 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
             //OperationsFiles.Generate(TextBoxStartNumber.Text, TextBoxCountNumbers.Text, TextBoxPath.Text, GlobalVar.DIGITS);
         }
 
+        #endregion
+
+        #region При клике на кнопку "Показать номера"
+        /// <summary>При клике на кнопку "Показать номера"</summary>
+        private void ButtonShowNumbers_OnClick(object sender, RoutedEventArgs e)
+        {
+            OperationsFiles.ReadingFileNumbers(TextBoxPath.Text);
+        }
+        #endregion
+
+        #region При включении автоматической установки года
+        /// <summary>При включении автоматической установки года</summary>
+        private void CheckBoxAutoSetYear_OnChecked(object sender, RoutedEventArgs e)
+        {
+            TextBoxStartNumber.Text = OperationsFiles.GetYear() + TextBoxStartNumber.Text.Remove(0, 2);
+            TextBoxPath.Text = $"{Directory.GetCurrentDirectory()}\\numbers{ComboBoxDepartment.Text}_20{OperationsFiles.GetYear()}.txt";
+        }
         #endregion
     }
 }

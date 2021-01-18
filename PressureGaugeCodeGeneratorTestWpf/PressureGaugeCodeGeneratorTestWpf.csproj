@@ -60,6 +60,9 @@
     </ApplicationDefinition>
     <Compile Include="Commands\OperationsFiles.cs" />
     <Compile Include="Data\GlobalVar.cs" />
+    <Compile Include="Windows\ListNumbersWindow.xaml.cs">
+      <DependentUpon>ListNumbersWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -78,6 +81,10 @@
     <Compile Include="Windows\AboutProgram.Designer.cs">
       <DependentUpon>AboutProgram.cs</DependentUpon>
     </Compile>
+    <Page Include="Windows\ListNumbersWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
