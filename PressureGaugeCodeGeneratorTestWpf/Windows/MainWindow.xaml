@@ -64,7 +64,7 @@
                 </TextBlock>
             </Label.Content>
         </Label>
-        <Label x:Name="label_numbers"  
+        <Label x:Name="LabelDrawNumbers"  
                Grid.Column="1" 
                Grid.Row="0"                
                Margin="10,132,0,0" 
@@ -101,8 +101,6 @@
                 Width="107"                
                 Margin="10,0,0,10"              
                 KeyboardNavigation.TabIndex="7" 
-                FontFamily="Verdana" 
-                FontSize="13"
                 Style="{StaticResource buttons}"
                 Click="ButtonGenerate_Click"/>
         <Button Content="Показать номера"
@@ -110,11 +108,11 @@
                 Width="122" 
                 KeyboardNavigation.TabIndex="8"
                 Margin="147,0,0,10" 
+                Click="ButtonShowNumbers_OnClick"
                 Style="{StaticResource buttons}"/>
         <Button Content="Сгенерировать QR"
                 x:Name="ButtonGenerateQr"             
                 Margin="81,0,0,10" 
-                VerticalAlignment="Bottom" 
                 Width="135"
                 KeyboardNavigation.TabIndex="9" 
                 Grid.Column="1" 
@@ -255,6 +253,7 @@
                   VerticalAlignment="Top" 
                   FontFamily="Verdana" 
                   FontSize="13" 
-                  Unchecked="CheckBoxAutoSetYear_Unchecked"/>
+                  Unchecked="CheckBoxAutoSetYear_Unchecked"
+                  Checked="CheckBoxAutoSetYear_OnChecked"/>
     </Grid>
 </Window>
