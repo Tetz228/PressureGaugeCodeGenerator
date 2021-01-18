@@ -282,6 +282,11 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
             TextBoxPath.Text = $"{Directory.GetCurrentDirectory()}\\numbers{ComboBoxDepartment.Text}_20{OperationsFiles.GetYear()}.txt";
         }
         #endregion
+
+        private void ComboBoxDepartment_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            TextBoxPath.Text = OperationsFiles.Handle(ComboBoxDepartment.Text);
+        }
     }
 }
 
