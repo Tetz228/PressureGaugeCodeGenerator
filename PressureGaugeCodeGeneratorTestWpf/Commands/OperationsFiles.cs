@@ -1,4 +1,5 @@
 ﻿using PressureGaugeCodeGeneratorTestWpf.Data;
+using PressureGaugeCodeGeneratorTestWpf.Windows;
 using System;
 using System.IO;
 using System.Linq;
@@ -8,7 +9,7 @@ using form = System.Windows.Forms;
 
 namespace PressureGaugeCodeGeneratorTestWpf.Commands
 {
-    static class OperationsFiles
+    internal static class OperationsFiles
     {
         #region Проверка пути файла
         /// <summary>Проверка пути файла</summary>
@@ -46,6 +47,7 @@ namespace PressureGaugeCodeGeneratorTestWpf.Commands
         public static bool ValidNumber(string path, string number) => int.Parse(number) > int.Parse(File.ReadLines(path).Last());
         #endregion
 
+        //Мб переписать метод
         #region Вызов всех проверок файла и пути
         /// <summary>Вызов всех проверок файла и пути</summary>
         /// <param name="path">Путь до файла</param>
@@ -59,15 +61,135 @@ namespace PressureGaugeCodeGeneratorTestWpf.Commands
         public static string GetYear() => DateTime.Now.ToString("yy");
         #endregion
 
-        //public void Generate(int _begin, int _quantity, string _path, int _count)
+        #region Открытие .txt файла
+        /// <summary>Открытие .txt файла</summary>
+        /// <param name="path">Путь до файла</param>
+        /// <returns>Возвращает true, если файл выбран, иначе false</returns>
+        public static bool OpenFile(out string path)
+        {
+            path = "";
+            form.OpenFileDialog openFileDialog;
+            try
+            {
+                openFileDialog = new form.OpenFileDialog
+                {
+                    Title = "Выберите файл",
+                    InitialDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    Filter = "Файлы с расширением .txt|*.txt"
+                };
+                if (openFileDialog.ShowDialog() == form.DialogResult.OK)
+                {
+                    if (!EmptyFile(openFileDialog.FileName))
+                        if (!IsNumber(File.ReadLines(openFileDialog.FileName).Last()))
+                        {
+                            MessageBox.Show($"Неверный формат файла - {openFileDialog.FileName}\nФайл должен содержать {GlobalVar.DIGITS}-значные номера",
+                                            "Некорректный формат файла", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return false;
+                        }
+
+                    path = openFileDialog.FileName;
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Ошибка при выборе файла!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            return false;
+        }
+        #endregion
+
+        #region Установка начального значения
+        /// <summary>Установка начального значения</summary>
+        /// <param name="data">Кортеж с данными о пути, о установки автоматического года, о участке</param>
+        /// <param name="startNumber">Начальный номер</param>
+        public static void SetStartNumber((string path, bool? autoSetYear, string department) data, out string startNumber)
+        {
+            startNumber = "";
+            if (!EmptyFile(data.path))
+            {
+                int lastNumber = int.Parse(File.ReadLines(data.path).Last());
+                if (int.Parse(GetYear()) == int.Parse(lastNumber.ToString().Substring(0, 2)))
+                    startNumber = lastNumber++.ToString();
+                else
+                {
+                    if (data.autoSetYear == true)
+                    {
+                        using (StreamWriter streamWriter = new StreamWriter(data.path))
+                        {
+                            string newPath = Directory.GetCurrentDirectory() + $"\\numbers{data.department}_20{GetYear()}.txt";
+                            File.Create(newPath);
+                            startNumber = $"{GetYear()}{data.department}000001";
+                            streamWriter.Write($"{GetYear()}{data.department}000000");
+                        }
+                        MessageBox.Show($"Настал следующий год.\nПервые цифры номера теперь - {int.Parse(lastNumber.ToString().Substring(0, 2))}", "Информация",
+                                        MessageBoxButton.OK,
+                                        MessageBoxImage.Information);
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region Чтение файла с номерами
+        /// <summary>Чтение файла с номерами</summary>
+        /// <param name="path">Путь до файла</param>
+        public static void ReadingFileNumbers(string path)
+        {
+            if (!CheckPath(path))
+                return;
+            if (!FileExist(path))
+                return;
+
+            try
+            {
+                using (StreamReader streamReader = new StreamReader(path))
+                {
+                    ListNumbersWindow numbersWindow = new ListNumbersWindow();
+                    string numbers = streamReader.ReadToEnd();
+                    numbersWindow.TextBoxNumbers.Text = numbers == "" ? "Номера в файле отсутствуют!" : numbers;
+                    numbersWindow.Show();
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Ошибка при чтении файла с номерами", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        #endregion
+
+        #region Вывод номеров, которые будут сгенерированные для QR-кодов
+        /// <summary>Вывод номеров, которые будут сгенерированные для QR-кодов</summary>
+        /// <param name="path">Путь до файла</param>
+        /// <returns>Вывод первого и последнего номера,или одно номера, если первый и последний номер совпадают, или вывод "Нет номеров для генерации!"</returns>
+        public static string DrawNumbers(string path)
+        {
+            if (!EmptyFile(path))
+            {
+                string first = int.Parse(File.ReadLines(path).First()).ToString();
+                string last = int.Parse(File.ReadLines(path).Last()).ToString();
+
+                if (first.Equals(last))
+                    return first;
+
+                return first + " - " + last;
+            }
+
+            return "Нет номеров для генерации!";
+        }
+        #endregion
+
+
+        //public void Generate(int _begin, int _quantity, string path, int _count)
         //{
-        //    string path = _path;
-        //    if (_path.Length > 0)
+        //    string directory = path;
+        //    if (path.Length > 0)
         //    {
-        //        if (!CheckPath(_path))
+        //        if (!CheckPath(path))
         //        {
         //            MessageBox.Show(
-        //                "Путь " + _path + " не найден",
+        //                "Путь " + path + " не найден",
         //                "Ошибка",
         //                MessageBoxButton.OK,
         //                MessageBoxImage.Error);
@@ -77,14 +199,14 @@ namespace PressureGaugeCodeGeneratorTestWpf.Commands
         //            if (checkBox_setYear.IsChecked == false)
         //            {
         //                string year = textBox_begin.Text.Substring(0, 2);
-        //                path = Directory.GetCurrentDirectory() + "\\numbers" + GetDepartment() + "_20" + year + ".txt";
-        //                textBox_path.Text = path;
+        //                directory = Directory.GetCurrentDirectory() + "\\numbers" + GetDepartment() + "_20" + year + ".txt";
+        //                textBox_path.Text = directory;
         //                //TODO: тут создаём файл с маркировкой года, если проверка года отключена
         //            }
-        //            if (!FileExist(path))
+        //            if (!FileExist(directory))
         //            {
         //                MessageBoxResult result = MessageBox.Show(
-        //                    "Файл " + path + " не существует\nСоздать файл?",
+        //                    "Файл " + directory + " не существует\nСоздать файл?",
         //                    "Ошибка",
         //                    MessageBoxButton.YesNo,
         //                    MessageBoxImage.Error);
@@ -92,11 +214,11 @@ namespace PressureGaugeCodeGeneratorTestWpf.Commands
         //                switch (result)
         //                {
         //                    case MessageBoxResult.Yes:
-        //                        using (FileStream fs = File.Create(path))
+        //                        using (FileStream fs = File.Create(directory))
         //                        {
-        //                            MessageBox.Show("Создан файл" + path, "Информация");
+        //                            MessageBox.Show("Создан файл" + directory, "Информация");
         //                        }
-        //                        Generate(_begin, _quantity, path, _count);
+        //                        Generate(_begin, _quantity, directory, _count);
         //                        //     textBox_begin.Text = GetYear() + GetDepartment() + "000001";
         //                        break;
         //                    case MessageBoxResult.No:
@@ -125,7 +247,7 @@ namespace PressureGaugeCodeGeneratorTestWpf.Commands
         //                        str = str.Remove(2, 1).Insert(2, department[0].ToString());
         //                        _begin = Int32.Parse(str);
         //                    }
-        //                    WriteFile(path, _begin, _quantity, _count);
+        //                    WriteFile(directory, _begin, _quantity, _count);
         //                }
         //            }
         //        }
@@ -140,73 +262,33 @@ namespace PressureGaugeCodeGeneratorTestWpf.Commands
         //    }
         //}
 
-        #region Открытие .txt файла
-        /// <summary>Открытие .txt файла</summary>
+        #region Запись номеров в файл
+        /// <summary>Запись номеров в файл</summary>
         /// <param name="path">Путь до файла</param>
-        public static bool OpenFile(out string path)
+        /// <param name="startNumber">Начальный номер</param>
+        /// <param name="countNumber">Количество номеров</param>
+        public static void WritingNumbersToFile(string path, int startNumber, int countNumber)
         {
-            path = "";
-            form.OpenFileDialog openFileDialog;
-            try
-            {
-                openFileDialog = new form.OpenFileDialog
-                {
-                    Title = "Выберите файл",
-                    InitialDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                    Filter = "Файлы с расширением .txt|*.txt"
-                };
-                if (openFileDialog.ShowDialog() == form.DialogResult.OK)
-                {
-                    if (!EmptyFile(openFileDialog.FileName))
-                        if (!IsNumber(File.ReadLines(openFileDialog.FileName).Last()))
-                        {
-                            MessageBox.Show($"Неверный формат файла - {openFileDialog.FileName}\nФайл должен содержать " + GlobalVar.DIGITS + "-значные номера", "Некорректный формат файла", MessageBoxButton.OK, MessageBoxImage.Error);
-                            return false;
-                        }
+            int[] arr = new int[countNumber];
+            arr[0] = startNumber;
 
-                    path = openFileDialog.FileName;
-                    return true;
+            for (int i = 1; i < countNumber; i++) 
+                arr[i] = ++startNumber;
+
+            using (StreamWriter streamWriter = new StreamWriter(path))
+            {
+                for (int i = 0; i < countNumber; i++)
+                {
+                    if (i < countNumber - 1)
+                        streamWriter.WriteLine(arr[i].ToString());
+                    else
+                        streamWriter.Write(arr[i].ToString());
                 }
+                MessageBox.Show($"Номера успешно сгенерированны и записаны в файл: {path}", "Успех!", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "Ошибка при выборе файла!", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            return false;
+            //SetStartNumber(_path, _count);
         }
         #endregion
-
-        public static void SetStartNumber((string path, bool? autoSetYear, string department) data, out string startNumber)
-        {
-            startNumber = "";
-            if(EmptyFile(data.path))
-            {
-
-            }
-            else
-            {
-                int lastNumber = int.Parse(File.ReadLines(data.path).Last());
-                if (int.Parse(GetYear()) == int.Parse(lastNumber.ToString().Substring(0, 2)))
-                    startNumber = lastNumber++.ToString();
-                else
-                {
-                    if (data.autoSetYear == true)
-                    {
-                        using (StreamWriter streamWriter = new StreamWriter(data.path))
-                        {
-                            string newPath = Directory.GetCurrentDirectory() + $"\\numbers{data.department}_20{GetYear()}.txt";
-                            File.Create(newPath);
-                            startNumber = $"{GetYear()}{data.department}000001";
-                            streamWriter.Write($"{GetYear()}{data.department}000000");
-                        }
-                        MessageBox.Show($"Настал следующий год\nПервые цифры номера теперь - {Int32.Parse(lastNumber.ToString().Substring(0, 2))}", "Информация",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information);
-                    }
-                }
-            }            
-        }
     }
 }
 
