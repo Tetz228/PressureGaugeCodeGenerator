@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using form = System.Windows.Forms;
-using System.Windows.Controls;
 
 namespace PressureGaugeCodeGeneratorTestWpf.Classes
 {
@@ -55,28 +54,29 @@ namespace PressureGaugeCodeGeneratorTestWpf.Classes
         /// <summary>Установка начального значения</summary>
         /// <param name="data">Кортеж с данными о пути, о установки автоматического года, о участке</param>
         /// <param name="startNumber">Начальный номер</param>
-        public static void SetStartNumber((string path, bool? autoSetYear, string department) data, out string startNumber)
+        public static void SetStartNumber(string path, bool? autoSetYear, string department, out string startNumber)
         {
             startNumber = "";
-            if (!ChecksFile.EmptyFile(data.path))
+            if (!ChecksFile.EmptyFile(path))
             {
-                int lastNumber = int.Parse(File.ReadLines(data.path).Last());
-                if (data.autoSetYear == false ||
+                int lastNumber = int.Parse(File.ReadLines(path).Last());
+                if (autoSetYear == false ||
                     int.Parse(GetData.GetYear()) ==
                     int.Parse(lastNumber.ToString().Substring(0, 2)))
                 {
-                    startNumber = lastNumber++.ToString();
+                    lastNumber++;
+                    startNumber = lastNumber.ToString();
                     return;
                 }
 
-                if (data.autoSetYear == true)
+                if (autoSetYear == true)
                 {
-                    using (StreamWriter streamWriter = new StreamWriter(data.path))
+                    using (StreamWriter streamWriter = new StreamWriter(path))
                     {
-                        string newPath = $"{Directory.GetCurrentDirectory()}\\numbers{data.department}_20{GetData.GetYear()}.txt";
+                        string newPath = $"{Directory.GetCurrentDirectory()}\\numbers{department}_20{GetData.GetYear()}.txt";
                         File.Create(newPath);
-                        startNumber = $"{GetData.GetYear()}{data.department}000001";
-                        streamWriter.Write($"{GetData.GetYear()}{data.department}000000");
+                        startNumber = $"{GetData.GetYear()}{department}000001";
+                        streamWriter.Write($"{GetData.GetYear()}{department}000000");
                     }
                     MessageBox.Show($"Настал следующий год.\nПервые цифры номера теперь - {int.Parse(lastNumber.ToString().Substring(0, 2))}", "Информация",
                                     MessageBoxButton.OK,
@@ -85,7 +85,7 @@ namespace PressureGaugeCodeGeneratorTestWpf.Classes
             }
         }
         #endregion
-
+        
         #region Чтение файла с номерами
         /// <summary>Чтение файла с номерами</summary>
         /// <param name="path">Путь до файла</param>
@@ -134,62 +134,47 @@ namespace PressureGaugeCodeGeneratorTestWpf.Classes
         }
         #endregion
 
-        public static void Generate(string startNumber, int countNumber, string path, bool? autoSetYear,ComboBox depart)
+        #region Генерация и запись номеров в файл
+        /// <summary></summary>
+        /// <param name="startNumber"></param>
+        /// <param name="countNumber"></param>
+        /// <param name="path"></param>
+        /// <param name="autoSetYear"></param>
+        /// <param name="department"></param>
+        public static void Generate(int startNumber, int countNumber, string path, bool? autoSetYear, string department)
         {
-            string department = GetData.GetDepartment(depart);
-
-            if (autoSetYear == false)
-                path = Directory.GetCurrentDirectory() + "\\numbers" + department + "_20" + startNumber.Substring(0, 2) + ".txt";
-
-            int num = int.Parse(startNumber.Substring(0, 2));
+            string startNum = startNumber.ToString();
+            int num = int.Parse(startNum.Substring(0, 2));
 
             if (autoSetYear == true && num != int.Parse(GetData.GetYear()))
-            {
                 MessageBox.Show(
-                    "Вы пытаетесь сгенерировать номера для 20" + num + "-го года, " +
-                    "сейчас 20" + Int32.Parse(GetYear()) + "-й год. " +
-                    "Чтобы отключить проверку, снимите галочку \"Установить год автоматически\"",
-                    "Ошибка",
+                    $"Вы пытаетесь сгенерировать номера для 20{num}-го года, сейчас 20{GetData.GetYear()}-й год. Чтобы отключить проверку, снимите галочку \"Установить год автоматически\"",
+                    "Предупреждение",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
-            }
             else
             {
-                string str = startNumber;
-                if (str[2] != department[0])
+                if (startNum[2] != department[0])
+                    startNumber = int.Parse(startNum.Remove(2, 1).Insert(2, department[0].ToString()));
+
+                int[] arr = new int[countNumber];
+                arr[0] = startNumber;
+
+                for (int i = 1; i < countNumber; i++)
+                    arr[i] = ++startNumber;
+
+                using (StreamWriter streamWriter = new StreamWriter(path))
                 {
-                    str = str.Remove(2, 1).Insert(2, department[0].ToString());
-                    startNumber = Int32.Parse(str);
+                    for (int i = 0; i < countNumber; i++)
+                    {
+                        if (i < countNumber - 1)
+                            streamWriter.WriteLine(arr[i].ToString());
+                        else
+                            streamWriter.Write(arr[i].ToString());
+                    }
+                    MessageBox.Show($"Номера успешно сгенерированны и записаны в файл по пути: {path}", "Успех!", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
-                WriteFile(path, startNumber, countNumber, GlobalVarDIGITS);
             }
-        }
-
-        #region Запись номеров в файл
-        /// <summary>Запись номеров в файл</summary>
-        /// <param name="path">Путь до файла</param>
-        /// <param name="startNumber">Начальный номер</param>
-        /// <param name="countNumber">Количество номеров</param>
-        public static void WritingNumbersToFile(string path, int startNumber, int countNumber)
-        {
-            int[] arr = new int[countNumber];
-            arr[0] = startNumber;
-
-            for (int i = 1; i < countNumber; i++)
-                arr[i] = ++startNumber;
-
-            using (StreamWriter streamWriter = new StreamWriter(path))
-            {
-                for (int i = 0; i < countNumber; i++)
-                {
-                    if (i < countNumber - 1)
-                        streamWriter.WriteLine(arr[i].ToString());
-                    else
-                        streamWriter.Write(arr[i].ToString());
-                }
-                MessageBox.Show($"Номера успешно сгенерированны и записаны в файл: {path}", "Успех!", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            //SetStartNumber(_path, _count);
         }
         #endregion
     }
