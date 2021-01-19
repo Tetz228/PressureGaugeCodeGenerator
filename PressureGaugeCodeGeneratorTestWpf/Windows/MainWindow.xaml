@@ -115,7 +115,8 @@
                 Margin="81,0,0,10" 
                 Width="135"
                 KeyboardNavigation.TabIndex="9" 
-                Grid.Column="1" 
+                Grid.Column="1"
+                Click="ButtonGenerateQr_Click"
                 Style="{StaticResource buttons}"/>
         <Button Content="Открыть" 
                 x:Name="ButtonOpen"  
