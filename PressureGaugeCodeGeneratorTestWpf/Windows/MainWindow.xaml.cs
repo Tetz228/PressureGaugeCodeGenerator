@@ -1,13 +1,19 @@
-﻿using PressureGaugeCodeGeneratorTestWpf.Commands;
-using PressureGaugeCodeGeneratorTestWpf.Data;
+﻿using PressureGaugeCodeGeneratorTestWpf.Data;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using PressureGaugeCodeGeneratorTestWpf.Classes;
+using System;
 
 namespace PressureGaugeCodeGeneratorTestWpf.Windows
 {
+    enum Departments
+    {
+
+    }
+
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -37,7 +43,7 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
         {
             if (OperationsFiles.OpenFile(out string path))
             {
-                OperationsFiles.SetStartNumber((path, CheckBoxAutoSetYear.IsChecked, ComboBoxDepartment.Text), out string startNumber);
+                OperationsFiles.SetStartNumber((path, CheckBoxAutoSetYear.IsChecked, GetData.GetDepartment(ComboBoxDepartment)), out string startNumber);
                 TextBoxStartNumber.Text = startNumber;
                 TextBoxPath.Text = path;
                 LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(path);
@@ -60,15 +66,15 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
         {
             Dictionary<string, string> settings = new Dictionary<string, string>
             {
-                { "Department", ComboBoxDepartment.Text },
+                { "Department", GetData.GetDepartment(ComboBoxDepartment) },
                 { "Width", TextBoxWidth.Text },
                 { "Height", TextBoxHeight.Text },
                 { "Width_BMP", TextBoxWidthBmp.Text },
                 { "Height_BMP", TextBoxHeightBmp.Text },
                 { "Checked", CheckBoxAutoSetYear.IsChecked.ToString() },
-                { "Format", ComboBoxFormat.Text }
+                { "Format", ComboBoxFormat.Text },
             };
-            Settings.SaveSettings(settings);
+            SaveAndReadSettings.SaveSettings(settings);
         }
         #endregion
 
@@ -76,7 +82,7 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
         /// <summary>При загрузке окна</summary>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Dictionary<string, string> settings = Settings.ReadSettings();
+            Dictionary<string, string> settings = SaveAndReadSettings.ReadSettings();
 
             if (settings.Count != 0)
             {
@@ -131,7 +137,6 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
             }
             else
             {
-
                 label_bmp.Visibility = Visibility.Hidden;
                 TextBoxHeightBmp.Visibility = Visibility.Hidden;
                 TextBoxWidthBmp.Visibility = Visibility.Hidden;
@@ -240,21 +245,21 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
                 return;
             }
 
-            if (!OperationsFiles.FileExist(TextBoxPath.Text))
+            if (!ChecksFile.FileExist(TextBoxPath.Text))
             {
                 MessageBox.Show("Введите корректный путь", "Некорректный путь!", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            if (!OperationsFiles.EmptyFile(TextBoxPath.Text))
+            if (!ChecksFile.EmptyFile(TextBoxPath.Text))
             {
-                if (!OperationsFiles.IsNumber(File.ReadLines(TextBoxPath.Text).Last()))
+                if (!ChecksFile.IsNumber(File.ReadLines(TextBoxPath.Text).Last()))
                 {
                     MessageBox.Show("В файле последний номер содержит недопустимые знаки", "Некорректный последний номер в файле!", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
-                if (!OperationsFiles.ValidNumber(TextBoxPath.Text, TextBoxStartNumber.Text))
+                if (!ChecksFile.ValidNumber(TextBoxPath.Text, TextBoxStartNumber.Text))
                 {
                     MessageBox.Show("Номер должен быть больше, чем уже сгенерированное число в файле", "Некорректный начальный номер!", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
@@ -278,15 +283,103 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
         /// <summary>При включении автоматической установки года</summary>
         private void CheckBoxAutoSetYear_OnChecked(object sender, RoutedEventArgs e)
         {
-            TextBoxStartNumber.Text = OperationsFiles.GetYear() + TextBoxStartNumber.Text.Remove(0, 2);
-            TextBoxPath.Text = $"{Directory.GetCurrentDirectory()}\\numbers{ComboBoxDepartment.Text}_20{OperationsFiles.GetYear()}.txt";
+            TextBoxStartNumber.Text = TextBoxStartNumber.Text != ""
+                ? GetData.GetYear() + TextBoxStartNumber.Text.Remove(0, 2)
+                : "";
+            TextBoxPath.Text = TextBoxPath.Text != ""
+                ? $"{Directory.GetCurrentDirectory()}\\numbers{GetData.GetDepartment(ComboBoxDepartment)}_20{GetData.GetYear()}.txt"
+                : "";
         }
         #endregion
 
+        private bool _Handle = true;
+
+        #region При закрытии раскрывающейся части поля со списком.
+        /// <summary>При изменении значения в ComboBox`е участков</summary>
+        private void ComboBoxDepartment_OnDropDownClosed(object sender, EventArgs e)
+        {
+            if (_Handle)
+                Handle();
+            _Handle = true;
+        }
+        #endregion
+
+        #region При изменении текущего выделения в элементе управления, позволяющего пользователю выбрать один из его дочерних элементов.
+        /// <summary>При изменении текущего выделения в элементе управления, позволяющего пользователю выбрать один из его дочерних элементов.</summary>
         private void ComboBoxDepartment_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            TextBoxPath.Text = OperationsFiles.Handle(ComboBoxDepartment.Text);
+            ComboBox cmb = sender as ComboBox;
+            _Handle = !cmb.IsDropDownOpen;
+            Handle();
+        } 
+        #endregion
+
+        private void Handle()
+        {
+            switch (ComboBoxDepartment.SelectedItem.ToString().Remove(0, 38))
+            {
+                case "1 - Литография (ППШ)":
+                    ComboBoxOpenFile($"{Directory.GetCurrentDirectory()}\\numbers1_20{GetData.GetYear()}.txt");
+                    break;
+                case "2 - Безрегулировка":
+                    ComboBoxOpenFile($"{Directory.GetCurrentDirectory()}\\numbers2_20{GetData.GetYear()}.txt");
+                    break;
+                case "3 - Безрегулировка (штучный циферблат)":
+                    ComboBoxOpenFile($"{Directory.GetCurrentDirectory()}\\numbers3_20{GetData.GetYear()}.txt");
+                    break;
+                case "4 - ПНП":
+                    ComboBoxOpenFile($"{Directory.GetCurrentDirectory()}\\numbers4_20{GetData.GetYear()}.txt");
+                    break;
+            }
+        }
+
+        private void ComboBoxOpenFile(string path)
+        {
+            if (ChecksFile.CheckFullPathAndFile(path))
+            {
+                OperationsFiles.SetStartNumber((TextBoxPath.Text = path, CheckBoxAutoSetYear.IsChecked, GetData.GetDepartment(ComboBoxDepartment)), out string startNumber);
+                TextBoxStartNumber.Text = startNumber;
+                return;
+            }
+
+            if (ChecksFile.FileExist(path) && ChecksFile.EmptyFile(path))
+            {
+                TextBoxStartNumber.Text = $"{GetData.GetYear()}{GetData.GetDepartment(ComboBoxDepartment)}000001";
+                TextBoxPath.Text = path;
+                return;
+            }
+
+            if (!ChecksFile.FileExist(path))
+            {
+                MessageBoxResult result = MessageBox.Show($"Файла по пути {path} не существует.\n" +
+                                                          "Создать файл?", "Файла не существует", MessageBoxButton.YesNo,
+                                                          MessageBoxImage.Error);
+
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        using (File.Create(path))
+                        {
+                            TextBoxStartNumber.Text = $"{GetData.GetYear()}{GetData.GetDepartment(ComboBoxDepartment)}000001";
+                            TextBoxPath.Text = path;
+                            MessageBox.Show($"Создан файл {path}", "Оповещение о создании файла", MessageBoxButton.OK,
+                                MessageBoxImage.Information);
+                        }
+                        break;
+                    case MessageBoxResult.No:
+                        break;
+                }
+            }
+            else
+            {
+                MessageBox.Show(
+                    $"Файл по пути {path} содержит некорректные данные.\n" +
+                    $"Файл должен содержать {GlobalVar.DIGITS}-значные номера",
+                    "Ошибка",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                TextBoxStartNumber.Text = $"{GetData.GetYear()}{GetData.GetDepartment(ComboBoxDepartment)}000001";
+            }
         }
     }
 }
-
