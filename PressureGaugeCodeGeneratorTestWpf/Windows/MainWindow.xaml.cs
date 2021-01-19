@@ -1,6 +1,5 @@
 ﻿using PressureGaugeCodeGeneratorTestWpf.Classes;
 using PressureGaugeCodeGeneratorTestWpf.Data;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -38,7 +37,7 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
         {
             if (OperationsFiles.OpenFile(out string path))
             {
-                OperationsFiles.SetStartNumber((path, CheckBoxAutoSetYear.IsChecked, GetData.GetDepartment(ComboBoxDepartment)), out string startNumber);
+                OperationsFiles.SetStartNumber(path, CheckBoxAutoSetYear.IsChecked, GetData.GetDepartment(ComboBoxDepartment), out string startNumber);
                 TextBoxStartNumber.Text = startNumber;
                 TextBoxPath.Text = path;
                 LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(path);
@@ -61,13 +60,13 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
         {
             Dictionary<string, string> settings = new Dictionary<string, string>
             {
-                { "Department", GetData.GetDepartment(ComboBoxDepartment) },
+                { "Department", ComboBoxDepartment.SelectedIndex.ToString() },
                 { "Width", TextBoxWidth.Text },
                 { "Height", TextBoxHeight.Text },
                 { "Width_BMP", TextBoxWidthBmp.Text },
                 { "Height_BMP", TextBoxHeightBmp.Text },
                 { "Checked", CheckBoxAutoSetYear.IsChecked.ToString() },
-                { "Format", ComboBoxFormat.Text },
+                { "Format", ComboBoxFormat.SelectedIndex.ToString() },
             };
             SaveAndReadSettings.SaveSettings(settings);
         }
@@ -86,36 +85,8 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
                 TextBoxWidthBmp.Text = settings["Width_BMP"];
                 TextBoxHeightBmp.Text = settings["Height_BMP"];
                 CheckBoxAutoSetYear.IsChecked = bool.Parse(settings["Checked"]);
-                switch (settings["Department"])
-                {
-                    case "1 - Литография (ППШ)":
-                        ComboBoxDepartment.SelectedIndex = 0;
-                        break;
-                    case "2 - Безрегулировка":
-                        ComboBoxDepartment.SelectedIndex = 1;
-                        break;
-                    case "3 - Безрегулировка (штучный циферблат)":
-                        ComboBoxDepartment.SelectedIndex = 2;
-                        break;
-                    case "4 - ПНП":
-                        ComboBoxDepartment.SelectedIndex = 3;
-                        break;
-                }
-                switch (settings["Format"])
-                {
-                    case "BMP":
-                        ComboBoxFormat.SelectedIndex = 0;
-                        break;
-                    case "PNG":
-                        ComboBoxFormat.SelectedIndex = 1;
-                        break;
-                    case "JPEG":
-                        ComboBoxFormat.SelectedIndex = 2;
-                        break;
-                    case "PNG и BMP":
-                        ComboBoxFormat.SelectedIndex = 3;
-                        break;
-                }
+                ComboBoxDepartment.SelectedIndex = int.Parse(settings["Department"]);
+                ComboBoxFormat.SelectedIndex = int.Parse(settings["Format"]);
             }
         }
         #endregion
@@ -261,7 +232,10 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
                 }
             }
 
-            //OperationsFiles.Generate(TextBoxStartNumber.Text, TextBoxCountNumbers.Text, TextBoxPath.Text, GlobalVar.DIGITS);
+            OperationsFiles.Generate(int.Parse(TextBoxStartNumber.Text), int.Parse(TextBoxCountNumbers.Text), TextBoxPath.Text, CheckBoxAutoSetYear.IsChecked, GetData.GetDepartment(ComboBoxDepartment));
+            OperationsFiles.SetStartNumber(TextBoxPath.Text, CheckBoxAutoSetYear.IsChecked, GetData.GetDepartment(ComboBoxDepartment), out string startNumber);
+            TextBoxStartNumber.Text = startNumber;
+            LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(TextBoxPath.Text);
         }
 
         #endregion
@@ -291,33 +265,13 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
         /// <summary>При изменении текущего значения в ComboBox`е</summary>
         private void ComboBoxDepartment_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            switch (ComboBoxDepartment.SelectedItem.ToString().Remove(0, 38))
-            {
-                case "1 - Литография (ППШ)":
-                    ComboBoxOpenFile($"{Directory.GetCurrentDirectory()}\\numbers1_20{GetData.GetYear()}.txt");
-                    break;
-                case "2 - Безрегулировка":
-                    ComboBoxOpenFile($"{Directory.GetCurrentDirectory()}\\numbers2_20{GetData.GetYear()}.txt");
-                    break;
-                case "3 - Безрегулировка (штучный циферблат)":
-                    ComboBoxOpenFile($"{Directory.GetCurrentDirectory()}\\numbers3_20{GetData.GetYear()}.txt");
-                    break;
-                case "4 - ПНП":
-                    ComboBoxOpenFile($"{Directory.GetCurrentDirectory()}\\numbers4_20{GetData.GetYear()}.txt");
-                    break;
-            }
-        }
-        #endregion
+            string path = $"{Directory.GetCurrentDirectory()}\\numbers{ComboBoxDepartment.SelectedItem.ToString().Remove(0, 38).Remove(1)}_20{GetData.GetYear()}.txt";
 
-        #region MyRegion
-        /// <summary></summary>
-        /// <param name="path">Путь до файла</param>
-        private void ComboBoxOpenFile(string path)
-        {
             if (ChecksFile.CheckFullPathAndFile(path))
             {
-                OperationsFiles.SetStartNumber((TextBoxPath.Text = path, CheckBoxAutoSetYear.IsChecked, GetData.GetDepartment(ComboBoxDepartment)), out string startNumber);
+                OperationsFiles.SetStartNumber(TextBoxPath.Text = path, true, GetData.GetDepartment(ComboBoxDepartment), out string startNumber);
                 TextBoxStartNumber.Text = startNumber;
+                LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(path);
                 return;
             }
 
@@ -325,6 +279,7 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
             {
                 TextBoxStartNumber.Text = $"{GetData.GetYear()}{GetData.GetDepartment(ComboBoxDepartment)}000001";
                 TextBoxPath.Text = path;
+                LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(path);
                 return;
             }
 
@@ -348,6 +303,7 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
                     case MessageBoxResult.No:
                         break;
                 }
+                LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(path);
             }
             else
             {
@@ -361,5 +317,10 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
             }
         }
         #endregion
+
+        private void ButtonGenerateQr_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
