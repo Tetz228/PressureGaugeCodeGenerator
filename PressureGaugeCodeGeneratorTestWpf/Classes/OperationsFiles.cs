@@ -60,23 +60,26 @@ namespace PressureGaugeCodeGeneratorTestWpf.Classes
             if (!ChecksFile.EmptyFile(data.path))
             {
                 int lastNumber = int.Parse(File.ReadLines(data.path).Last());
-                if (data.autoSetYear == false || int.Parse(GetData.GetYear()) == int.Parse(lastNumber.ToString().Substring(0, 2)))
-                    startNumber = lastNumber++.ToString();
-                else
+                if (data.autoSetYear == false ||
+                    int.Parse(GetData.GetYear()) ==
+                    int.Parse(lastNumber.ToString().Substring(0, 2)))
                 {
-                    if (data.autoSetYear == true)
+                    startNumber = lastNumber++.ToString();
+                    return;
+                }
+
+                if (data.autoSetYear == true)
+                {
+                    using (StreamWriter streamWriter = new StreamWriter(data.path))
                     {
-                        using (StreamWriter streamWriter = new StreamWriter(data.path))
-                        {
-                            string newPath = $"{Directory.GetCurrentDirectory()}\\numbers{data.department}_20{GetData.GetYear()}.txt";
-                            File.Create(newPath);
-                            startNumber = $"{GetData.GetYear()}{data.department}000001";
-                            streamWriter.Write($"{GetData.GetYear()}{data.department}000000");
-                        }
-                        MessageBox.Show($"Настал следующий год.\nПервые цифры номера теперь - {int.Parse(lastNumber.ToString().Substring(0, 2))}", "Информация",
-                                        MessageBoxButton.OK,
-                                        MessageBoxImage.Information);
+                        string newPath = $"{Directory.GetCurrentDirectory()}\\numbers{data.department}_20{GetData.GetYear()}.txt";
+                        File.Create(newPath);
+                        startNumber = $"{GetData.GetYear()}{data.department}000001";
+                        streamWriter.Write($"{GetData.GetYear()}{data.department}000000");
                     }
+                    MessageBox.Show($"Настал следующий год.\nПервые цифры номера теперь - {int.Parse(lastNumber.ToString().Substring(0, 2))}", "Информация",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Information);
                 }
             }
         }
@@ -130,86 +133,41 @@ namespace PressureGaugeCodeGeneratorTestWpf.Classes
         }
         #endregion
 
-        //public void Generate(int _begin, int _quantity, string path, int _count)
-        //{
-        //    string directory = path;
-        //    if (path.Length > 0)
-        //    {
-        //        if (!CheckPath(path))
-        //        {
-        //            MessageBox.Show(
-        //                "Путь " + path + " не найден",
-        //                "Ошибка",
-        //                MessageBoxButton.OK,
-        //                MessageBoxImage.Error);
-        //        }
-        //        else
-        //        {
-        //            if (checkBox_setYear.IsChecked == false)
-        //            {
-        //                string year = textBox_begin.Text.Substring(0, 2);
-        //                directory = Directory.GetCurrentDirectory() + "\\numbers" + GetDepartment() + "_20" + year + ".txt";
-        //                textBox_path.Text = directory;
-        //                //TODO: тут создаём файл с маркировкой года, если проверка года отключена
-        //            }
-        //            if (!FileExist(directory))
-        //            {
-        //                MessageBoxResult result = MessageBox.Show(
-        //                    "Файл " + directory + " не существует\nСоздать файл?",
-        //                    "Ошибка",
-        //                    MessageBoxButton.YesNo,
-        //                    MessageBoxImage.Error);
-
-        //                switch (result)
-        //                {
-        //                    case MessageBoxResult.Yes:
-        //                        using (FileStream fs = File.Create(directory))
-        //                        {
-        //                            MessageBox.Show("Создан файл" + directory, "Информация");
-        //                        }
-        //                        Generate(_begin, _quantity, directory, _count);
-        //                        //     textBox_begin.Text = GetYear() + GetDepartment() + "000001";
-        //                        break;
-        //                    case MessageBoxResult.No:
-        //                        break;
-        //                }
-        //            }
-        //            else
-        //            {
-        //                int num = Int32.Parse(textBox_begin.Text.Substring(0, 2));
-        //                if (checkBox_setYear.IsChecked == true && num != Int32.Parse(GetYear()))
-        //                {
-        //                    MessageBox.Show(
-        //                        "Вы пытаетесь сгенерировать номера для 20" + num + "-го года, " +
-        //                        "сейчас 20" + Int32.Parse(GetYear()) + "-й год. " +
-        //                        "Чтобы отключить проверку, снимите галочку \"Установить год автоматически\"",
-        //                        "Ошибка",
-        //                        MessageBoxButton.OK,
-        //                        MessageBoxImage.Error);
-        //                }
-        //                else
-        //                {
-        //                    string str = _begin.ToString();
-        //                    string department = GetDepartment();
-        //                    if (str[2] != department[0])
-        //                    {
-        //                        str = str.Remove(2, 1).Insert(2, department[0].ToString());
-        //                        _begin = Int32.Parse(str);
-        //                    }
-        //                    WriteFile(directory, _begin, _quantity, _count);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show(
-        //                "Путь к файлу не должен быть пустым",
-        //                "Ошибка",
-        //                MessageBoxButton.OK,
-        //                MessageBoxImage.Error);
-        //    }
-        //}
+        public static void Generate(int startNumber, int countNumber, string path, bool? autoSetYear)
+        {
+            //if (autoSetYear == false)
+            //{
+            //    string year = startNumber.ToString().Substring(0, 2);
+            //    path = Directory.GetCurrentDirectory() + "\\numbers" + GetDepartment() + "_20" + year + ".txt";
+            //    textBox_path.Text = path;
+            //    //TODO: тут создаём файл с маркировкой года, если проверка года отключена
+            //}
+            //else
+            //{
+            //    int num = Int32.Parse(textBox_begin.Text.Substring(0, 2));
+            //    if (checkBox_setYear.IsChecked == true && num != Int32.Parse(GetYear()))
+            //    {
+            //        MessageBox.Show(
+            //            "Вы пытаетесь сгенерировать номера для 20" + num + "-го года, " +
+            //            "сейчас 20" + Int32.Parse(GetYear()) + "-й год. " +
+            //            "Чтобы отключить проверку, снимите галочку \"Установить год автоматически\"",
+            //            "Ошибка",
+            //            MessageBoxButton.OK,
+            //            MessageBoxImage.Error);
+            //    }
+            //    else
+            //    {
+            //        string str = startNumber.ToString();
+            //        string department = GetDepartment();
+            //        if (str[2] != department[0])
+            //        {
+            //            str = str.Remove(2, 1).Insert(2, department[0].ToString());
+            //            startNumber = Int32.Parse(str);
+            //        }
+            //        WriteFile(path, startNumber, countNumber, GlobalVarDIGITS);
+            //    }
+            //}
+        }
 
         #region Запись номеров в файл
         /// <summary>Запись номеров в файл</summary>
