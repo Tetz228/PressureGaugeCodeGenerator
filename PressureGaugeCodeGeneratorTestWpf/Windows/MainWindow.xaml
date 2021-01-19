@@ -225,6 +225,7 @@
                   Width="259"
                   SelectedIndex="0"
                   KeyboardNavigation.TabIndex="2"
+                  DropDownClosed="ComboBoxDepartment_OnDropDownClosed"
                   SelectionChanged="ComboBoxDepartment_OnSelectionChanged"
                   Style="{StaticResource comboBoxs}">
             <ComboBoxItem Content="1 - Литография (ППШ)"/>
