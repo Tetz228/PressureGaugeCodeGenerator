@@ -1,19 +1,14 @@
-﻿using PressureGaugeCodeGeneratorTestWpf.Data;
+﻿using PressureGaugeCodeGeneratorTestWpf.Classes;
+using PressureGaugeCodeGeneratorTestWpf.Data;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using PressureGaugeCodeGeneratorTestWpf.Classes;
-using System;
 
 namespace PressureGaugeCodeGeneratorTestWpf.Windows
 {
-    enum Departments
-    {
-
-    }
-
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -221,13 +216,13 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
                 return;
             }
 
-            if (!int.TryParse(TextBoxCountNumbers.Text, out _))
+            if (!ChecksFile.IsNumber(TextBoxCountNumbers.Text))
             {
                 MessageBox.Show("Введите корректное количество номеров", "Некорректное количество номеров!", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            if (!int.TryParse(TextBoxStartNumber.Text, out _))
+            if (!ChecksFile.IsNumber(TextBoxStartNumber.Text))
             {
                 MessageBox.Show("Введите корректный начальный номер", "Некорректный начальный номер!", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -292,29 +287,9 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
         }
         #endregion
 
-        private bool _Handle = true;
-
-        #region При закрытии раскрывающейся части поля со списком.
-        /// <summary>При изменении значения в ComboBox`е участков</summary>
-        private void ComboBoxDepartment_OnDropDownClosed(object sender, EventArgs e)
-        {
-            if (_Handle)
-                Handle();
-            _Handle = true;
-        }
-        #endregion
-
-        #region При изменении текущего выделения в элементе управления, позволяющего пользователю выбрать один из его дочерних элементов.
-        /// <summary>При изменении текущего выделения в элементе управления, позволяющего пользователю выбрать один из его дочерних элементов.</summary>
+        #region При изменении текущего значения в ComboBox`е
+        /// <summary>При изменении текущего значения в ComboBox`е</summary>
         private void ComboBoxDepartment_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ComboBox cmb = sender as ComboBox;
-            _Handle = !cmb.IsDropDownOpen;
-            Handle();
-        } 
-        #endregion
-
-        private void Handle()
         {
             switch (ComboBoxDepartment.SelectedItem.ToString().Remove(0, 38))
             {
@@ -332,7 +307,11 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
                     break;
             }
         }
+        #endregion
 
+        #region MyRegion
+        /// <summary></summary>
+        /// <param name="path">Путь до файла</param>
         private void ComboBoxOpenFile(string path)
         {
             if (ChecksFile.CheckFullPathAndFile(path))
@@ -381,5 +360,6 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
                 TextBoxStartNumber.Text = $"{GetData.GetYear()}{GetData.GetDepartment(ComboBoxDepartment)}000001";
             }
         }
+        #endregion
     }
 }
