@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using form = System.Windows.Forms;
+using System.Windows.Controls;
 
 namespace PressureGaugeCodeGeneratorTestWpf.Classes
 {
@@ -133,40 +134,35 @@ namespace PressureGaugeCodeGeneratorTestWpf.Classes
         }
         #endregion
 
-        public static void Generate(int startNumber, int countNumber, string path, bool? autoSetYear)
+        public static void Generate(string startNumber, int countNumber, string path, bool? autoSetYear,ComboBox depart)
         {
-            //if (autoSetYear == false)
-            //{
-            //    string year = startNumber.ToString().Substring(0, 2);
-            //    path = Directory.GetCurrentDirectory() + "\\numbers" + GetDepartment() + "_20" + year + ".txt";
-            //    textBox_path.Text = path;
-            //    //TODO: тут создаём файл с маркировкой года, если проверка года отключена
-            //}
-            //else
-            //{
-            //    int num = Int32.Parse(textBox_begin.Text.Substring(0, 2));
-            //    if (checkBox_setYear.IsChecked == true && num != Int32.Parse(GetYear()))
-            //    {
-            //        MessageBox.Show(
-            //            "Вы пытаетесь сгенерировать номера для 20" + num + "-го года, " +
-            //            "сейчас 20" + Int32.Parse(GetYear()) + "-й год. " +
-            //            "Чтобы отключить проверку, снимите галочку \"Установить год автоматически\"",
-            //            "Ошибка",
-            //            MessageBoxButton.OK,
-            //            MessageBoxImage.Error);
-            //    }
-            //    else
-            //    {
-            //        string str = startNumber.ToString();
-            //        string department = GetDepartment();
-            //        if (str[2] != department[0])
-            //        {
-            //            str = str.Remove(2, 1).Insert(2, department[0].ToString());
-            //            startNumber = Int32.Parse(str);
-            //        }
-            //        WriteFile(path, startNumber, countNumber, GlobalVarDIGITS);
-            //    }
-            //}
+            string department = GetData.GetDepartment(depart);
+
+            if (autoSetYear == false)
+                path = Directory.GetCurrentDirectory() + "\\numbers" + department + "_20" + startNumber.Substring(0, 2) + ".txt";
+
+            int num = int.Parse(startNumber.Substring(0, 2));
+
+            if (autoSetYear == true && num != int.Parse(GetData.GetYear()))
+            {
+                MessageBox.Show(
+                    "Вы пытаетесь сгенерировать номера для 20" + num + "-го года, " +
+                    "сейчас 20" + Int32.Parse(GetYear()) + "-й год. " +
+                    "Чтобы отключить проверку, снимите галочку \"Установить год автоматически\"",
+                    "Ошибка",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+            else
+            {
+                string str = startNumber;
+                if (str[2] != department[0])
+                {
+                    str = str.Remove(2, 1).Insert(2, department[0].ToString());
+                    startNumber = Int32.Parse(str);
+                }
+                WriteFile(path, startNumber, countNumber, GlobalVarDIGITS);
+            }
         }
 
         #region Запись номеров в файл
