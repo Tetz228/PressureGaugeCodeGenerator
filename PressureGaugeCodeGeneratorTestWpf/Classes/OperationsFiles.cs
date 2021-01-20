@@ -1,11 +1,15 @@
 ﻿using PressureGaugeCodeGeneratorTestWpf.Data;
-using PressureGaugeCodeGeneratorTestWpf.Windows;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
-using form = System.Windows.Forms;
+using ZXing;
+using ZXing.Common;
+using ZXing.QrCode;
 
 namespace PressureGaugeCodeGeneratorTestWpf.Classes
 {
@@ -20,14 +24,14 @@ namespace PressureGaugeCodeGeneratorTestWpf.Classes
             path = "";
             try
             {
-                var openFileDialog = new form.OpenFileDialog
+                var openFileDialog = new System.Windows.Forms.OpenFileDialog
                 {
                     Title = "Выберите файл",
                     InitialDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                     Filter = "Файлы с расширением .txt|*.txt"
                 };
 
-                if (openFileDialog.ShowDialog() == form.DialogResult.OK)
+                if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     if (!ChecksFile.EmptyFile(openFileDialog.FileName))
                         if (!ChecksFile.IsNumber(File.ReadLines(openFileDialog.FileName).Last()))
@@ -45,7 +49,6 @@ namespace PressureGaugeCodeGeneratorTestWpf.Classes
             {
                 MessageBox.Show(e.Message, "Ошибка при выборе файла!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
             return false;
         }
         #endregion
@@ -82,33 +85,6 @@ namespace PressureGaugeCodeGeneratorTestWpf.Classes
                                     MessageBoxButton.OK,
                                     MessageBoxImage.Information);
                 }
-            }
-        }
-        #endregion
-        
-        #region Чтение файла с номерами
-        /// <summary>Чтение файла с номерами</summary>
-        /// <param name="path">Путь до файла</param>
-        public static void ReadingFileNumbers(string path)
-        {
-            if (!ChecksFile.CheckPath(path))
-                return;
-            if (!ChecksFile.FileExist(path))
-                return;
-
-            try
-            {
-                using (StreamReader streamReader = new StreamReader(path))
-                {
-                    ListNumbersWindow numbersWindow = new ListNumbersWindow();
-                    string numbers = streamReader.ReadToEnd();
-                    numbersWindow.TextBoxNumbers.Text = numbers == "" ? "Номера в файле отсутствуют!" : numbers;
-                    numbersWindow.Show();
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "Ошибка при чтении файла с номерами", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         #endregion
@@ -173,6 +149,61 @@ namespace PressureGaugeCodeGeneratorTestWpf.Classes
                             streamWriter.Write(arr[i].ToString());
                     }
                     MessageBox.Show($"Номера успешно сгенерированны и записаны в файл по пути: {path}", "Успех!", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+        }
+        #endregion
+
+        #region Генерация QR-кодов
+        /// <summary>Генерация QR-кодов</summary>
+        /// <param name="massNum">Список номеров для генерации</param>
+        /// <param name="dataDictionary">Словарь с данными</param>
+        public static void GenerateQrCodes(List<string> massNum, Dictionary<string, string> dataDictionary)
+        {
+            EncodingOptions encodingOptions = new QrCodeEncodingOptions
+            {
+                DisableECI = true,
+                CharacterSet = "UTF-8",
+                Width = int.Parse(dataDictionary["Width"]),
+                Height = int.Parse(dataDictionary["Height"]),
+                Margin = 0
+            };
+            BarcodeWriter barcodeWriter = new BarcodeWriter
+            {
+                Format = BarcodeFormat.QR_CODE,
+                Options = encodingOptions
+            };
+            Bitmap qrCode;
+
+            foreach (var code in massNum)
+            {
+                qrCode = barcodeWriter.Write(code);
+                switch (dataDictionary["Format"])
+                {
+                    case "BMP":
+                        qrCode.Save(GlobalVar.NAME_FOLDER_QR + code + ".bmp", ImageFormat.Bmp);
+                        break;
+                    case "PNG":
+                        qrCode.Save(GlobalVar.NAME_FOLDER_QR + code + ".png", ImageFormat.Png);
+                        break;
+                    case "JPEG":
+                        qrCode.Save(GlobalVar.NAME_FOLDER_QR + code + ".jpeg", ImageFormat.Jpeg);
+                        break;
+                    case "BMP + PNG":
+                        qrCode.Save(GlobalVar.NAME_FOLDER_QR + code + ".png", ImageFormat.Png);
+
+                        encodingOptions.Width = int.Parse(dataDictionary["WidthBmp"]);
+                        encodingOptions.Height = int.Parse(dataDictionary["HeightBmp"]);
+
+                        barcodeWriter = new BarcodeWriter
+                        {
+                            Format = BarcodeFormat.QR_CODE,
+                            Options = encodingOptions
+                        };
+
+                        Bitmap qrCodeBmp = barcodeWriter.Write(GlobalVar.NAME_FOLDER_QR);
+                        qrCodeBmp.Save(dataDictionary["Patch"] + GlobalVar.NAME_FOLDER_QR + ".bmp", ImageFormat.Bmp);
+                        break;
                 }
             }
         }
