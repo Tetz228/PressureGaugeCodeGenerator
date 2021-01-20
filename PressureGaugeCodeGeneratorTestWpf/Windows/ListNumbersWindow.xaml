@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PressureGaugeCodeGeneratorTestWpf.Windows"
         mc:Ignorable="d"
-        Title="Номера в файле" Height="287.282" Width="226.476" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Icon="logo_small.ico">
+        Title="Номера в файле" Height="287.282" Width="226.476" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Icon="logo_small.ico" Loaded="ListNumbersWindow_OnLoaded">
     <Grid>
         <TextBox x:Name="TextBoxNumbers" 
                  Margin="10,32,10,44" 
