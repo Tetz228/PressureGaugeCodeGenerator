@@ -19,7 +19,11 @@
                       KeyboardNavigation.TabIndex="0"
                       Style="{StaticResource menuItem}">
                 <MenuItem Header="Открыть"
-                          Click="MenuItemOpen_Click"/>
+                          Click="MenuItemOpen_OnClick"/>
+                <MenuItem Header="Перейти к номерам"
+                          Click="MenuItemGoNumbers_OnClick"/>
+                <MenuItem Header="Перейти к QR-кодам"
+                          Click="MenuItemGoQrCodes_OnClick"/>
                 <MenuItem Header="Выход" 
                           Click="MenuItemExit_Click"/>
             </MenuItem>
