@@ -1,6 +1,7 @@
 ﻿using PressureGaugeCodeGeneratorTestWpf.Classes;
 using PressureGaugeCodeGeneratorTestWpf.Data;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -14,14 +15,6 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
         {
             InitializeComponent();
         }
-
-        #region При клике на кнопку в меню "Открыть"
-        /// <summary>При клике на кнопку в меню "Открыть"</summary>
-        private void MenuItemOpen_Click(object sender, RoutedEventArgs e)
-        {
-            Open();
-        }
-        #endregion
 
         #region При клике на кнопку "Открыть"
         /// <summary>При клике на кнопку "Открыть"</summary>
@@ -431,6 +424,34 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
         }
+        #endregion
+
+        #region При клике на кнопку в меню "Открыть"
+        /// <summary>При клике на кнопку в меню "Открыть"</summary>
+        private void MenuItemOpen_OnClick(object sender, RoutedEventArgs e)
+        {
+            Open();
+        }
+        #endregion
+
+        #region При клике на "Перейти к номерам"
+
+        /// <summary>При клике на "Перейти к номерам"</summary>
+        private void MenuItemGoNumbers_OnClick(object sender, RoutedEventArgs e)
+        {
+            Process.Start("explorer", $"file://{Path.GetDirectoryName(TextBoxPath.Text)}");
+        }
+
+        #endregion
+
+        #region При клике на "Перейти к QR-кодам"
+
+        /// <summary>При клике на "Перейти к QR-кодам"</summary>
+        private void MenuItemGoQrCodes_OnClick(object sender, RoutedEventArgs e)
+        {
+            Process.Start("explorer", $"file://{Path.GetDirectoryName(TextBoxPath.Text)}\\" + GlobalVar.NAME_FOLDER_QR);
+        }
+
         #endregion
     }
 }
