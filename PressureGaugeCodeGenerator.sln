@@ -3,13 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PressureGaugeCodeGenerator", "PressureGaugeCodeGenerator\PressureGaugeCodeGenerator.csproj", "{6619B2CF-DBC7-4467-94B1-24960EA2F746}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7D9BBA8C-CB25-4D28-8A12-CAB805DFA2F5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PressureGaugeCodeGeneratorConsole", "PressureGaugeCodeGeneratorConsole\PressureGaugeCodeGeneratorConsole.csproj", "{60ADE4A6-B55E-43A3-869D-A2C7536347ED}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PressureGaugeCodeGeneratorTestWpf", "PressureGaugeCodeGeneratorTestWpf\PressureGaugeCodeGeneratorTestWpf.csproj", "{5DA1034E-D7F5-45CF-B3A5-D7EB8720984B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PressureGaugeCodeGenerator", "PressureGaugeCodeGeneratorWPF\PressureGaugeCodeGenerator.csproj", "{5DA1034E-D7F5-45CF-B3A5-D7EB8720984B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,14 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6619B2CF-DBC7-4467-94B1-24960EA2F746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6619B2CF-DBC7-4467-94B1-24960EA2F746}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6619B2CF-DBC7-4467-94B1-24960EA2F746}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6619B2CF-DBC7-4467-94B1-24960EA2F746}.Release|Any CPU.Build.0 = Release|Any CPU
-		{60ADE4A6-B55E-43A3-869D-A2C7536347ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{60ADE4A6-B55E-43A3-869D-A2C7536347ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{60ADE4A6-B55E-43A3-869D-A2C7536347ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{60ADE4A6-B55E-43A3-869D-A2C7536347ED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5DA1034E-D7F5-45CF-B3A5-D7EB8720984B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5DA1034E-D7F5-45CF-B3A5-D7EB8720984B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DA1034E-D7F5-45CF-B3A5-D7EB8720984B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -32,10 +18,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{60ADE4A6-B55E-43A3-869D-A2C7536347ED} = {7D9BBA8C-CB25-4D28-8A12-CAB805DFA2F5}
-		{5DA1034E-D7F5-45CF-B3A5-D7EB8720984B} = {7D9BBA8C-CB25-4D28-8A12-CAB805DFA2F5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40298AF4-1F2B-4DFB-8774-A2BE09B08F7E}
