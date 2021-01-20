@@ -37,7 +37,8 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
         {
             if (OperationsFiles.OpenFile(out string path))
             {
-                OperationsFiles.SetStartNumber(path, CheckBoxAutoSetYear.IsChecked, GetData.GetDepartment(ComboBoxDepartment), out string startNumber);
+                OperationsFiles.SetStartNumber(path, CheckBoxAutoSetYear.IsChecked,
+                    GetData.GetDepartment(ComboBoxDepartment), out string startNumber);
                 TextBoxStartNumber.Text = startNumber;
                 TextBoxPath.Text = path;
                 LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(path);
@@ -115,9 +116,9 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
         private void CheckBoxAutoSetYear_Unchecked(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("Вы уверены, что хотите отключить автоматическую установку года?",
-                                                      "Автоматическая установка года",
-                                                      MessageBoxButton.YesNoCancel,
-                                                      MessageBoxImage.Question);
+                "Автоматическая установка года",
+                MessageBoxButton.YesNoCancel,
+                MessageBoxImage.Question);
             switch (result)
             {
                 case MessageBoxResult.Yes:
@@ -138,33 +139,33 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
         private void MenuItemSupport_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show(
-                            "Программа педназначена для генерации кодов манометров и QR-кодов.\n\n" +
-                            "В начале работы необходимо выбрать номер участка, для которого будет производиться генерация кодов.\n" +
-                            "В поле \"Начальный номер\" необходимо указать номер, с которого будет начинаться нумерация манометров. " +
-                            "Номер должен состоять из цифр и содержать 9 символов.\n" +
-                            "Первые две цифры программа устанавливают автоматически и они соответсвуют последним двум цифрам года. " +
-                            "Третья цифра соответствует номеру участка и устанавливается автоматически, в зависимости от выбранного участка. " +
-                            "Если номера для выбранного участка ранее сгенерированы не были, программа предложит начать генерацию с первого номера. " +
-                            "Можно указать начальный номер вручную в поле \"Начальный номер\".\n" +
-                            "Если номера были сгенерированы в программе ранее, они считаются из файла и " +
-                            "программа автоматически вставит в поле " +
-                            "\"Начальный номер\", следующий по порядку номер после последнего сгенерированного.\n\n" +
-                            "В поле \"Количество номеров\" нужно указать количество номеров, которые необходимо сгенерировать.\n" +
-                            "Количество номеров должно быть в диапазоне от 1-го до 1000.\n\n" +
-                            "В поле \"Путь к файлу\" программа автоматически подставляет файлы, соотвествующие номеру участка: \"numbers1_20ХХ.txt\", \"numbers2_20ХХ.txt\", \"numbers3_20ХХ.txt\", \"numbers4_20ХХ.txt\".\n" +
-                            "Путь к файлу можно указать вручную, нажав кнопку \"Открыть\" " +
-                            "и выбрать в появившемся диалоговом окне, необходимый файл. " +
-                            "Файлы должны иметь расширение \"*.txt\".\n\n" +
-                            "После заполнения всех обязательных полей, необходимо нажать кнопку \"Генерировать\". " +
-                            "Произойдет генерация номеров в указанный файл, о чём программа выдаст сообщение.\n" +
-                            "Кнопка \"Показать номера\", позволяет просмотреть номера, сгенерированные в файле.\n" +
-                            "Если необходимо отключить автоматическую генерацию года в начале номера, необходимо снять галочку \"Установить года автоматически\" " +
-                            "Чтобы создать QR-код из сгенерированных номеров, нужно перейти на вкладку \"QR-код\", выбрать формат файла и указать разрешение, затем нажать кнопку \"Генерировать QR\".\n" +
-                            "Сгенерированные изображения QR-кодов будут находиться в каталоге \"qrcode\".\n" +
-                            "После этого программу можно закрыть, нажав кнопку \"Выход\".",
-                            "Справка",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information);
+                "Программа педназначена для генерации кодов манометров и QR-кодов.\n\n" +
+                "В начале работы необходимо выбрать номер участка, для которого будет производиться генерация кодов.\n" +
+                "В поле \"Начальный номер\" необходимо указать номер, с которого будет начинаться нумерация манометров. " +
+                "Номер должен состоять из цифр и содержать 9 символов.\n" +
+                "Первые две цифры программа устанавливают автоматически и они соответсвуют последним двум цифрам года. " +
+                "Третья цифра соответствует номеру участка и устанавливается автоматически, в зависимости от выбранного участка. " +
+                "Если номера для выбранного участка ранее сгенерированы не были, программа предложит начать генерацию с первого номера. " +
+                "Можно указать начальный номер вручную в поле \"Начальный номер\".\n" +
+                "Если номера были сгенерированы в программе ранее, они считаются из файла и " +
+                "программа автоматически вставит в поле " +
+                "\"Начальный номер\", следующий по порядку номер после последнего сгенерированного.\n\n" +
+                "В поле \"Количество номеров\" нужно указать количество номеров, которые необходимо сгенерировать.\n" +
+                "Количество номеров должно быть в диапазоне от 1-го до 1000.\n\n" +
+                "В поле \"Путь к файлу\" программа автоматически подставляет файлы, соотвествующие номеру участка: \"numbers1_20ХХ.txt\", \"numbers2_20ХХ.txt\", \"numbers3_20ХХ.txt\", \"numbers4_20ХХ.txt\".\n" +
+                "Путь к файлу можно указать вручную, нажав кнопку \"Открыть\" " +
+                "и выбрать в появившемся диалоговом окне, необходимый файл. " +
+                "Файлы должны иметь расширение \"*.txt\".\n\n" +
+                "После заполнения всех обязательных полей, необходимо нажать кнопку \"Генерировать\". " +
+                "Произойдет генерация номеров в указанный файл, о чём программа выдаст сообщение.\n" +
+                "Кнопка \"Показать номера\", позволяет просмотреть номера, сгенерированные в файле.\n" +
+                "Если необходимо отключить автоматическую генерацию года в начале номера, необходимо снять галочку \"Установить года автоматически\" " +
+                "Чтобы создать QR-код из сгенерированных номеров, нужно перейти на вкладку \"QR-код\", выбрать формат файла и указать разрешение, затем нажать кнопку \"Генерировать QR\".\n" +
+                "Сгенерированные изображения QR-кодов будут находиться в каталоге \"qrcode\".\n" +
+                "После этого программу можно закрыть, нажав кнопку \"Выход\".",
+                "Справка",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
         }
         #endregion
 
@@ -183,37 +184,43 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
         {
             if (TextBoxStartNumber.Text.Length < GlobalVar.DIGITS)
             {
-                MessageBox.Show($"В номере должно быть {GlobalVar.DIGITS} цифр", "Некорректный начальный номер!", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"В номере должно быть {GlobalVar.DIGITS} цифр", "Некорректный начальный номер!",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (!ChecksFile.IsNumber(TextBoxCountNumbers.Text))
             {
-                MessageBox.Show("Введите корректное количество номеров", "Некорректное количество номеров!", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Введите корректное количество номеров", "Некорректное количество номеров!",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (!ChecksFile.IsNumber(TextBoxStartNumber.Text))
             {
-                MessageBox.Show("Введите корректный начальный номер", "Некорректный начальный номер!", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Введите корректный начальный номер", "Некорректный начальный номер!",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (int.Parse(TextBoxCountNumbers.Text) < 1 || int.Parse(TextBoxCountNumbers.Text) > 1000)
             {
-                MessageBox.Show("Количество номеров должно быть в диапазоне от 1 до 1000", "Некорректное количество номеров!", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Количество номеров должно быть в диапазоне от 1 до 1000",
+                    "Некорректное количество номеров!", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (int.Parse(TextBoxStartNumber.Text) + int.Parse(TextBoxCountNumbers.Text) >= 1_000_000_000)
             {
-                MessageBox.Show("Последнее генерируемое число должно быть не более 999999999", "Некорректное генерируемое число!", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Последнее генерируемое число должно быть не более 999999999",
+                    "Некорректное генерируемое число!", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (!ChecksFile.FileExist(TextBoxPath.Text))
             {
-                MessageBox.Show("Введите корректный путь", "Некорректный путь!", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Введите корректный путь", "Некорректный путь!", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
                 return;
             }
 
@@ -221,30 +228,39 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
             {
                 if (!ChecksFile.IsNumber(File.ReadLines(TextBoxPath.Text).Last()))
                 {
-                    MessageBox.Show("В файле последний номер содержит недопустимые знаки", "Некорректный последний номер в файле!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("В файле последний номер содержит недопустимые знаки",
+                        "Некорректный последний номер в файле!", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
                 if (!ChecksFile.ValidNumber(TextBoxPath.Text, TextBoxStartNumber.Text))
                 {
-                    MessageBox.Show("Номер должен быть больше, чем уже сгенерированное число в файле", "Некорректный начальный номер!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Номер должен быть больше, чем уже сгенерированное число в файле",
+                        "Некорректный начальный номер!", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
             }
 
-            OperationsFiles.Generate(int.Parse(TextBoxStartNumber.Text), int.Parse(TextBoxCountNumbers.Text), TextBoxPath.Text, CheckBoxAutoSetYear.IsChecked, GetData.GetDepartment(ComboBoxDepartment));
-            OperationsFiles.SetStartNumber(TextBoxPath.Text, CheckBoxAutoSetYear.IsChecked, GetData.GetDepartment(ComboBoxDepartment), out string startNumber);
+            OperationsFiles.Generate(int.Parse(TextBoxStartNumber.Text), int.Parse(TextBoxCountNumbers.Text),
+                TextBoxPath.Text, CheckBoxAutoSetYear.IsChecked, GetData.GetDepartment(ComboBoxDepartment));
+            OperationsFiles.SetStartNumber(TextBoxPath.Text, CheckBoxAutoSetYear.IsChecked,
+                GetData.GetDepartment(ComboBoxDepartment), out string startNumber);
             TextBoxStartNumber.Text = startNumber;
             LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(TextBoxPath.Text);
         }
-
         #endregion
 
         #region При клике на кнопку "Показать номера"
         /// <summary>При клике на кнопку "Показать номера"</summary>
         private void ButtonShowNumbers_OnClick(object sender, RoutedEventArgs e)
         {
-            OperationsFiles.ReadingFileNumbers(TextBoxPath.Text);
+            if (!ChecksFile.CheckPath(TextBoxPath.Text))
+                return;
+            if (!ChecksFile.FileExist(TextBoxPath.Text))
+                return;
+
+            ListNumbersWindow numbersWindow = new ListNumbersWindow(TextBoxPath.Text);
+            numbersWindow.Show();
         }
         #endregion
 
@@ -265,11 +281,13 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
         /// <summary>При изменении текущего значения в ComboBox`е</summary>
         private void ComboBoxDepartment_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string path = $"{Directory.GetCurrentDirectory()}\\numbers{ComboBoxDepartment.SelectedItem.ToString().Remove(0, 38).Remove(1)}_20{GetData.GetYear()}.txt";
+            string path =
+                $"{Directory.GetCurrentDirectory()}\\numbers{ComboBoxDepartment.SelectedItem.ToString().Remove(0, 38).Remove(1)}_20{GetData.GetYear()}.txt";
 
             if (ChecksFile.CheckFullPathAndFile(path))
             {
-                OperationsFiles.SetStartNumber(TextBoxPath.Text = path, true, GetData.GetDepartment(ComboBoxDepartment), out string startNumber);
+                OperationsFiles.SetStartNumber(TextBoxPath.Text = path, true, GetData.GetDepartment(ComboBoxDepartment),
+                    out string startNumber);
                 TextBoxStartNumber.Text = startNumber;
                 LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(path);
                 return;
@@ -286,15 +304,17 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
             if (!ChecksFile.FileExist(path))
             {
                 MessageBoxResult result = MessageBox.Show($"Файла по пути {path} не существует.\n" +
-                                                          "Создать файл?", "Файла не существует", MessageBoxButton.YesNo,
-                                                          MessageBoxImage.Error);
+                                                          "Создать файл?", "Файла не существует",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Error);
 
                 switch (result)
                 {
                     case MessageBoxResult.Yes:
                         using (File.Create(path))
                         {
-                            TextBoxStartNumber.Text = $"{GetData.GetYear()}{GetData.GetDepartment(ComboBoxDepartment)}000001";
+                            TextBoxStartNumber.Text =
+                                $"{GetData.GetYear()}{GetData.GetDepartment(ComboBoxDepartment)}000001";
                             TextBoxPath.Text = path;
                             MessageBox.Show($"Создан файл {path}", "Оповещение о создании файла", MessageBoxButton.OK,
                                 MessageBoxImage.Information);
@@ -303,6 +323,7 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
                     case MessageBoxResult.No:
                         break;
                 }
+
                 LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(path);
             }
             else
@@ -318,9 +339,98 @@ namespace PressureGaugeCodeGeneratorTestWpf.Windows
         }
         #endregion
 
-        private void ButtonGenerateQr_Click(object sender, RoutedEventArgs e)
+        #region При клике на кнопку генерации QR-кода
+        /// <summary>При клике на кнопку генерации QR-кода</summary>
+        private void ButtonGenerateQr_OnClick(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(TextBoxHeight.Text) && string.IsNullOrEmpty(TextBoxWidth.Text))
+            {
+                MessageBox.Show(
+                    "Укажите размер изображения для QR-кода",
+                    "Некорректные данные",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
 
+            if (ChecksFile.FileExist(TextBoxPath.Text) && ChecksFile.EmptyFile(TextBoxPath.Text))
+            {
+                MessageBox.Show(
+                    "Файла по пути " + TextBoxPath.Text + " не существует, либо он не имеет номеров для генерации QR-кодов",
+                    "Ошибка при чтении файла",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+
+            string number = File.ReadLines(TextBoxPath.Text).Last();
+
+            if (!ChecksFile.IsNumber(number))
+            {
+                MessageBox.Show(
+                    "Файл содержит некорректные данные",
+                    "Ошибка при считывании номера",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+
+            if (Directory.Exists(GlobalVar.NAME_FOLDER_QR))
+            {
+                string[] filesInFolder = Directory.GetFiles(GlobalVar.NAME_FOLDER_QR, "*.*");
+                foreach (string f in filesInFolder)
+                    File.Delete(f);
+            }
+            else
+                Directory.CreateDirectory(GlobalVar.NAME_FOLDER_QR);
+
+            if (ComboBoxFormat.SelectedIndex == 3)
+            {
+                if (string.IsNullOrEmpty(TextBoxHeightBmp.Text) || string.IsNullOrEmpty(TextBoxWidthBmp.Text))
+                {
+                    MessageBox.Show(
+                        "Укажите размер изображения для QR-кода",
+                        "Некорректные данные",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                    return;
+                }
+            }
+
+            if (string.IsNullOrEmpty(TextBoxHeight.Text) || string.IsNullOrEmpty(TextBoxWidth.Text))
+            {
+                MessageBox.Show(
+                    "Укажите размер изображения для QR-кода",
+                    "Некорректные данные",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+
+            List<string> massNum = new List<string>();
+            Dictionary<string, string> dataDictionary = new Dictionary<string, string>
+            {
+                {"Patch",TextBoxPath.Text },
+                {"Format",ComboBoxFormat.Text },
+                {"Width",TextBoxWidth.Text },
+                {"Height",TextBoxHeight.Text },
+                {"WidthBmp",TextBoxWidthBmp.Text },
+                {"HeightBmp",TextBoxHeightBmp.Text }
+            };
+
+            using (var streamReader = new StreamReader(TextBoxPath.Text))
+            {
+                for (number = streamReader.ReadLine(); number != null; number = streamReader.ReadLine())
+                    massNum.Add(number);
+            }
+
+            OperationsFiles.GenerateQrCodes(massNum, dataDictionary);
+            MessageBox.Show(
+                "QR-коды сгенерированы в каталог \"" + GlobalVar.NAME_FOLDER_QR,
+                "Успешно!",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
         }
+        #endregion
     }
 }
