@@ -29,7 +29,7 @@ namespace PressureGaugeCodeGeneratorTestWpf.Classes
         #region Проверка на номер ли в строке
         /// <summary>Проверка на номер ли в строке</summary>
         /// <param name="number">Строка с данными</param>
-        /// <returns>Возвращает true, если в строке номер, иначе false</returns>
+        /// <returns>Возвращает true, если в строке номер соответствует int, иначе false</returns>
         public static bool IsNumber(string number) => int.TryParse(number, out _);
         #endregion
 
