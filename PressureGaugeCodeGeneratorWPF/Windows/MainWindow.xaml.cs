@@ -454,5 +454,11 @@
         }
 
         #endregion
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            ImageOverlayWindow imageOverlayWindow = new ImageOverlayWindow();
+            imageOverlayWindow.ShowDialog();
+        }
     }
 }

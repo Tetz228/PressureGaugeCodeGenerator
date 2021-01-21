@@ -63,6 +63,9 @@
     <Compile Include="Classes\GetData.cs" />
     <Compile Include="Classes\OperationsFiles.cs" />
     <Compile Include="Data\GlobalVar.cs" />
+    <Compile Include="Windows\ImageOverlayWindow.xaml.cs">
+      <DependentUpon>ImageOverlayWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ListNumbersWindow.xaml.cs">
       <DependentUpon>ListNumbersWindow.xaml</DependentUpon>
     </Compile>
@@ -84,6 +87,10 @@
     <Compile Include="Windows\AboutProgram.Designer.cs">
       <DependentUpon>AboutProgram.cs</DependentUpon>
     </Compile>
+    <Page Include="Windows\ImageOverlayWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\ListNumbersWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

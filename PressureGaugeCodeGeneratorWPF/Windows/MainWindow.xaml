@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Генератор кодов манометров" Height="401" Width="572" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Closing="Window_Closing" Loaded="Window_Loaded" Icon="logo_small.ico">
+        Title="Генератор кодов манометров" Height="401" Width="615.825" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Closing="Window_Closing" Loaded="Window_Loaded" Icon="logo_small.ico">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="280"/>
@@ -13,7 +13,7 @@
         <Menu VerticalAlignment="Top" 
               HorizontalAlignment="Left" 
               Height="19" 
-              Width="558" Grid.ColumnSpan="2">
+              Width="610" Grid.ColumnSpan="2" Margin="0,0,-48,0">
             <MenuItem Header="Файл" 
                       KeyboardNavigation.TabIndex="0"
                       Style="{StaticResource menuItem}">
@@ -37,7 +37,7 @@
             </MenuItem>
         </Menu>
         <Label Content="Путь к файлу:"
-               Margin="3,19,0,0" 
+               Margin="3,20,0,0" 
                Style="{StaticResource labels}"/>
         <Label Content="Начальный номер" 
                Margin="10,150,0,0" 
@@ -55,14 +55,14 @@
                Style="{StaticResource labels}"/>
         <Label Grid.Column="1" 
                Grid.Row="0" 
-               Margin="13,86,0,0" 
-               Width="260" 
-               Height="46" 
+               Margin="13,90,-38,0" 
+               Width="306" 
+               Height="41" 
                FontWeight="Bold" 
                Style="{StaticResource labels}">
             <Label.Content>
                 <TextBlock TextWrapping="Wrap" 
-                           Width="250">
+                           Width="296">
                            Будут сгенерированы QR-коды для номеров:
                 </TextBlock>
             </Label.Content>
@@ -70,7 +70,7 @@
         <Label x:Name="LabelDrawNumbers"  
                Grid.Column="1" 
                Grid.Row="0"                
-               Margin="10,132,0,0" 
+               Margin="10,148,0,0" 
                Width="243"
                FontWeight="Bold"  
                Style="{StaticResource labels}" 
@@ -115,7 +115,7 @@
                 Style="{StaticResource buttons}"/>
         <Button Content="Сгенерировать QR"
                 x:Name="ButtonGenerateQr"             
-                Margin="81,0,0,10" 
+                Margin="13,0,0,10" 
                 Width="135"
                 KeyboardNavigation.TabIndex="9" 
                 Grid.Column="1" 
@@ -126,17 +126,17 @@
                 Width="100" 
                 Height="23" 
                 KeyboardNavigation.TabIndex="6" 
-                Margin="166,22,0,0" 
+                Margin="0,22,-29,0" 
                 Grid.Column="1"                
                 Style="{StaticResource buttons}" 
                 Click="ButtonOpen_Click"
-                VerticalAlignment="Top"/>
+                VerticalAlignment="Top" HorizontalAlignment="Right"/>
         <TextBox x:Name="TextBoxPath"
                  Grid.ColumnSpan="2" 
                  Height="23" 
                  Margin="110,22,0,0" 
                  TextAlignment="Left" 
-                 Width="332" 
+                 Width="369" 
                  Style="{StaticResource textBoxs}"/>
         <TextBox x:Name="TextBoxStartNumber"  
                  Height="23" 
@@ -197,7 +197,7 @@
         <TextBlock Text="QR-коды"
                    Grid.Column="1" 
                    Grid.Row="0" 
-                   Margin="0,55,0,0"                   
+                   Margin="153,55,49,0"                   
                    Width="79"
                    Style="{StaticResource textBlocks}"/>
         <Separator RenderTransformOrigin="0.5,0.5" 
@@ -215,15 +215,15 @@
         <Separator Grid.ColumnSpan="2" 
                    HorizontalAlignment="Left" 
                    Height="14" 
-                   Margin="0,72,-2,0" 
+                   Margin="0,72,-48,0" 
                    VerticalAlignment="Top" 
-                   Width="564"/>
+                   Width="610"/>
         <Separator Grid.ColumnSpan="2" 
                    HorizontalAlignment="Left" 
                    Height="14" 
-                   Margin="0,43,-2,0" 
+                   Margin="0,43,-48,0" 
                    VerticalAlignment="Top" 
-                   Width="564"/>
+                   Width="610"/>
         <ComboBox x:Name="ComboBoxDepartment" 
                   Margin="10,112,0,0"
                   Width="259"
@@ -260,5 +260,6 @@
                   FontSize="13" 
                   Unchecked="CheckBoxAutoSetYear_Unchecked"
                   Checked="CheckBoxAutoSetYear_OnChecked"/>
+        <Button Style="{StaticResource buttons}" Click="ButtonBase_OnClick" Content="Наложить QR-код" Grid.Column="1" Margin="0,0,-27,10" Width="147" HorizontalAlignment="Right"/>
     </Grid>
 </Window>
