@@ -5,17 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PressureGaugeCodeGenerator.Windows"
         mc:Ignorable="d"
-        Title="ImageOverlayWindow" Height="606.148" Width="995.492">
-    <Grid>
-        <Button Click="ButtonBase_OnClick" Content="Button" HorizontalAlignment="Left" Margin="576,18,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button Click="ButtonBase1_OnClick" Content="Button" HorizontalAlignment="Left" Margin="576,57,0,0" VerticalAlignment="Top" Width="75" Height="27"/>
-        <ScrollViewer Name="Viewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="565" VerticalAlignment="Top" Width="555">
-            <Image x:Name="IMAGE" HorizontalAlignment="Left" Height="565" VerticalAlignment="Top" Width="545" MouseWheel="image_MouseWheel" MouseLeftButtonDown="IMAGE_MouseLeftButtonDown"/>
+        Title="ImageOverlayWindow" Height="963.194" Width="1330.95">
+    <Grid Name="DGrid">
+        <Button Click="ButtonBase_OnClick" Content="Button" HorizontalAlignment="Left" Margin="1222,10,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Click="ButtonBase1_OnClick" Content="Button" HorizontalAlignment="Left" Margin="1222,79,0,0" VerticalAlignment="Top" Width="75" Height="27"/>
+        <ScrollViewer Name="Viewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="922" VerticalAlignment="Top" Width="1018">
+            <Image x:Name="IMAGE" AllowDrop="True" HorizontalAlignment="Left" Height="912" VerticalAlignment="Top" Width="1008" MouseWheel="image_MouseWheel" MouseLeftButtonDown="IMAGE_MouseLeftButtonDown" MouseMove="IMAGE_MouseMove"/>
         </ScrollViewer>
-        <Image   x:Name="IMAGEQR" HorizontalAlignment="Left" Height="100" Margin="706,18,0,0" VerticalAlignment="Top" Width="100" />
-        <TextBox Name="TextBox1" HorizontalAlignment="Left" Height="23" Margin="576,193,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="211"/>
-        <TextBox Name="TextBox2" HorizontalAlignment="Left" Height="23" Margin="576,235,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="211"/>
-        <Canvas HorizontalAlignment="Left" Height="175" Margin="687,290,0,0" VerticalAlignment="Top" Width="211"/>
+        <Image   x:Name="IMAGEQR" HorizontalAlignment="Left" Height="100" Margin="1067,351,0,0" VerticalAlignment="Top" Width="100" />
+        <TextBox Name="TextBox1" HorizontalAlignment="Left" Height="23" Margin="1053,225,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="211"/>
+        <TextBox Name="TextBox2" HorizontalAlignment="Left" Height="23" Margin="1053,267,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="211"/>
 
     </Grid>
 </Window>
