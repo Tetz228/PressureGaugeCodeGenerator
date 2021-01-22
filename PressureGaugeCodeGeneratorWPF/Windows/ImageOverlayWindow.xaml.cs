@@ -1,12 +1,9 @@
-﻿
-
-namespace PressureGaugeCodeGenerator.Windows
+﻿namespace PressureGaugeCodeGenerator.Windows
 {
     using System;
     using System.Drawing;
     using System.Drawing.Drawing2D;
     using System.Windows;
-    using System.Windows.Forms;
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
@@ -14,20 +11,14 @@ namespace PressureGaugeCodeGenerator.Windows
     using DragEventArgs = System.Windows.DragEventArgs;
     using Point = System.Windows.Point;
 
-    /// <summary>
-    /// Логика взаимодействия для ImageOverlayWindow.xaml
-    /// </summary>
     public partial class ImageOverlayWindow : Window
     {
         public double H { get; set; }
         public double W { get; set; }
         public int c = 0;
-        private Point spotClicked;
-        BitmapImage f = new BitmapImage(new Uri(@"C:\Users\tetz2\OneDrive\Рабочий стол\0513-0511145.png"));
 
         public ImageOverlayWindow()
         {
-            
             InitializeComponent();
             ImageSource image = new BitmapImage(new Uri(@"C:\Users\tetz2\OneDrive\Рабочий стол\0513-0511145.png"));
             IMAGE.Source = image;
@@ -45,16 +36,16 @@ namespace PressureGaugeCodeGenerator.Windows
 
         private void image_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            //if (e.Delta < 0)
-            //{
-            //    IMAGE.Height -= 150;
-            //    IMAGE.Width -= 150;
-            //}
-            //else
-            //{
-            //    IMAGE.Height += 150;
-            //    IMAGE.Width += 150;
-            //}
+            if (e.Delta < 0)
+            {
+                IMAGE.Height -= 150;
+                IMAGE.Width -= 150;
+            }
+            else
+            {
+                IMAGE.Height += 150;
+                IMAGE.Width += 150;
+            }
         }
 
         /// <summary>
@@ -64,25 +55,28 @@ namespace PressureGaugeCodeGenerator.Windows
         /// <param name="y">2е изображение.</param>
         /// <param name="percent">Коэффициент прозрачности (от 0 до 1).</param>
         /// <returns></returns>
-        System.Drawing.Bitmap AlphaBlending(System.Drawing.Image x, System.Drawing.Image y, Point tePoint)
+        Bitmap AlphaBlending(Image x, Image y, Point tePoint)
         {
             int x1 = (int)tePoint.X;
             int y1 = (int)tePoint.Y;
 
-            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(Convert.ToInt32(x.Width), Convert.ToInt32(x.Height));
+            int outputImageWidth = x.Width > y.Width ? x.Width : y.Width;
+            int outputImageHeight = x.Height + y.Height + 1;
+
+            Bitmap outputImage = new Bitmap(outputImageWidth, outputImageHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
             // Отвечает за расположение изображения
-            using (var g = System.Drawing.Graphics.FromImage(bmp))
+            using (var g = Graphics.FromImage(outputImage))
             {
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 g.DrawImage(x, 0, 0, x.Width, x.Height);
-                //Координаты для расположение QR-кода в 1 строке
-                //Координаты для расположение QR-кода на 1-ой табличке - x:22, y:300
-                //Координаты для расположение QR-кода на 2-ой табличке - x:1100, y:300
-                //Координаты для расположение QR-кода на 3-ой табличке - x:2180, y:288
-                g.DrawImage(y, new System.Drawing.Rectangle(x1, y1, y.Width, y.Height), 0, 0, y.Width, y.Height, System.Drawing.GraphicsUnit.Pixel);
+                ////Координаты для расположение QR-кода в 1 строке
+                ////Координаты для расположение QR-кода на 1-ой табличке - x:22, y:300
+                ////Координаты для расположение QR-кода на 2-ой табличке - x:1100, y:300
+                ////Координаты для расположение QR-кода на 3-ой табличке - x:2180, y:288
+                g.DrawImage(y, new Rectangle(x1, y1, y.Width, y.Height), 0, 0, y.Width, y.Height, GraphicsUnit.Pixel);
             }
-            return bmp;
+            return outputImage;
         }
 
 
@@ -90,11 +84,11 @@ namespace PressureGaugeCodeGenerator.Windows
         {
             var windowPosition = Mouse.GetPosition(IMAGE);
 
-            using (var img0 = System.Drawing.Image.FromFile(@"C:\Users\tetz2\OneDrive\Рабочий стол\0513-0511145.png"))
-            using (var img1 = System.Drawing.Image.FromFile(@"C:\Users\tetz2\OneDrive\Рабочий стол\211000001.png"))
+            using (var img0 = Image.FromFile(@"C:\Users\tetz2\OneDrive\Рабочий стол\0513-0511145.png"))
+            using (var img1 = Image.FromFile(@"C:\Users\tetz2\OneDrive\Рабочий стол\211000001.png"))
             using (var bmp = AlphaBlending(img0, img1, windowPosition))
             {
-                using (var sfd = new SaveFileDialog())
+                using (var sfd = new System.Windows.Forms.SaveFileDialog())
                 {
                     if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK) bmp.Save(sfd.FileName);
                 }
@@ -131,8 +125,8 @@ namespace PressureGaugeCodeGenerator.Windows
         private void IMAGEQR_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Controls.Image image = e.Source as System.Windows.Controls.Image;
-            System.Windows.DataObject data = new System.Windows.DataObject(typeof(ImageSource), image.Source);
-            DragDrop.DoDragDrop(image, data, System.Windows.DragDropEffects.All);
+            DataObject data = new DataObject(typeof(ImageSource), image.Source);
+            DragDrop.DoDragDrop(image, data, DragDropEffects.All);
         }
     }
 }
