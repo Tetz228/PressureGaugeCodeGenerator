@@ -1,14 +1,13 @@
 ﻿namespace PressureGaugeCodeGenerator.Windows
 {
+    using PressureGaugeCodeGenerator.Classes;
+    using PressureGaugeCodeGenerator.Data;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
-
-    using PressureGaugeCodeGenerator.Classes;
-    using PressureGaugeCodeGenerator.Data;
 
     public partial class MainWindow : Window
     {
@@ -328,6 +327,7 @@
                     "Ошибка",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
+
                 TextBoxStartNumber.Text = $"{GetData.GetYear()}{GetData.GetDepartment(ComboBoxDepartment)}000001";
             }
         }
