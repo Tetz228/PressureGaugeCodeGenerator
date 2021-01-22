@@ -57,7 +57,9 @@
 
         #region Установка начального значения
         /// <summary>Установка начального значения</summary>
-        /// <param name="data">Кортеж с данными о пути, о установки автоматического года, о участке</param>
+        /// <param name="path">Путь</param>
+        /// <param name="autoSetYear">Установка автоматического года</param>
+        /// <param name="department">Участок</param>
         /// <param name="startNumber">Начальный номер</param>
         public static void SetStartNumber(string path, bool? autoSetYear, string department, out string startNumber)
         {
