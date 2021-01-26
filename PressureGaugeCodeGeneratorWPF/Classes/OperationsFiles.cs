@@ -1,16 +1,13 @@
 ﻿namespace PressureGaugeCodeGenerator.Classes
 {
+    using PressureGaugeCodeGenerator.Data;
     using System;
     using System.Collections.Generic;
-    using System.Drawing;
     using System.Drawing.Imaging;
     using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Windows;
-
-    using PressureGaugeCodeGenerator.Data;
-
     using ZXing;
     using ZXing.Common;
     using ZXing.QrCode;
@@ -177,36 +174,30 @@
                 Format = BarcodeFormat.QR_CODE,
                 Options = encodingOptions
             };
-            Bitmap qrCode;
 
             foreach (var code in massNum)
             {
-                qrCode = barcodeWriter.Write(code);
                 switch (dataDictionary["Format"])
                 {
                     case "BMP":
-                        qrCode.Save(GlobalVar.NAME_FOLDER_QR + code + ".bmp", ImageFormat.Bmp);
+                        barcodeWriter.Write(code).Save(GlobalVar.NAME_FOLDER_QR + code + ".bmp", ImageFormat.Bmp);
                         break;
                     case "PNG":
-                        qrCode.Save(GlobalVar.NAME_FOLDER_QR + code + ".png", ImageFormat.Png);
+                        barcodeWriter.Write(code).Save(GlobalVar.NAME_FOLDER_QR + code + ".png", ImageFormat.Png);
                         break;
                     case "JPEG":
-                        qrCode.Save(GlobalVar.NAME_FOLDER_QR + code + ".jpeg", ImageFormat.Jpeg);
+                        barcodeWriter.Write(code).Save(GlobalVar.NAME_FOLDER_QR + code + ".jpeg", ImageFormat.Jpeg);
                         break;
                     case "BMP + PNG":
-                        qrCode.Save(GlobalVar.NAME_FOLDER_QR + code + ".png", ImageFormat.Png);
-
+                        barcodeWriter.Write(code).Save(GlobalVar.NAME_FOLDER_QR + code + ".png", ImageFormat.Png);
                         encodingOptions.Width = int.Parse(dataDictionary["WidthBmp"]);
                         encodingOptions.Height = int.Parse(dataDictionary["HeightBmp"]);
-
                         barcodeWriter = new BarcodeWriter
                         {
                             Format = BarcodeFormat.QR_CODE,
                             Options = encodingOptions
                         };
-
-                        Bitmap qrCodeBmp = barcodeWriter.Write(GlobalVar.NAME_FOLDER_QR);
-                        qrCodeBmp.Save(dataDictionary["Patch"] + GlobalVar.NAME_FOLDER_QR + ".bmp", ImageFormat.Bmp);
+                        barcodeWriter.Write(GlobalVar.NAME_FOLDER_QR).Save(dataDictionary["Patch"] + GlobalVar.NAME_FOLDER_QR + ".bmp", ImageFormat.Bmp);
                         break;
                 }
             }
