@@ -175,46 +175,63 @@
         /// <summary>При клике на кнопку "Сгенерировать"</summary>
         private void ButtonGenerate_Click(object sender, RoutedEventArgs e)
         {
+            if (CheckingFieldsGeneratingNumbers())
+            {
+                OperationsFiles.Generate(int.Parse(TextBoxStartNumber.Text), int.Parse(TextBoxCountNumbers.Text),
+                                TextBoxPath.Text, CheckBoxAutoSetYear.IsChecked, GetData.GetDepartment(ComboBoxDepartment));
+                OperationsFiles.SetStartNumber(TextBoxPath.Text, CheckBoxAutoSetYear.IsChecked,
+                    GetData.GetDepartment(ComboBoxDepartment), out string startNumber);
+                TextBoxStartNumber.Text = startNumber;
+                LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(TextBoxPath.Text);
+            }
+        }
+        #endregion
+
+        #region Валидация полей при генерации номеров
+        /// <summary>Валидация полей при генерации номеров</summary>
+        /// <returns>Возвращает true, если все поля заполнены верно, иначе false</returns>
+        private bool CheckingFieldsGeneratingNumbers()
+        {
             if (TextBoxStartNumber.Text.Length < GlobalVar.DIGITS)
             {
                 MessageBox.Show($"В номере должно быть {GlobalVar.DIGITS} цифр", "Некорректный начальный номер!",
                     MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return false;
             }
 
             if (!ChecksFile.IsNumber(TextBoxCountNumbers.Text))
             {
                 MessageBox.Show("Введите корректное количество номеров", "Некорректное количество номеров!",
                     MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return false;
             }
 
             if (!ChecksFile.IsNumber(TextBoxStartNumber.Text))
             {
                 MessageBox.Show("Введите корректный начальный номер", "Некорректный начальный номер!",
                     MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return false;
             }
 
             if (int.Parse(TextBoxCountNumbers.Text) < 1 || int.Parse(TextBoxCountNumbers.Text) > 1000)
             {
                 MessageBox.Show("Количество номеров должно быть в диапазоне от 1 до 1000",
                     "Некорректное количество номеров!", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return false;
             }
 
             if (int.Parse(TextBoxStartNumber.Text) + int.Parse(TextBoxCountNumbers.Text) >= 1_000_000_000)
             {
                 MessageBox.Show("Последнее генерируемое число должно быть не более 999999999",
                     "Некорректное генерируемое число!", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return false;
             }
 
             if (!ChecksFile.FileExist(TextBoxPath.Text))
             {
                 MessageBox.Show("Введите корректный путь", "Некорректный путь!", MessageBoxButton.OK,
                     MessageBoxImage.Error);
-                return;
+                return false;
             }
 
             if (!ChecksFile.EmptyFile(TextBoxPath.Text))
@@ -223,23 +240,17 @@
                 {
                     MessageBox.Show("В файле последний номер содержит недопустимые знаки",
                         "Некорректный последний номер в файле!", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    return false;
                 }
 
                 if (!ChecksFile.ValidNumber(TextBoxPath.Text, TextBoxStartNumber.Text))
                 {
                     MessageBox.Show("Номер должен быть больше, чем уже сгенерированное число в файле",
                         "Некорректный начальный номер!", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    return false;
                 }
             }
-
-            OperationsFiles.Generate(int.Parse(TextBoxStartNumber.Text), int.Parse(TextBoxCountNumbers.Text),
-                TextBoxPath.Text, CheckBoxAutoSetYear.IsChecked, GetData.GetDepartment(ComboBoxDepartment));
-            OperationsFiles.SetStartNumber(TextBoxPath.Text, CheckBoxAutoSetYear.IsChecked,
-                GetData.GetDepartment(ComboBoxDepartment), out string startNumber);
-            TextBoxStartNumber.Text = startNumber;
-            LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(TextBoxPath.Text);
+            return true;
         }
         #endregion
 
@@ -337,6 +348,43 @@
         /// <summary>При клике на кнопку генерации QR-кода</summary>
         private void ButtonGenerateQr_OnClick(object sender, RoutedEventArgs e)
         {
+            if (CheckingFieldsDirectoriesGeneratingQrCodes(out string number))
+            {
+                List<string> massNum = new List<string>();
+                Dictionary<string, string> dataDictionary = new Dictionary<string, string>
+                {
+                    {"Patch",TextBoxPath.Text },
+                    {"Format",ComboBoxFormat.Text },
+                    {"Width",TextBoxWidth.Text },
+                    {"Height",TextBoxHeight.Text },
+                    {"WidthBmp",TextBoxWidthBmp.Text },
+                    {"HeightBmp",TextBoxHeightBmp.Text }
+                };
+
+                using (var streamReader = new StreamReader(TextBoxPath.Text))
+                {
+                    for (number = streamReader.ReadLine(); number != null; number = streamReader.ReadLine())
+                        massNum.Add(number);
+                }
+
+                OperationsFiles.GenerateQrCodes(massNum, dataDictionary);
+                MessageBox.Show(
+                    "QR-коды сгенерированы в каталог \"" + GlobalVar.NAME_FOLDER_QR,
+                    "Успешно!",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+        }
+        #endregion
+
+        #region Проверка полей и директории при генерации QR-кодов
+        /// <summary>Проверка полей и директории при генерации QR-кодов</summary>
+        /// <param name="number">Последний номер записанный в файле</param>
+        /// <returns>Возвращает true, если все проверки прошли успешно, иначе false</returns>
+        private bool CheckingFieldsDirectoriesGeneratingQrCodes(out string number)
+        {
+            number = null;
+
             if (string.IsNullOrEmpty(TextBoxHeight.Text) && string.IsNullOrEmpty(TextBoxWidth.Text))
             {
                 MessageBox.Show(
@@ -344,7 +392,7 @@
                     "Некорректные данные",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
-                return;
+                return false;
             }
 
             if (ChecksFile.FileExist(TextBoxPath.Text) && ChecksFile.EmptyFile(TextBoxPath.Text))
@@ -354,10 +402,10 @@
                     "Ошибка при чтении файла",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
-                return;
+                return false;
             }
 
-            string number = File.ReadLines(TextBoxPath.Text).Last();
+            number = File.ReadLines(TextBoxPath.Text).Last();
 
             if (!ChecksFile.IsNumber(number))
             {
@@ -366,7 +414,7 @@
                     "Ошибка при считывании номера",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
-                return;
+                return false;
             }
 
             if (Directory.Exists(GlobalVar.NAME_FOLDER_QR))
@@ -387,7 +435,7 @@
                         "Некорректные данные",
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);
-                    return;
+                    return false;
                 }
             }
 
@@ -398,32 +446,9 @@
                     "Некорректные данные",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
-                return;
+                return false;
             }
-
-            List<string> massNum = new List<string>();
-            Dictionary<string, string> dataDictionary = new Dictionary<string, string>
-            {
-                {"Patch",TextBoxPath.Text },
-                {"Format",ComboBoxFormat.Text },
-                {"Width",TextBoxWidth.Text },
-                {"Height",TextBoxHeight.Text },
-                {"WidthBmp",TextBoxWidthBmp.Text },
-                {"HeightBmp",TextBoxHeightBmp.Text }
-            };
-
-            using (var streamReader = new StreamReader(TextBoxPath.Text))
-            {
-                for (number = streamReader.ReadLine(); number != null; number = streamReader.ReadLine())
-                    massNum.Add(number);
-            }
-
-            OperationsFiles.GenerateQrCodes(massNum, dataDictionary);
-            MessageBox.Show(
-                "QR-коды сгенерированы в каталог \"" + GlobalVar.NAME_FOLDER_QR,
-                "Успешно!",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information);
+            return true;
         }
         #endregion
 
