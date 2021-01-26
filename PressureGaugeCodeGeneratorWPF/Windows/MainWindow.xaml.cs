@@ -461,29 +461,28 @@
         #endregion
 
         #region При клике на "Перейти к номерам"
-
         /// <summary>При клике на "Перейти к номерам"</summary>
         private void MenuItemGoNumbers_OnClick(object sender, RoutedEventArgs e)
         {
             Process.Start("explorer", $"file://{Path.GetDirectoryName(TextBoxPath.Text)}");
         }
-
         #endregion
 
         #region При клике на "Перейти к QR-кодам"
-
         /// <summary>При клике на "Перейти к QR-кодам"</summary>
         private void MenuItemGoQrCodes_OnClick(object sender, RoutedEventArgs e)
         {
             Process.Start("explorer", $"file://{Path.GetDirectoryName(TextBoxPath.Text)}\\" + GlobalVar.NAME_FOLDER_QR);
         }
-
         #endregion
 
+        #region При клике на "Наложить QR-код"
+        /// <summary>При клике на "Наложить QR-код"</summary>
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             ImageOverlayWindow imageOverlayWindow = new ImageOverlayWindow();
             imageOverlayWindow.ShowDialog();
         }
+        #endregion
     }
 }
