@@ -5,16 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PressureGaugeCodeGenerator.Windows"
         mc:Ignorable="d"
-        Title="ImageOverlayWindow" Height="488.109" Width="879.551">
+        Title="ImageOverlayWindow" Height="488.109" Width="1208.051">
     <Grid Name="DGrid">
-        <Button Click="ButtonBase_OnClick" Content="Button" HorizontalAlignment="Left" Margin="784,8,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button Click="ButtonBase1_OnClick" Content="Button" HorizontalAlignment="Left" Margin="784,78,0,0" VerticalAlignment="Top" Width="75" Height="26"/>
-        <ScrollViewer Name="Viewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="462" VerticalAlignment="Top" Width="630">
-            <Image x:Name="IMAGE" AllowDrop="True" HorizontalAlignment="Left" Height="458" MouseMove="IMAGE_MouseMove" VerticalAlignment="Top" Width="626" Drop="IMAGE_OnDrop" MouseLeftButtonDown="IMAGE_MouseLeftButtonDown" MouseWheel="image_MouseWheel"/>
+        <Button Click="ButtonBase_OnClick" Content="Button" HorizontalAlignment="Left" Margin="1051,5,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Click="ButtonBase1_OnClick" Content="Button" HorizontalAlignment="Left" Margin="1051,75,0,0" VerticalAlignment="Top" Width="75" Height="26"/>
+        <ScrollViewer Name="Viewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="462" VerticalAlignment="Top" Width="413" Margin="0,0,0,-5">
+            <Image x:Name="IMAGE" AllowDrop="True" HorizontalAlignment="Left" Height="458" MouseMove="IMAGE_MouseMove" VerticalAlignment="Top" Width="412" Drop="IMAGE_OnDrop" MouseLeftButtonDown="IMAGE_MouseLeftButtonDown" MouseWheel="image_MouseWheel"/>
         </ScrollViewer>
-        <Image MouseLeftButtonDown="IMAGEQR_OnMouseLeftButtonDown"  x:Name="IMAGEQR" HorizontalAlignment="Left" Height="100" Margin="648,8,0,0" VerticalAlignment="Top" Width="100" />
-        <TextBox Name="TextBox1" HorizontalAlignment="Left" Height="22" Margin="648,146,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="211"/>
-        <TextBox Name="TextBox2" HorizontalAlignment="Left" Height="22" Margin="648,202,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="211"/>
+        <Image MouseLeftButtonDown="IMAGEQR_OnMouseLeftButtonDown"  x:Name="IMAGEQR" HorizontalAlignment="Left" Height="100" Margin="915,5,0,0" VerticalAlignment="Top" Width="100" />
+        <TextBox Name="TextBox1" HorizontalAlignment="Left" Height="22" Margin="915,143,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="211"/>
+        <TextBox Name="TextBox2" HorizontalAlignment="Left" Height="22" Margin="915,199,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="211"/>
+        <Image Name="TestImage" HorizontalAlignment="Left" Height="442" Margin="418,5,0,0" VerticalAlignment="Top" Width="442"/>
 
     </Grid>
 </Window>

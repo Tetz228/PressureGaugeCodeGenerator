@@ -20,13 +20,8 @@
         public ImageOverlayWindow()
         {
             InitializeComponent();
-            ImageSource image = new BitmapImage(new Uri(@"C:\Users\tetz2\OneDrive\Рабочий стол\0513-0511145.png"));
-            IMAGE.Source = image;
-            ImageSource imageQR = new BitmapImage(new Uri(
-                @"C:\Users\tetz2\OneDrive\Рабочий стол\211000001.png"));
-            IMAGEQR.Source = imageQR;
-            H = IMAGE.Height;
-            W = IMAGE.Width;
+            IMAGE.Source = new BitmapImage(new Uri(@"C:\Users\tetz2\OneDrive\Рабочий стол\0513-0511145.png"));
+            IMAGEQR.Source = new BitmapImage(new Uri(@"C:\Users\tetz2\OneDrive\Рабочий стол\211000001.png"));
         }
 
         private void MouseButtonIsDown(object sender, MouseButtonEventArgs e)
@@ -60,12 +55,12 @@
             int x1 = (int)tePoint.X;
             int y1 = (int)tePoint.Y;
 
-            int outputImageWidth = x.Width > y.Width ? x.Width : y.Width;
-            int outputImageHeight = x.Height + y.Height + 1;
+            int outputImageWidth = x.Width;
+            int outputImageHeight = x.Height;
 
             Bitmap outputImage = new Bitmap(outputImageWidth, outputImageHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-            // Отвечает за расположение изображения
+            //Отвечает за расположение изображения
             using (var g = Graphics.FromImage(outputImage))
             {
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -74,7 +69,7 @@
                 ////Координаты для расположение QR-кода на 1-ой табличке - x:22, y:300
                 ////Координаты для расположение QR-кода на 2-ой табличке - x:1100, y:300
                 ////Координаты для расположение QR-кода на 3-ой табличке - x:2180, y:288
-                g.DrawImage(y, new Rectangle(x1, y1, y.Width, y.Height), 0, 0, y.Width, y.Height, GraphicsUnit.Pixel);
+                g.DrawImage(y, new Rectangle(22, 300, y.Width, y.Height), 0, 0, y.Width, y.Height, GraphicsUnit.Pixel);
             }
             return outputImage;
         }
