@@ -353,7 +353,6 @@
                 List<string> massNum = new List<string>();
                 Dictionary<string, string> dataDictionary = new Dictionary<string, string>
                 {
-                    {"Patch",TextBoxPath.Text },
                     {"Format",ComboBoxFormat.Text },
                     {"Width",TextBoxWidth.Text },
                     {"Height",TextBoxHeight.Text },
