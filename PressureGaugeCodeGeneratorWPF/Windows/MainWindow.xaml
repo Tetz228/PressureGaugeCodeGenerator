@@ -13,7 +13,9 @@
         <Menu VerticalAlignment="Top" 
               HorizontalAlignment="Left" 
               Height="19" 
-              Width="610" Grid.ColumnSpan="2" Margin="0,0,-48,0">
+              Width="610" 
+              Grid.ColumnSpan="2" 
+              Margin="0,0,-48,0">
             <MenuItem Header="Файл" 
                       KeyboardNavigation.TabIndex="0"
                       Style="{StaticResource menuItem}">
@@ -103,13 +105,13 @@
                 x:Name="ButtonGenerate"             
                 Width="107"                
                 Margin="10,0,0,10"              
-                KeyboardNavigation.TabIndex="7" 
+                KeyboardNavigation.TabIndex="8" 
                 Style="{StaticResource buttons}"
                 Click="ButtonGenerate_Click"/>
         <Button Content="Показать номера"
                 x:Name="ButtonShowNumbers"  
                 Width="122" 
-                KeyboardNavigation.TabIndex="8"
+                KeyboardNavigation.TabIndex="9"
                 Margin="147,0,0,10" 
                 Click="ButtonShowNumbers_OnClick"
                 Style="{StaticResource buttons}"/>
@@ -117,7 +119,7 @@
                 x:Name="ButtonGenerateQr"             
                 Margin="13,0,0,10" 
                 Width="135"
-                KeyboardNavigation.TabIndex="9" 
+                KeyboardNavigation.TabIndex="15" 
                 Grid.Column="1" 
                 Click="ButtonGenerateQr_OnClick"
                 Style="{StaticResource buttons}"/>
@@ -125,32 +127,34 @@
                 x:Name="ButtonOpen"  
                 Width="100" 
                 Height="23" 
-                KeyboardNavigation.TabIndex="6" 
+                KeyboardNavigation.TabIndex="3" 
                 Margin="0,22,-29,0" 
                 Grid.Column="1"                
                 Style="{StaticResource buttons}" 
                 Click="ButtonOpen_Click"
-                VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                VerticalAlignment="Top" 
+                HorizontalAlignment="Right"/>
         <TextBox x:Name="TextBoxPath"
                  Grid.ColumnSpan="2" 
                  Height="23" 
                  Margin="110,22,0,0" 
                  TextAlignment="Left" 
                  Width="369" 
+                 KeyboardNavigation.TabIndex = "2"
                  Style="{StaticResource textBoxs}"/>
         <TextBox x:Name="TextBoxStartNumber"  
                  Height="23" 
                  Margin="10,176,0,0" 
                  Width="259" 
                  MaxLength="9" 
-                 KeyboardNavigation.TabIndex="3" 
+                 KeyboardNavigation.TabIndex="5" 
                  Style="{StaticResource textBoxs}"/>
         <TextBox x:Name="TextBoxCountNumbers"  
                  Height="22" 
                  Margin="10,259,0,0"
                  Width="259" 
                  MaxLength="4" 
-                 KeyboardNavigation.TabIndex="4"
+                 KeyboardNavigation.TabIndex="7"
                  Style="{StaticResource textBoxs}"/>
         <TextBox x:Name="TextBoxHeight"
                  Grid.Column="1" 
@@ -159,7 +163,7 @@
                  Margin="140,223,0,0" 
                  Text="21" 
                  Width="64" 
-                 KeyboardNavigation.TabIndex="3"
+                 KeyboardNavigation.TabIndex="11"
                  Style="{StaticResource textBoxs}"/>
         <TextBox x:Name="TextBoxWidth" 
                  Grid.Column="1" 
@@ -168,7 +172,7 @@
                  Margin="209,223,0,0" 
                  Text="21" 
                  Width="64" 
-                 KeyboardNavigation.TabIndex="4"
+                 KeyboardNavigation.TabIndex="12"
                  Style="{StaticResource textBoxs}"/>
         <TextBox x:Name="TextBoxHeightBmp" 
                  Grid.Column="1" 
@@ -177,7 +181,7 @@
                  Margin="140,251,0,0" 
                  Text="21"  
                  Width="64"
-                 KeyboardNavigation.TabIndex="5"
+                 KeyboardNavigation.TabIndex="13"
                  Style="{StaticResource textBoxs}"/>
         <TextBox x:Name="TextBoxWidthBmp" 
                  Grid.Column="1" 
@@ -186,7 +190,7 @@
                  Margin="209,251,0,0" 
                  Text="21" 
                  Width="64" 
-                 KeyboardNavigation.TabIndex="6"
+                 KeyboardNavigation.TabIndex="14"
                  Style="{StaticResource textBoxs}"/>
         <TextBlock Text="Номера" 
                    Grid.Column="0" 
@@ -228,7 +232,7 @@
                   Margin="10,112,0,0"
                   Width="259"
                   SelectedIndex="0"
-                  KeyboardNavigation.TabIndex="2"
+                  KeyboardNavigation.TabIndex="4"
                   SelectionChanged="ComboBoxDepartment_OnSelectionChanged"
                   Style="{StaticResource comboBoxs}">
             <ComboBoxItem Content="1 - Литография (ППШ)"/>
@@ -243,7 +247,7 @@
                   Width="120" 
                   Height="23" 
                   SelectedIndex="0"
-                  KeyboardNavigation.TabIndex="2"
+                  KeyboardNavigation.TabIndex="10"
                   Style="{StaticResource comboBoxs}" 
                   SelectionChanged="ComboBoxFormatSelectionChanged">
             <ComboBoxItem Content="BMP"/>
@@ -259,7 +263,15 @@
                   FontFamily="Verdana" 
                   FontSize="13" 
                   Unchecked="CheckBoxAutoSetYear_Unchecked"
+                  KeyboardNavigation.TabIndex = "6"
                   Checked="CheckBoxAutoSetYear_OnChecked"/>
-        <Button Style="{StaticResource buttons}" Click="ButtonBase_OnClick" Content="Наложить QR-код" Grid.Column="1" Margin="0,0,-27,10" Width="147" HorizontalAlignment="Right"/>
+        <Button Content="Наложить QR-код"
+                Style="{StaticResource buttons}" 
+                Click="ButtonBase_OnClick"  
+                Grid.Column="1" 
+                Margin="0,0,-27,10" 
+                Width="147" 
+                HorizontalAlignment="Right"
+                KeyboardNavigation.TabIndex = "16"/>
     </Grid>
 </Window>
