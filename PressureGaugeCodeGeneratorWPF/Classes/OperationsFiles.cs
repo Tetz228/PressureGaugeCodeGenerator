@@ -188,8 +188,9 @@
                     case "JPEG":
                         barcodeWriter.Write(code).Save(GlobalVar.NAME_FOLDER_QR + code + ".jpeg", ImageFormat.Jpeg);
                         break;
-                    case "BMP + PNG":
+                    case "PNG и BMP":
                         barcodeWriter.Write(code).Save(GlobalVar.NAME_FOLDER_QR + code + ".png", ImageFormat.Png);
+
                         encodingOptions.Width = int.Parse(dataDictionary["WidthBmp"]);
                         encodingOptions.Height = int.Parse(dataDictionary["HeightBmp"]);
                         barcodeWriter = new BarcodeWriter
@@ -197,7 +198,8 @@
                             Format = BarcodeFormat.QR_CODE,
                             Options = encodingOptions
                         };
-                        barcodeWriter.Write(GlobalVar.NAME_FOLDER_QR).Save(dataDictionary["Patch"] + GlobalVar.NAME_FOLDER_QR + ".bmp", ImageFormat.Bmp);
+
+                        barcodeWriter.Write(code).Save(GlobalVar.NAME_FOLDER_QR + code + ".bmp", ImageFormat.Bmp);
                         break;
                 }
             }
