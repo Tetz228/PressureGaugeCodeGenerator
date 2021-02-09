@@ -42,9 +42,7 @@
                 var settings = configFile.AppSettings.Settings;
 
                 foreach (var item in dictionarySettings)
-                {
                     settings[item.Key].Value = item.Value;
-                }
 
                 configFile.Save(ConfigurationSaveMode.Modified);
                 ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
@@ -53,6 +51,47 @@
             {
                 MessageBox.Show(ex.Message, "Ошибка при сохранении настроек", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+        #endregion
+
+        #region Сохранение размеров форматов
+        /// <summary></summary>
+        /// <param name="indexFormat">Индекс формата</param>
+        /// <param name="width">Ширина</param>
+        /// <param name="height">Высота</param>
+        /// <param name="widthPngBmp">Ширина BMP</param>
+        /// <param name="heightPngBmp">Высота BMP</param>
+        public static void SaveSizesFormats(int indexFormat, string width, string height, string widthPngBmp, string heightPngBmp)
+        {
+            Dictionary<string, string> settings = ReadSettings();
+
+            switch (indexFormat)
+            {
+                //BMP
+                case 0:
+                    settings["BmpWidth"] = width;
+                    settings["BmpHeight"] = height;
+                    break;
+                //PNG
+                case 1:
+                    settings["PngWidth"] = width;
+                    settings["PngHeight"] = height;
+                    break;
+                //JPEG
+                case 2:
+                    settings["JpegWidth"] = width;
+                    settings["JpegHeight"] = height;
+                    break;
+                //PNG и BMP
+                case 3:
+                    settings["PngBmpWidthPng"] = width;
+                    settings["PngBmpHeightPng"] = height;
+                    settings["PngBmpWidthBmp"] = widthPngBmp;
+                    settings["PngBmpHeightBmp"] = heightPngBmp;
+                    break;
+            }
+
+            SaveSettings(settings);
         }
         #endregion
     }
