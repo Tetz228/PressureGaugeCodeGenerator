@@ -2,6 +2,7 @@
 {
     using PressureGaugeCodeGenerator.Classes;
     using PressureGaugeCodeGenerator.Data;
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
@@ -52,17 +53,14 @@
         /// <summary>При закрытии окна</summary>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Dictionary<string, string> settings = new Dictionary<string, string>
-            {
-                { "Department", ComboBoxDepartment.SelectedIndex.ToString() },
-                { "Width", TextBoxWidth.Text },
-                { "Height", TextBoxHeight.Text },
-                { "Width_BMP", TextBoxWidthBmp.Text },
-                { "Height_BMP", TextBoxHeightBmp.Text },
-                { "Checked", CheckBoxAutoSetYear.IsChecked.ToString() },
-                { "Format", ComboBoxFormat.SelectedIndex.ToString() },
-            };
+            Dictionary<string, string> settings = SaveAndReadSettings.ReadSettings();
+            settings["Department"] = ComboBoxDepartment.SelectedIndex.ToString();
+            settings["Checked"] = CheckBoxAutoSetYear.IsChecked.ToString();
+            settings["Format"] = ComboBoxFormat.SelectedIndex.ToString();
+
             SaveAndReadSettings.SaveSettings(settings);
+            SaveAndReadSettings.SaveSizesFormats(ComboBoxFormat.SelectedIndex, TextBoxWidth.Text, TextBoxHeight.Text, TextBoxWidthBmp.Text,
+                TextBoxHeightBmp.Text);
         }
         #endregion
 
@@ -74,10 +72,6 @@
 
             if (settings.Count != 0)
             {
-                TextBoxWidth.Text = settings["Width"];
-                TextBoxHeight.Text = settings["Height"];
-                TextBoxWidthBmp.Text = settings["Width_BMP"];
-                TextBoxHeightBmp.Text = settings["Height_BMP"];
                 CheckBoxAutoSetYear.IsChecked = bool.Parse(settings["Checked"]);
                 ComboBoxDepartment.SelectedIndex = int.Parse(settings["Department"]);
                 ComboBoxFormat.SelectedIndex = int.Parse(settings["Format"]);
@@ -100,6 +94,34 @@
                 label_bmp.Visibility = Visibility.Hidden;
                 TextBoxHeightBmp.Visibility = Visibility.Hidden;
                 TextBoxWidthBmp.Visibility = Visibility.Hidden;
+            }
+
+            Dictionary<string, string> settings = SaveAndReadSettings.ReadSettings();
+
+            switch (ComboBoxFormat.SelectedIndex)
+            {
+                //BMP
+                case 0:
+                    TextBoxWidth.Text = settings["BmpWidth"];
+                    TextBoxHeight.Text = settings["BmpHeight"];
+                    break;
+                //PNG
+                case 1:
+                    TextBoxWidth.Text = settings["PngWidth"];
+                    TextBoxHeight.Text = settings["PngHeight"];
+                    break;
+                //JPEG
+                case 2:
+                    TextBoxWidth.Text = settings["JpegWidth"];
+                    TextBoxHeight.Text = settings["JpegHeight"];
+                    break;
+                //PNG и BMP
+                case 3:
+                    TextBoxWidth.Text = settings["PngBmpWidthPng"];
+                    TextBoxHeight.Text = settings["PngBmpHeightPng"];
+                    TextBoxWidthBmp.Text = settings["PngBmpWidthBmp"];
+                    TextBoxHeightBmp.Text = settings["PngBmpHeightBmp"];
+                    break;
             }
         }
         #endregion
@@ -481,6 +503,16 @@
         {
             ImageOverlayWindow imageOverlayWindow = new ImageOverlayWindow();
             imageOverlayWindow.ShowDialog();
+        }
+        #endregion
+
+        #region При открытии раскрывающегося списка
+        /// <summary>При открытии раскрывающегося списка</summary>
+        private void ComboBoxFormat_DropDownOpened(object sender, EventArgs e)
+        {
+            SaveAndReadSettings.SaveSizesFormats(ComboBoxFormat.SelectedIndex, TextBoxWidth.Text, TextBoxHeight.Text,
+                TextBoxWidthBmp.Text,
+                TextBoxHeightBmp.Text);
         }
         #endregion
     }
