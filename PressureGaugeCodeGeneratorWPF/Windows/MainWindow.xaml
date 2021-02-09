@@ -249,7 +249,8 @@
                   SelectedIndex="0"
                   KeyboardNavigation.TabIndex="10"
                   Style="{StaticResource comboBoxs}" 
-                  SelectionChanged="ComboBoxFormatSelectionChanged">
+                  SelectionChanged="ComboBoxFormatSelectionChanged" 
+                  DropDownOpened="ComboBoxFormat_DropDownOpened">
             <ComboBoxItem Content="BMP"/>
             <ComboBoxItem Content="PNG"/>
             <ComboBoxItem Content="JPEG"/>
