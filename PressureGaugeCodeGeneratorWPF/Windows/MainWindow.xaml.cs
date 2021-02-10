@@ -36,7 +36,6 @@
                 TextBoxStartNumber.Text = startNumber;
                 TextBoxPath.Text = path;
                 LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(path);
-                TextBoxCountNumbers.Clear();
             }
         }
         #endregion
@@ -55,7 +54,8 @@
         {
             Dictionary<string, string> settings = SaveAndReadSettings.ReadSettings();
             settings["Department"] = ComboBoxDepartment.SelectedIndex.ToString();
-            settings["Checked"] = CheckBoxAutoSetYear.IsChecked.ToString();
+            settings["CheckedYear"] = CheckBoxAutoSetYear.IsChecked.ToString();
+            settings["CheckedStartNumber"] = CheckBoxCheckStartNumber.IsChecked.ToString();
             settings["Format"] = ComboBoxFormat.SelectedIndex.ToString();
 
             SaveAndReadSettings.SaveSettings(settings);
@@ -72,7 +72,8 @@
 
             if (settings.Count != 0)
             {
-                CheckBoxAutoSetYear.IsChecked = bool.Parse(settings["Checked"]);
+                CheckBoxAutoSetYear.IsChecked = bool.Parse(settings["CheckedYear"]);
+                CheckBoxCheckStartNumber.IsChecked = bool.Parse(settings["CheckedStartNumber"]);
                 ComboBoxDepartment.SelectedIndex = int.Parse(settings["Department"]);
                 ComboBoxFormat.SelectedIndex = int.Parse(settings["Format"]);
             }
@@ -265,12 +266,13 @@
                     return false;
                 }
 
-                if (!ChecksFile.ValidNumber(TextBoxPath.Text, TextBoxStartNumber.Text))
-                {
-                    MessageBox.Show("Номер должен быть больше, чем уже сгенерированное число в файле",
-                        "Некорректный начальный номер!", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return false;
-                }
+                if (CheckBoxCheckStartNumber.IsChecked == true)
+                    if (!ChecksFile.ValidNumber(TextBoxPath.Text, TextBoxStartNumber.Text))
+                    {
+                        MessageBox.Show("Номер должен быть больше, чем уже сгенерированное число в файле",
+                            "Некорректный начальный номер!", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return false;
+                    }
             }
             return true;
         }
@@ -315,7 +317,6 @@
                 OperationsFiles.SetStartNumber(TextBoxPath.Text = path, true, GetData.GetDepartment(ComboBoxDepartment),
                     out string startNumber);
                 TextBoxStartNumber.Text = startNumber;
-                LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(path);
                 return;
             }
 
@@ -323,7 +324,6 @@
             {
                 TextBoxStartNumber.Text = $"{GetData.GetYear()}{GetData.GetDepartment(ComboBoxDepartment)}000001";
                 TextBoxPath.Text = path;
-                LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(path);
                 return;
             }
 
@@ -349,8 +349,6 @@
                     case MessageBoxResult.No:
                         break;
                 }
-
-                LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(path);
             }
             else
             {
@@ -515,5 +513,11 @@
                 TextBoxHeightBmp.Text);
         }
         #endregion
+
+        private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (MainTabControl.SelectedIndex == 1)
+                LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(TextBoxPath.Text);
+        }
     }
 }
