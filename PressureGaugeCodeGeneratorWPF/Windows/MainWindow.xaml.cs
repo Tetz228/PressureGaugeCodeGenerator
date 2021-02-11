@@ -135,7 +135,7 @@
 
             cCoreScannerClass.Open(0, scannerTypes, numberOfScannerTypes, out int status);
 
-            StreamReader sr = new StreamReader(@"D:\test.txt");
+            StreamReader sr = new StreamReader($"{Directory.GetCurrentDirectory()}\\test.txt");
             string line = sr.ReadLine();
 
             while (line != null)
