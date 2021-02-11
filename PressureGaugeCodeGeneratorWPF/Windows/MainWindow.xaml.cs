@@ -9,9 +9,14 @@
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Xml;
+
+    using CoreScanner;
 
     public partial class MainWindow : Window
     {
+        private static CCoreScannerClass cCoreScannerClass = new CCoreScannerClass();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -77,6 +82,86 @@
                 ComboBoxDepartment.SelectedIndex = int.Parse(settings["Department"]);
                 ComboBoxFormat.SelectedIndex = int.Parse(settings["Format"]);
             }
+
+            try
+            {
+                short[] scannerTypes = { 1 };
+                short numberOfScannerTypes = 1;
+
+                cCoreScannerClass.Open(0, scannerTypes, numberOfScannerTypes, out int status);
+
+                int opcode = 1001;
+                string inXML = "<inArgs>" +
+                               "<cmdArgs>" +
+                               "<arg-int>1</arg-int>" +
+                               "<arg-int>1</arg-int>" +
+                               "</cmdArgs>" +
+                               "</inArgs>";
+
+                cCoreScannerClass.ExecCommand(opcode, ref inXML, out string outXML, out status);
+            }
+            catch (Exception exp)
+            {
+                Console.WriteLine("Что-то не так, пожалуйста, проверьте... " + exp.Message);
+            }
+
+            cCoreScannerClass.BarcodeEvent += OnBarcodeEvent;
+        }
+        #endregion
+
+        #region Событие при сканирование QR-кода
+        /// <summary>Событие при сканирование QR-кода</summary>
+        void OnBarcodeEvent(short eventType, ref string pscanData)
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(pscanData);
+
+            string decoder = xmlDoc.DocumentElement.GetElementsByTagName("datalabel").Item(0).InnerText;
+            string[] numbers = decoder.Split(' ');
+            string strData = "";
+
+            foreach (string number in numbers)
+            {
+                if (string.IsNullOrEmpty(number))
+                    break;
+
+                strData += ((char)Convert.ToInt32(number, 16)).ToString();
+            }
+
+            short[] scannerTypes = { 1 };
+            short numberOfScannerTypes = 1;
+            int opcode = 6000, isLine = 0;
+            string inXML;
+
+            cCoreScannerClass.Open(0, scannerTypes, numberOfScannerTypes, out int status);
+
+            StreamReader sr = new StreamReader(@"D:\test.txt");
+            string line = sr.ReadLine();
+
+            while (line != null)
+            {
+                if (line == strData)
+                    isLine++;
+
+                line = sr.ReadLine();
+            }
+
+            if (isLine >= 1)
+                inXML = "<inArgs>" +
+                        "<scannerID>1</scannerID>" +
+                        "<cmdArgs>" +
+                        "<arg-int>3</arg-int>" +
+                        "</cmdArgs>" +
+                        "</inArgs>";
+            else
+                inXML = "<inArgs>" +
+                        "<scannerID>1</scannerID>" +
+                        "<cmdArgs>" +
+                        "<arg-int>0</arg-int>" +
+                        "</cmdArgs>" +
+                        "</inArgs>";
+
+            cCoreScannerClass.ExecCommand(opcode, ref inXML, out string outXML, out status);
         }
         #endregion
 
@@ -514,10 +599,13 @@
         }
         #endregion
 
+        #region При изменении значения в TabControl
+        /// <summary>При изменении значения в TabControl</summary>
         private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (MainTabControl.SelectedIndex == 1)
                 LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(TextBoxPath.Text);
         }
+        #endregion
     }
 }
