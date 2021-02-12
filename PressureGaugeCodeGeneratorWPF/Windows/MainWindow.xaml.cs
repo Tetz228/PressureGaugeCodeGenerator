@@ -11,14 +11,23 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Xml;
+    using System.Configuration;
+    using System.Data.Common;
+    using System.Data.OleDb;
 
     public partial class MainWindow : Window
     {
         static CCoreScannerClass cCoreScannerClass = new CCoreScannerClass();
+        public static string connectString = ConfigurationManager.ConnectionStrings["PressureGaugeCodeGenerator.Properties.Settings.BaseNumberConnectionString"].ConnectionString;
+
+        private OleDbConnection myConnection;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            myConnection = new OleDbConnection(connectString);
+            myConnection.Open();
         }
 
         #region При клике на кнопку "Открыть"
@@ -56,6 +65,8 @@
         /// <summary>При закрытии окна</summary>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            myConnection.Close();
+
             var settings = SaveAndReadSettings.ReadSettings();
             settings["Department"] = ComboBoxDepartment.SelectedIndex.ToString();
             settings["CheckedYear"] = CheckBoxAutoSetYear.IsChecked.ToString();
