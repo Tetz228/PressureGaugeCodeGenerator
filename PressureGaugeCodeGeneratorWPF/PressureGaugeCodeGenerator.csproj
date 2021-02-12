@@ -77,11 +77,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BaseNumberDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BaseNumberDataSet.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Classes\Checks.cs" />
     <Compile Include="Classes\GetData.cs" />
     <Compile Include="Classes\OperationsFiles.cs" />
@@ -144,17 +139,6 @@
     <EmbeddedResource Include="Windows\AboutProgram.resx">
       <DependentUpon>AboutProgram.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="BaseNumberDataSet.xsc">
-      <DependentUpon>BaseNumberDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="BaseNumberDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>BaseNumberDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="BaseNumberDataSet.xss">
-      <DependentUpon>BaseNumberDataSet.xsd</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -207,11 +191,6 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </COMReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="BaseNumber.mdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

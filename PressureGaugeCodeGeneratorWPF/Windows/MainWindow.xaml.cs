@@ -11,23 +11,20 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Xml;
-    using System.Configuration;
-    using System.Data.Common;
-    using System.Data.OleDb;
 
     public partial class MainWindow : Window
     {
         static CCoreScannerClass cCoreScannerClass = new CCoreScannerClass();
-        public static string connectString = ConfigurationManager.ConnectionStrings["PressureGaugeCodeGenerator.Properties.Settings.BaseNumberConnectionString"].ConnectionString;
+        //public static string connectString = "Provider=Microsoft.Jet.OLEDB.4.0;Password=Admin1;Data Source=BaseNumber.mdb";
 
-        private OleDbConnection myConnection;
+        //private OleDbConnection myConnection;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            myConnection = new OleDbConnection(connectString);
-            myConnection.Open();
+            //myConnection = new OleDbConnection(connectString);
+            //myConnection.Open();
         }
 
         #region При клике на кнопку "Открыть"
@@ -65,7 +62,7 @@
         /// <summary>При закрытии окна</summary>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            myConnection.Close();
+            //myConnection.Close();
 
             var settings = SaveAndReadSettings.ReadSettings();
             settings["Department"] = ComboBoxDepartment.SelectedIndex.ToString();
@@ -122,6 +119,7 @@
         /// <summary>Событие при сканирование QR-кода</summary>
         void OnBarcodeEvent(short eventType, ref string pscanData)
         {
+            #region Расшифровка QR-кода
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(pscanData);
 
@@ -136,6 +134,7 @@
 
                 strData += ((char)Convert.ToInt32(number, 16)).ToString();
             }
+            #endregion
 
             short[] scannerTypes = { 1 };
             short numberOfScannerTypes = 1;
@@ -144,15 +143,23 @@
 
             cCoreScannerClass.Open(0, scannerTypes, numberOfScannerTypes, out int status);
 
-            StreamReader sr = new StreamReader($"{Directory.GetCurrentDirectory()}\\test.txt");
-            string line = sr.ReadLine();
-
-            while (line != null)
+            string path = $"{Directory.GetCurrentDirectory()}\\BaseNumbers";
+            if (!Checks.FileExist(path))
             {
-                if (line == strData)
-                    isLine++;
+                File.Create(path);
+            }
 
-                line = sr.ReadLine();
+            using (StreamReader sr = new StreamReader(path))
+            {
+                string line = sr.ReadLine();
+                
+                while (line != null)
+                {
+                    if (line == strData)
+                        isLine++;
+
+                    line = sr.ReadLine();
+                }
             }
 
             if (isLine >= 1)
@@ -163,12 +170,19 @@
                         "</cmdArgs>" +
                         "</inArgs>";
             else
+            {
+                using (StreamWriter streamWriter = new StreamWriter(path,true))
+                {
+                    streamWriter.WriteLine(strData);
+                }
+
                 inXML = "<inArgs>" +
                         "<scannerID>1</scannerID>" +
                         "<cmdArgs>" +
                         "<arg-int>0</arg-int>" +
                         "</cmdArgs>" +
                         "</inArgs>";
+            }
 
             cCoreScannerClass.ExecCommand(opcode, ref inXML, out string outXML, out status);
         }
@@ -259,7 +273,7 @@
         /// <summary>При клике на кнопку "Сгенерировать"</summary>
         private void ButtonGenerate_Click(object sender, RoutedEventArgs e)
         {
-            if (Checks.CheckingFieldsGeneratingNumbers(TextBoxStartNumber.Text, TextBoxCountNumbers.Text, TextBoxPath.Text, CheckBoxAutoSetYear.IsChecked))
+            if (Checks.CheckingFieldsGeneratingNumbers(TextBoxStartNumber.Text, TextBoxCountNumbers.Text, TextBoxPath.Text, CheckBoxCheckStartNumber.IsChecked))
             {
                 OperationsFiles.Generate(int.Parse(TextBoxStartNumber.Text),
                                         int.Parse(TextBoxCountNumbers.Text),
@@ -280,6 +294,14 @@
         /// <summary>При клике на кнопку "Показать номера"</summary>
         private void ButtonShowNumbers_OnClick(object sender, RoutedEventArgs e)
         {
+            using (StreamWriter streamWriter = new StreamWriter(Directory.GetCurrentDirectory()))
+            {
+                //string newPath = $"{Directory.GetCurrentDirectory()}\\numbers{department}_20{GetData.GetYear()}.txt";
+                //File.Create(newPath);
+                //startNumber = $"{GetData.GetYear()}{department}000001";
+                //streamWriter.Write($"{GetData.GetYear()}{department}000000");
+            }
+
             if (!Checks.FileExist(TextBoxPath.Text))
             {
                 MessageBox.Show("Некорректный путь или файл отсутствует", "Ошибка!",

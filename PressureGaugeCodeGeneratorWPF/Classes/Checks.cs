@@ -46,7 +46,7 @@
         #region Валидация полей при генерации номеров
         /// <summary>Валидация полей при генерации номеров</summary>
         /// <returns>Возвращает true, если все поля заполнены верно, иначе false</returns>
-        public static bool CheckingFieldsGeneratingNumbers(string startNumber, string countNumber, string path, bool? autoSetYear)
+        public static bool CheckingFieldsGeneratingNumbers(string startNumber, string countNumber, string path, bool? checkStartNumber)
         {
             if (startNumber.Length < GlobalVar.DIGITS)
             {
@@ -99,7 +99,7 @@
                     return false;
                 }
 
-                if (autoSetYear == true)
+                if (checkStartNumber == true)
                     if (!ValidNumber(path, startNumber))
                     {
                         MessageBox.Show("Номер должен быть больше, чем уже сгенерированное число в файле",
