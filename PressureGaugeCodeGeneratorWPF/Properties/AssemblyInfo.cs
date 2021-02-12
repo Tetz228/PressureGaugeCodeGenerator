@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 using System.Windows;
 
 [assembly: AssemblyTitle("ManoNum")]
-[assembly: AssemblyDescription("Программа дле генерации кодов манометров ОАО Манотомь")]
+[assembly: AssemblyDescription("Программа для генерации кодов манометров и QR-кодов ОАО Манотомь")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ОАО Манотомь")]
 [assembly: AssemblyProduct("Генератор кодов манометров")]
-[assembly: AssemblyCopyright("© Юрий Петров 2020")]
+[assembly: AssemblyCopyright("© Юрий Петров, Кирилл Зыков, ОАО Манотомь 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
