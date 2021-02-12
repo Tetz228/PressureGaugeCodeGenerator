@@ -63,34 +63,30 @@
         /// <param name="heightPngBmp">Высота BMP</param>
         public static void SaveSizesFormats(int indexFormat, string width, string height, string widthPngBmp, string heightPngBmp)
         {
-            Dictionary<string, string> settings = ReadSettings();
+            var settings = ReadSettings();
 
             switch (indexFormat)
             {
-                //BMP
-                case 0:
+                case (int)GetData.Formats.Bmp:
                     settings["BmpWidth"] = width;
                     settings["BmpHeight"] = height;
                     break;
-                //PNG
-                case 1:
+                case (int)GetData.Formats.Png:
                     settings["PngWidth"] = width;
                     settings["PngHeight"] = height;
                     break;
-                //JPEG
-                case 2:
+
+                case (int)GetData.Formats.Jpeg:
                     settings["JpegWidth"] = width;
                     settings["JpegHeight"] = height;
                     break;
-                //PNG и BMP
-                case 3:
+                case (int)GetData.Formats.PngBmp:
                     settings["PngBmpWidthPng"] = width;
                     settings["PngBmpHeightPng"] = height;
                     settings["PngBmpWidthBmp"] = widthPngBmp;
                     settings["PngBmpHeightBmp"] = heightPngBmp;
                     break;
             }
-
             SaveSettings(settings);
         }
         #endregion

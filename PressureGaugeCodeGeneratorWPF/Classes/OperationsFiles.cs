@@ -32,11 +32,13 @@
 
                 if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    if (!ChecksFile.EmptyFile(openFileDialog.FileName))
-                        if (!ChecksFile.IsNumber(File.ReadLines(openFileDialog.FileName).Last()))
+                    if (!Checks.EmptyFile(openFileDialog.FileName))
+                        if (!Checks.IsNumber(File.ReadLines(openFileDialog.FileName).Last()))
                         {
                             MessageBox.Show($"Неверный формат файла - {openFileDialog.FileName}\nФайл должен содержать {GlobalVar.DIGITS}-значные номера",
-                                            "Некорректный формат файла", MessageBoxButton.OK, MessageBoxImage.Error);
+                                            "Некорректный формат файла", 
+                                            MessageBoxButton.OK, 
+                                            MessageBoxImage.Error);
                             return false;
                         }
 
@@ -46,7 +48,10 @@
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Ошибка при выборе файла!", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(e.Message,
+                                "Ошибка при выборе файла!", 
+                                MessageBoxButton.OK, 
+                                MessageBoxImage.Error);
             }
             return false;
         }
@@ -61,7 +66,7 @@
         public static void SetStartNumber(string path, bool? autoSetYear, string department, out string startNumber)
         {
             startNumber = "";
-            if (!ChecksFile.EmptyFile(path))
+            if (!Checks.EmptyFile(path))
             {
                 int lastNumber = int.Parse(File.ReadLines(path).Last());
                 if (autoSetYear == false ||
@@ -96,15 +101,15 @@
         /// <returns>Вывод первого и последнего номера,или одно номера, если первый и последний номер совпадают, или вывод "Нет номеров для генерации!"</returns>
         public static string DrawNumbers(string path)
         {
-            if (!ChecksFile.EmptyFile(path))
+            if (!Checks.EmptyFile(path))
             {
-                string first = int.Parse(File.ReadLines(path).First()).ToString();
-                string last = int.Parse(File.ReadLines(path).Last()).ToString();
+                string firstNumber = int.Parse(File.ReadLines(path).First()).ToString();
+                string lastNumber = int.Parse(File.ReadLines(path).Last()).ToString();
 
-                if (first.Equals(last))
-                    return first;
+                if (firstNumber.Equals(lastNumber))
+                    return firstNumber;
 
-                return first + " - " + last;
+                return firstNumber + " - " + lastNumber;
             }
 
             return "Нет номеров для генерации!";
@@ -121,11 +126,11 @@
         public static void Generate(int startNumber, int countNumber, string path, bool? autoSetYear, string department)
         {
             string startNum = startNumber.ToString();
-            int num = int.Parse(startNum.Substring(0, 2));
+            int year = int.Parse(startNum.Substring(0, 2));
 
-            if (autoSetYear == true && num != int.Parse(GetData.GetYear()))
+            if (autoSetYear == true && year != int.Parse(GetData.GetYear()))
                 MessageBox.Show(
-                    $"Вы пытаетесь сгенерировать номера для 20{num}-го года, сейчас 20{GetData.GetYear()}-й год. Чтобы отключить проверку, снимите галочку \"Установить год автоматически\"",
+                    $"Вы пытаетесь сгенерировать номера для 20{year}-го года, сейчас 20{GetData.GetYear()}-й год. Чтобы отключить проверку, снимите галочку \"Установить год автоматически\"",
                     "Предупреждение",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
@@ -134,20 +139,20 @@
                 if (startNum[2] != department[0])
                     startNumber = int.Parse(startNum.Remove(2, 1).Insert(2, department[0].ToString()));
 
-                int[] arr = new int[countNumber];
-                arr[0] = startNumber;
+                int[] massNumbers = new int[countNumber];
+                massNumbers[0] = startNumber;
 
                 for (int i = 1; i < countNumber; i++)
-                    arr[i] = ++startNumber;
+                    massNumbers[i] = ++startNumber;
 
                 using (StreamWriter streamWriter = new StreamWriter(path))
                 {
                     for (int i = 0; i < countNumber; i++)
                     {
                         if (i < countNumber - 1)
-                            streamWriter.WriteLine(arr[i].ToString());
+                            streamWriter.WriteLine(massNumbers[i].ToString());
                         else
-                            streamWriter.Write(arr[i].ToString());
+                            streamWriter.Write(massNumbers[i].ToString());
                     }
                     MessageBox.Show($"Номера успешно сгенерированны и записаны в файл по пути: {path}", "Успех!", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
@@ -157,9 +162,9 @@
 
         #region Генерация QR-кодов
         /// <summary>Генерация QR-кодов</summary>
-        /// <param name="massNum">Список номеров для генерации</param>
+        /// <param name="listNumbers">Список номеров для генерации QR-кодов</param>
         /// <param name="dataDictionary">Словарь с данными</param>
-        public static void GenerateQrCodes(List<string> massNum, Dictionary<string, string> dataDictionary)
+        public static void GenerateQrCodes(List<string> listNumbers, Dictionary<string, string> dataDictionary)
         {
             EncodingOptions encodingOptions = new QrCodeEncodingOptions
             {
@@ -175,7 +180,7 @@
                 Options = encodingOptions
             };
 
-            foreach (var code in massNum)
+            foreach (var code in listNumbers)
             {
                 switch (dataDictionary["Format"])
                 {
