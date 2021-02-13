@@ -48,9 +48,9 @@
         /// <returns>Возвращает true, если все поля заполнены верно, иначе false</returns>
         public static bool CheckingFieldsGeneratingNumbers(string startNumber, string countNumber, string path, bool? checkStartNumber)
         {
-            if (startNumber.Length < GlobalVar.DIGITS)
+            if (startNumber.Length < Data.DIGITS)
             {
-                MessageBox.Show($"В номере должно быть {GlobalVar.DIGITS} цифр", "Некорректный начальный номер!",
+                MessageBox.Show($"В номере должно быть {Data.DIGITS} цифр", "Некорректный начальный номер!",
                     MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
@@ -110,5 +110,23 @@
             return true;
         }
         #endregion
+
+        public static bool CheckingExistenceNumber(string decodedNumber)
+        {
+            using (StreamReader sr = new StreamReader(Data.PatchBaseNumbers))
+            {
+                string line = sr.ReadLine();
+
+                while (line != null)
+                {
+                    if (line == decodedNumber)
+                        return true;
+
+                    line = sr.ReadLine();
+                }
+            }
+
+            return false;
+        }
     }
 }
