@@ -80,7 +80,8 @@
     <Compile Include="Classes\Checks.cs" />
     <Compile Include="Classes\GetData.cs" />
     <Compile Include="Classes\OperationsFiles.cs" />
-    <Compile Include="Data\GlobalVar.cs" />
+    <Compile Include="Classes\OperationsQrCodes.cs" />
+    <Compile Include="Data\Data.cs" />
     <Compile Include="Windows\ImageOverlayWindow.xaml.cs">
       <DependentUpon>ImageOverlayWindow.xaml</DependentUpon>
     </Compile>

@@ -35,7 +35,7 @@
                     if (!Checks.EmptyFile(openFileDialog.FileName))
                         if (!Checks.IsNumber(File.ReadLines(openFileDialog.FileName).Last()))
                         {
-                            MessageBox.Show($"Неверный формат файла - {openFileDialog.FileName}\nФайл должен содержать {GlobalVar.DIGITS}-значные номера",
+                            MessageBox.Show($"Неверный формат файла - {openFileDialog.FileName}\nФайл должен содержать {Data.DIGITS}-значные номера",
                                             "Некорректный формат файла", 
                                             MessageBoxButton.OK, 
                                             MessageBoxImage.Error);
@@ -185,16 +185,16 @@
                 switch (dataDictionary["Format"])
                 {
                     case "BMP":
-                        barcodeWriter.Write(code).Save(GlobalVar.NAME_FOLDER_QR + code + ".bmp", ImageFormat.Bmp);
+                        barcodeWriter.Write(code).Save(Data.NAME_FOLDER_QR + code + ".bmp", ImageFormat.Bmp);
                         break;
                     case "PNG":
-                        barcodeWriter.Write(code).Save(GlobalVar.NAME_FOLDER_QR + code + ".png", ImageFormat.Png);
+                        barcodeWriter.Write(code).Save(Data.NAME_FOLDER_QR + code + ".png", ImageFormat.Png);
                         break;
                     case "JPEG":
-                        barcodeWriter.Write(code).Save(GlobalVar.NAME_FOLDER_QR + code + ".jpeg", ImageFormat.Jpeg);
+                        barcodeWriter.Write(code).Save(Data.NAME_FOLDER_QR + code + ".jpeg", ImageFormat.Jpeg);
                         break;
                     case "PNG и BMP":
-                        barcodeWriter.Write(code).Save(GlobalVar.NAME_FOLDER_QR + code + ".png", ImageFormat.Png);
+                        barcodeWriter.Write(code).Save(Data.NAME_FOLDER_QR + code + ".png", ImageFormat.Png);
 
                         encodingOptions.Width = int.Parse(dataDictionary["WidthBmp"]);
                         encodingOptions.Height = int.Parse(dataDictionary["HeightBmp"]);
@@ -204,7 +204,7 @@
                             Options = encodingOptions
                         };
 
-                        barcodeWriter.Write(code).Save(GlobalVar.NAME_FOLDER_QR + code + ".bmp", ImageFormat.Bmp);
+                        barcodeWriter.Write(code).Save(Data.NAME_FOLDER_QR + code + ".bmp", ImageFormat.Bmp);
                         break;
                 }
             }

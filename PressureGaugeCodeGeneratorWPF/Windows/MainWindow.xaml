@@ -218,13 +218,12 @@
                         <ComboBoxItem Content="JPEG"/>
                         <ComboBoxItem Content="PNG и BMP"/>
                     </ComboBox>
-                    <Button Content="Наложить QR-код"
+                    <Button Name="ButtonImposeQrCode" Content="Наложить QR-код"
                         Style="{StaticResource buttons}" 
-                        Click="ButtonBase_OnClick" 
                         Margin="0,0,302,22" 
                         Width="147" 
                         HorizontalAlignment="Right"
-                        KeyboardNavigation.TabIndex = "19"/>
+                        KeyboardNavigation.TabIndex = "19" Click="ButtonImposeQrCode_Click"/>
                     <Label 
                         Grid.Row="0" 
                         Margin="10,10,0,0" 
