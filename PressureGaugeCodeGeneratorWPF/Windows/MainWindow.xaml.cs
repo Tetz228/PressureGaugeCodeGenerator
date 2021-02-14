@@ -293,7 +293,7 @@
                         massNum.Add(number);
                 }
 
-                OperationsFiles.GenerateQrCodes(massNum, dataDictionary);
+                OperationsQrCodes.GenerateQrCodes(massNum, dataDictionary);
                 MessageBox.Show("QR-коды сгенерированы в каталог \"" + Data.NAME_FOLDER_QR,
                                 "Успешно!",
                                 MessageBoxButton.OK,

@@ -2,15 +2,10 @@
 {
     using PressureGaugeCodeGenerator.Data;
     using System;
-    using System.Collections.Generic;
-    using System.Drawing.Imaging;
     using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Windows;
-    using ZXing;
-    using ZXing.Common;
-    using ZXing.QrCode;
 
     internal static class OperationsFiles
     {
@@ -36,8 +31,8 @@
                         if (!Checks.IsNumber(File.ReadLines(openFileDialog.FileName).Last()))
                         {
                             MessageBox.Show($"Неверный формат файла - {openFileDialog.FileName}\nФайл должен содержать {Data.DIGITS}-значные номера",
-                                            "Некорректный формат файла", 
-                                            MessageBoxButton.OK, 
+                                            "Некорректный формат файла",
+                                            MessageBoxButton.OK,
                                             MessageBoxImage.Error);
                             return false;
                         }
@@ -49,8 +44,8 @@
             catch (Exception e)
             {
                 MessageBox.Show(e.Message,
-                                "Ошибка при выборе файла!", 
-                                MessageBoxButton.OK, 
+                                "Ошибка при выборе файла!",
+                                MessageBoxButton.OK,
                                 MessageBoxImage.Error);
             }
             return false;
@@ -155,57 +150,6 @@
                             streamWriter.Write(massNumbers[i].ToString());
                     }
                     MessageBox.Show($"Номера успешно сгенерированны и записаны в файл по пути: {path}", "Успех!", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-        }
-        #endregion
-
-        #region Генерация QR-кодов
-        /// <summary>Генерация QR-кодов</summary>
-        /// <param name="listNumbers">Список номеров для генерации QR-кодов</param>
-        /// <param name="dataDictionary">Словарь с данными</param>
-        public static void GenerateQrCodes(List<string> listNumbers, Dictionary<string, string> dataDictionary)
-        {
-            EncodingOptions encodingOptions = new QrCodeEncodingOptions
-            {
-                DisableECI = true,
-                CharacterSet = "UTF-8",
-                Width = int.Parse(dataDictionary["Width"]),
-                Height = int.Parse(dataDictionary["Height"]),
-                Margin = 0
-            };
-            BarcodeWriter barcodeWriter = new BarcodeWriter
-            {
-                Format = BarcodeFormat.QR_CODE,
-                Options = encodingOptions
-            };
-
-            foreach (var code in listNumbers)
-            {
-                switch (dataDictionary["Format"])
-                {
-                    case "BMP":
-                        barcodeWriter.Write(code).Save(Data.NAME_FOLDER_QR + code + ".bmp", ImageFormat.Bmp);
-                        break;
-                    case "PNG":
-                        barcodeWriter.Write(code).Save(Data.NAME_FOLDER_QR + code + ".png", ImageFormat.Png);
-                        break;
-                    case "JPEG":
-                        barcodeWriter.Write(code).Save(Data.NAME_FOLDER_QR + code + ".jpeg", ImageFormat.Jpeg);
-                        break;
-                    case "PNG и BMP":
-                        barcodeWriter.Write(code).Save(Data.NAME_FOLDER_QR + code + ".png", ImageFormat.Png);
-
-                        encodingOptions.Width = int.Parse(dataDictionary["WidthBmp"]);
-                        encodingOptions.Height = int.Parse(dataDictionary["HeightBmp"]);
-                        barcodeWriter = new BarcodeWriter
-                        {
-                            Format = BarcodeFormat.QR_CODE,
-                            Options = encodingOptions
-                        };
-
-                        barcodeWriter.Write(code).Save(Data.NAME_FOLDER_QR + code + ".bmp", ImageFormat.Bmp);
-                        break;
                 }
             }
         }

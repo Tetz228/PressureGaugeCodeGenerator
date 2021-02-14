@@ -111,6 +111,10 @@
         }
         #endregion
 
+        #region Проверка на существование расшифрованного номера в файле
+        /// <summary>Проверка на существование расшифрованного номера в файле</summary>
+        /// <param name="decodedNumber">Расшифрованный номер</param>
+        /// <returns>Возвращает true, если номер присутствует в файле, иначе false</returns>
         public static bool CheckingExistenceNumber(string decodedNumber)
         {
             using (StreamReader sr = new StreamReader(Data.PatchBaseNumbers))
@@ -128,5 +132,6 @@
 
             return false;
         }
+        #endregion
     }
 }

@@ -5,7 +5,6 @@
 
     static class GetData
     {
-        #region Форматы изображения
         public enum Formats
         {
             Bmp,
@@ -13,13 +12,8 @@
             Jpeg,
             PngBmp
         }
-        #endregion
 
-        #region Получение текущего года с компьютера
-        /// <summary>Получение текущего года с компьютера</summary>
-        /// <returns>Возвращает последние 2 цифры года</returns>
         public static string GetYear() => DateTime.Now.ToString("yy");
-        #endregion
 
         #region Получение номера, выбранного участка
         /// <summary>Получение номера, выбранного участка</summary>
