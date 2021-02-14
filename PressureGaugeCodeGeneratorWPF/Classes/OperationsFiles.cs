@@ -6,6 +6,9 @@
     using System.Linq;
     using System.Reflection;
     using System.Windows;
+    using System.Windows.Forms;
+
+    using MessageBox = System.Windows.MessageBox;
 
     internal static class OperationsFiles
     {
@@ -18,19 +21,19 @@
             path = "";
             try
             {
-                var openFileDialog = new System.Windows.Forms.OpenFileDialog
+                var openFileDialog = new OpenFileDialog
                 {
                     Title = "Выберите файл",
                     InitialDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                     Filter = "Файлы с расширением .txt|*.txt"
                 };
 
-                if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    if (!Checks.EmptyFile(openFileDialog.FileName))
+                    if (Checks.EmptyFile(openFileDialog.FileName))
                         if (!Checks.IsNumber(File.ReadLines(openFileDialog.FileName).Last()))
                         {
-                            MessageBox.Show($"Неверный формат файла - {openFileDialog.FileName}\nФайл должен содержать {Data.DIGITS}-значные номера",
+                            MessageBox.Show($"Неверный формат файла - {openFileDialog.FileName}\nФайл должен содержать {Data.DIGITS_IN_NUMBER}-значные номера",
                                             "Некорректный формат файла",
                                             MessageBoxButton.OK,
                                             MessageBoxImage.Error);
@@ -61,7 +64,7 @@
         public static void SetStartNumber(string path, bool? autoSetYear, string department, out string startNumber)
         {
             startNumber = "";
-            if (!Checks.EmptyFile(path))
+            if (Checks.EmptyFile(path))
             {
                 int lastNumber = int.Parse(File.ReadLines(path).Last());
                 if (autoSetYear == false ||
@@ -78,7 +81,7 @@
                     using (StreamWriter streamWriter = new StreamWriter(path))
                     {
                         string newPath = $"{Directory.GetCurrentDirectory()}\\numbers{department}_20{GetData.GetYear()}.txt";
-                        File.Create(newPath);
+                        File.Create(newPath).Dispose();
                         startNumber = $"{GetData.GetYear()}{department}000001";
                         streamWriter.Write($"{GetData.GetYear()}{department}000000");
                     }
@@ -96,7 +99,7 @@
         /// <returns>Вывод первого и последнего номера,или одно номера, если первый и последний номер совпадают, или вывод "Нет номеров для генерации!"</returns>
         public static string DrawNumbers(string path)
         {
-            if (!Checks.EmptyFile(path))
+            if (Checks.EmptyFile(path))
             {
                 string firstNumber = int.Parse(File.ReadLines(path).First()).ToString();
                 string lastNumber = int.Parse(File.ReadLines(path).Last()).ToString();
@@ -112,12 +115,12 @@
         #endregion
 
         #region Генерация и запись номеров в файл
-        /// <summary></summary>
-        /// <param name="startNumber"></param>
-        /// <param name="countNumber"></param>
-        /// <param name="path"></param>
-        /// <param name="autoSetYear"></param>
-        /// <param name="department"></param>
+        /// <summary>Генерация и запись номеров в файл</summary>
+        /// <param name="startNumber">Начальный номер</param>
+        /// <param name="countNumber">Количество начальных номеров</param>
+        /// <param name="path">Путь до файла с номерами</param>
+        /// <param name="autoSetYear">Установка автоматического года</param>
+        /// <param name="department">Отдел</param>
         public static void Generate(int startNumber, int countNumber, string path, bool? autoSetYear, string department)
         {
             string startNum = startNumber.ToString();
@@ -154,5 +157,24 @@
             }
         }
         #endregion
+
+        public static void FileCreate()
+        {
+            if (!Checks.FileExist(Data.PathBaseNumbers))
+                File.Create(Data.PathBaseNumbers);
+        }
+
+        public static void DirectoryCreate()
+        {
+            if (!Checks.DirectoryExist())
+                Directory.CreateDirectory(Data.PathQrCode);
+        }
+
+        public static void CleaningDirectory()
+        {
+            string[] filesInFolder = Directory.GetFiles(Data.PathQrCode, "*.*");
+            foreach (string file in filesInFolder)
+                File.Delete(file);
+        }
     }
 }

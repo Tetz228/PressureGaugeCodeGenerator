@@ -7,55 +7,25 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
-    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
 
     public partial class MainWindow : Window
     {
-        static CCoreScannerClass cCoreScannerClass = new CCoreScannerClass();
+        private delegate void Create();
+        static CCoreScannerClass cCoreScannerClass = new();
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void ButtonOpen_Click(object sender, RoutedEventArgs e)
-        {
-            Open();
-        }
-
-        private void Open()
-        {
-            if (OperationsFiles.OpenFile(out string path))
-            {
-                OperationsFiles.SetStartNumber(path, CheckBoxAutoSetYear.IsChecked,
-                    GetData.GetDepartment(ComboBoxDepartment.SelectedItem.ToString()), out string startNumber);
-                TextBoxStartNumber.Text = startNumber;
-                TextBoxPath.Text = path;
-                LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(path);
-            }
-        }
-
-        private void MenuItemExit_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            var settings = SaveAndReadSettings.ReadSettings();
-            settings["Department"] = ComboBoxDepartment.SelectedIndex.ToString();
-            settings["CheckedYear"] = CheckBoxAutoSetYear.IsChecked.ToString();
-            settings["CheckedStartNumber"] = CheckBoxCheckStartNumber.IsChecked.ToString();
-            settings["Format"] = ComboBoxFormat.SelectedIndex.ToString();
-
-            SaveAndReadSettings.SaveSettings(settings);
-            SaveAndReadSettings.SaveSizesFormats(ComboBoxFormat.SelectedIndex, TextBoxWidth.Text, TextBoxHeight.Text, TextBoxWidthBmp.Text, TextBoxHeightBmp.Text);
-        }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            Create date = OperationsFiles.FileCreate;
+            date += OperationsFiles.DirectoryCreate;
+            date();
+
             var settings = SaveAndReadSettings.ReadSettings();
 
             if (settings.Count != 0)
@@ -65,9 +35,6 @@
                 ComboBoxDepartment.SelectedIndex = int.Parse(settings["Department"]);
                 ComboBoxFormat.SelectedIndex = int.Parse(settings["Format"]);
             }
-
-            if (!Checks.FileExist(Data.PatchBaseNumbers))
-                File.Create(Data.PatchBaseNumbers);
 
             try
             {
@@ -84,6 +51,39 @@
             }
         }
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var settings = SaveAndReadSettings.ReadSettings();
+            settings["Department"] = ComboBoxDepartment.SelectedIndex.ToString();
+            settings["CheckedYear"] = CheckBoxAutoSetYear.IsChecked.ToString();
+            settings["CheckedStartNumber"] = CheckBoxCheckStartNumber.IsChecked.ToString();
+            settings["Format"] = ComboBoxFormat.SelectedIndex.ToString();
+
+            SaveAndReadSettings.SaveSettings(settings);
+            SaveAndReadSettings.SaveSizesFormats(ComboBoxFormat.SelectedIndex, TextBoxWidth.Text, TextBoxHeight.Text, TextBoxWidthBmp.Text, TextBoxHeightBmp.Text);
+        }
+
+        private void ButtonOpen_Click(object sender, RoutedEventArgs e)
+        {
+            Open();
+        }
+
+        private void Open()
+        {
+            if (OperationsFiles.OpenFile(out string path))
+            {
+                OperationsFiles.SetStartNumber(path, CheckBoxAutoSetYear.IsChecked, GetData.GetDepartment(ComboBoxDepartment.SelectedItem.ToString()), out string startNumber);
+                TextBoxStartNumber.Text = startNumber;
+                TextBoxPath.Text = path;
+                LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(path);
+            }
+        }
+
+        private void MenuItemExit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
         #region Событие при сканирование QR-кода
         /// <summary>Событие при сканирование QR-кода</summary>
         void OnBarcodeEvent(short eventType, ref string pscanData)
@@ -98,15 +98,13 @@
             {
                 cCoreScannerClass.ExecCommand(Data.SCAN_ACTION_CODE, Data.BEEP_THREE_TIMES, out _, out _);
                 cCoreScannerClass.ExecCommand(Data.SCAN_ACTION_CODE, Data.LED_RED, out _, out _);
-
             }
             else
             {
-                using (StreamWriter streamWriter = new StreamWriter(Data.PatchBaseNumbers, true))
+                using (StreamWriter streamWriter = new StreamWriter(Data.PathBaseNumbers, true))
                 {
                     streamWriter.WriteLine(decodedNumber);
                 }
-
                 cCoreScannerClass.ExecCommand(Data.SCAN_ACTION_CODE, Data.BEEP_ONE_TIMES, out _, out _);
                 cCoreScannerClass.ExecCommand(Data.SCAN_ACTION_CODE, Data.LED_GREEN, out _, out _);
             }
@@ -237,7 +235,7 @@
                 TextBoxStartNumber.Text = startNumber;
                 return;
             }
-            if (Checks.FileExist(path) && Checks.EmptyFile(path))
+            if (Checks.FileExist(path) && !Checks.EmptyFile(path))
             {
                 TextBoxStartNumber.Text = $"{GetData.GetYear()}{GetData.GetDepartment(ComboBoxDepartment.SelectedItem.ToString())}000001";
                 TextBoxPath.Text = path;
@@ -264,7 +262,7 @@
             }
             else
             {
-                MessageBox.Show($"Файл по пути {path} содержит некорректные данные.\n" + $"Файл должен содержать {Data.DIGITS}-значные номера",
+                MessageBox.Show($"Файл по пути {path} содержит некорректные данные.\n" + $"Файл должен содержать {Data.DIGITS_IN_NUMBER}-значные номера",
                                 "Ошибка",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Error);
@@ -275,7 +273,13 @@
 
         private void ButtonGenerateQr_OnClick(object sender, RoutedEventArgs e)
         {
-            if (CheckingFieldsDirectoriesGeneratingQrCodes(out string number))
+            if (OperationsQrCodes.CheckingFieldsDirectoriesGeneratingQrCodes(TextBoxPath.Text,
+                                                                             ComboBoxFormat.SelectedIndex,
+                                                                             TextBoxHeight.Text,
+                                                                             TextBoxWidth.Text,
+                                                                             TextBoxHeightBmp.Text,
+                                                                             TextBoxWidthBmp.Text,
+                                                                             out string number))
             {
                 var massNum = new List<string>();
                 var dataDictionary = new Dictionary<string, string>
@@ -294,75 +298,8 @@
                 }
 
                 OperationsQrCodes.GenerateQrCodes(massNum, dataDictionary);
-                MessageBox.Show("QR-коды сгенерированы в каталог \"" + Data.NAME_FOLDER_QR,
-                                "Успешно!",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Information);
             }
         }
-
-        #region Проверка полей и директории при генерации QR-кодов
-        /// <summary>Проверка полей и директории при генерации QR-кодов</summary>
-        /// <param name="number">Последний номер записанный в файле</param>
-        /// <returns>Возвращает true, если все проверки прошли успешно, иначе false</returns>
-        private bool CheckingFieldsDirectoriesGeneratingQrCodes(out string number)
-        {
-            number = null;
-
-            if (ComboBoxFormat.SelectedIndex == (int)GetData.Formats.PngBmp)
-            {
-                if (string.IsNullOrEmpty(TextBoxHeightBmp.Text) || string.IsNullOrEmpty(TextBoxWidthBmp.Text))
-                {
-                    MessageBox.Show(
-                        "Укажите размер изображения для QR-кода",
-                        "Некорректные данные",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error);
-                    return false;
-                }
-            }
-
-            if (string.IsNullOrEmpty(TextBoxHeight.Text) && string.IsNullOrEmpty(TextBoxWidth.Text))
-            {
-                MessageBox.Show("Укажите размер изображения для QR-кода",
-                                "Некорректные данные",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error);
-                return false;
-            }
-
-            if (Checks.FileExist(TextBoxPath.Text) && Checks.EmptyFile(TextBoxPath.Text))
-            {
-                MessageBox.Show("Файла по пути " + TextBoxPath.Text + " не существует, либо он не имеет номеров для генерации QR-кодов",
-                                "Ошибка при чтении файла",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error);
-                return false;
-            }
-
-            number = File.ReadLines(TextBoxPath.Text).Last();
-
-            if (!Checks.IsNumber(number))
-            {
-                MessageBox.Show("Файл содержит некорректные данные",
-                                "Ошибка при считывании номера",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error);
-                return false;
-            }
-
-            if (Directory.Exists(Data.NAME_FOLDER_QR))
-            {
-                string[] filesInFolder = Directory.GetFiles(Data.NAME_FOLDER_QR, "*.*");
-                foreach (string f in filesInFolder)
-                    File.Delete(f);
-            }
-            else
-                Directory.CreateDirectory(Data.NAME_FOLDER_QR);
-
-            return true;
-        }
-        #endregion
 
         private void MenuItemOpen_OnClick(object sender, RoutedEventArgs e)
         {
@@ -376,7 +313,8 @@
 
         private void MenuItemGoQrCodes_OnClick(object sender, RoutedEventArgs e)
         {
-            Process.Start("explorer", $"file://{Directory.GetCurrentDirectory()}\\" + Data.NAME_FOLDER_QR);
+            OperationsFiles.DirectoryCreate();
+            Process.Start("explorer", $"file://{Data.PathQrCode}");
         }
 
         private void ComboBoxFormat_DropDownOpened(object sender, EventArgs e)

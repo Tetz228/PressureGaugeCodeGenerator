@@ -4,9 +4,9 @@
 
     public static class Data
     {
-        public const int DIGITS = 9;
-        public const string NAME_FOLDER_QR = "QR-codes\\";
-        public static string PatchBaseNumbers = $"{Directory.GetCurrentDirectory()}\\BaseNumbers";
+        public const int DIGITS_IN_NUMBER = 9;
+        public static string PathQrCode = $"{Directory.GetCurrentDirectory()}\\QR-codes";
+        public static string PathBaseNumbers = $"{Directory.GetCurrentDirectory()}\\BaseNumbers";
         public const int SCAN_EVENT_СALL_СODE = 1001;
         public const string EVENTS = "<inArgs>" +
                                              "<cmdArgs>" +

@@ -17,8 +17,14 @@
         #region Проверка файла на пустоту
         /// <summary>Проверка файла на пустоту</summary>
         /// <param name="path">Строка пути до файла</param>
-        /// <returns>Возвращает true, если файл в себе ничего не содержит, иначе false</returns>
-        public static bool EmptyFile(string path) => File.ReadAllLines(path).Length == 0;
+        /// <returns>Возвращает true, если файл в себе что-то содержит, иначе false</returns>
+        public static bool EmptyFile(string path) => File.ReadAllLines(path).Length != 0;
+        #endregion
+
+        #region Проверка на то, существует ли каталог
+        /// <summary>Проверка на то, существует ли каталог</summary>
+        /// <returns>Возвращает true, если каталог существует, иначе false</returns>
+        public static bool DirectoryExist() => Directory.Exists(Data.PathQrCode);
         #endregion
 
         #region Проверка на номер ли в строке
@@ -40,7 +46,7 @@
         /// <summary>Вызов всех проверок файла и пути</summary>
         /// <param name="path">Путь до файла</param>
         /// <returns>Возвращает true, если все проверки возвращают true, иначе false</returns>
-        public static bool CheckFullPathAndFile(string path) => FileExist(path) && !EmptyFile(path) && IsNumber(File.ReadLines(path).Last());
+        public static bool CheckFullPathAndFile(string path) => FileExist(path) && EmptyFile(path) && IsNumber(File.ReadLines(path).Last());
         #endregion
 
         #region Валидация полей при генерации номеров
@@ -48,9 +54,9 @@
         /// <returns>Возвращает true, если все поля заполнены верно, иначе false</returns>
         public static bool CheckingFieldsGeneratingNumbers(string startNumber, string countNumber, string path, bool? checkStartNumber)
         {
-            if (startNumber.Length < Data.DIGITS)
+            if (startNumber.Length < Data.DIGITS_IN_NUMBER)
             {
-                MessageBox.Show($"В номере должно быть {Data.DIGITS} цифр", "Некорректный начальный номер!",
+                MessageBox.Show($"В номере должно быть {Data.DIGITS_IN_NUMBER} цифр", "Некорректный начальный номер!",
                     MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
@@ -90,7 +96,7 @@
                 return false;
             }
 
-            if (!EmptyFile(path))
+            if (EmptyFile(path))
             {
                 if (!IsNumber(File.ReadLines(path).Last()))
                 {
@@ -117,7 +123,7 @@
         /// <returns>Возвращает true, если номер присутствует в файле, иначе false</returns>
         public static bool CheckingExistenceNumber(string decodedNumber)
         {
-            using (StreamReader sr = new StreamReader(Data.PatchBaseNumbers))
+            using (StreamReader sr = new StreamReader(Data.PathBaseNumbers))
             {
                 string line = sr.ReadLine();
 

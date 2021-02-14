@@ -1,12 +1,13 @@
 ﻿namespace PressureGaugeCodeGenerator.Classes
 {
+    using PressureGaugeCodeGenerator.Data;
     using System;
     using System.Collections.Generic;
     using System.Drawing.Imaging;
+    using System.IO;
+    using System.Linq;
+    using System.Windows;
     using System.Xml;
-
-    using PressureGaugeCodeGenerator.Data;
-
     using ZXing;
     using ZXing.Common;
     using ZXing.QrCode;
@@ -63,16 +64,16 @@
                 switch (dataDictionary["Format"])
                 {
                     case "BMP":
-                        barcodeWriter.Write(code).Save(Data.NAME_FOLDER_QR + code + ".bmp", ImageFormat.Bmp);
+                        barcodeWriter.Write(code).Save(Data.PathQrCode + "\\" + code + ".bmp", ImageFormat.Bmp);
                         break;
                     case "PNG":
-                        barcodeWriter.Write(code).Save(Data.NAME_FOLDER_QR + code + ".png", ImageFormat.Png);
+                        barcodeWriter.Write(code).Save(Data.PathQrCode + "\\" + code + ".png", ImageFormat.Png);
                         break;
                     case "JPEG":
-                        barcodeWriter.Write(code).Save(Data.NAME_FOLDER_QR + code + ".jpeg", ImageFormat.Jpeg);
+                        barcodeWriter.Write(code).Save(Data.PathQrCode + "\\" + code + ".jpeg", ImageFormat.Jpeg);
                         break;
                     case "PNG и BMP":
-                        barcodeWriter.Write(code).Save(Data.NAME_FOLDER_QR + code + ".png", ImageFormat.Png);
+                        barcodeWriter.Write(code).Save(Data.PathQrCode + "\\" + code + ".png", ImageFormat.Png);
 
                         encodingOptions.Width = int.Parse(dataDictionary["WidthBmp"]);
                         encodingOptions.Height = int.Parse(dataDictionary["HeightBmp"]);
@@ -82,10 +83,69 @@
                             Options = encodingOptions
                         };
 
-                        barcodeWriter.Write(code).Save(Data.NAME_FOLDER_QR + code + ".bmp", ImageFormat.Bmp);
+                        barcodeWriter.Write(code).Save(Data.PathQrCode + code + ".bmp", ImageFormat.Bmp);
                         break;
                 }
             }
+            MessageBox.Show("QR-коды сгенерированы",
+                            "Успешно!",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
+        }
+        #endregion
+
+        #region Проверка полей и директории при генерации QR-кодов
+        /// <summary>Проверка полей и директории при генерации QR-кодов</summary>
+        /// <param name="number">Последний номер записанный в файле</param>
+        /// <returns>Возвращает true, если все проверки прошли успешно, иначе false</returns>
+        public static bool CheckingFieldsDirectoriesGeneratingQrCodes(string path, int indexFormat,string height, string width, string heightBmp, string widthBmp, out string number)
+        {
+            number = null;
+
+            if (indexFormat == (int)GetData.Formats.PngBmp)
+            {
+                if (string.IsNullOrEmpty(heightBmp) || string.IsNullOrEmpty(widthBmp))
+                {
+                    MessageBox.Show("Укажите размер изображения для QR-кода",
+                                    "Некорректные данные",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Error);
+                    return false;
+                }
+            }
+
+            if (string.IsNullOrEmpty(height) && string.IsNullOrEmpty(width))
+            {
+                MessageBox.Show("Укажите размер изображения для QR-кода",
+                                "Некорректные данные",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+                return false;
+            }
+
+            if (Checks.FileExist(path) && !Checks.EmptyFile(path))
+            {
+                MessageBox.Show("Файла по пути " + path + " не существует, либо он не имеет номеров для генерации QR-кодов",
+                                "Ошибка при чтении файла",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+                return false;
+            }
+
+            number = File.ReadLines(path).Last();
+
+            if (!Checks.IsNumber(number))
+            {
+                MessageBox.Show("Файл содержит некорректные данные",
+                                "Ошибка при считывании номера",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+                return false;
+            }
+
+            OperationsFiles.CleaningDirectory();
+
+            return true;
         }
         #endregion
     }

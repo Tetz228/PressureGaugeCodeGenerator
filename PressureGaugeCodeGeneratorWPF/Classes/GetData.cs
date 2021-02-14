@@ -15,11 +15,7 @@
 
         public static string GetYear() => DateTime.Now.ToString("yy");
 
-        #region Получение номера, выбранного участка
-        /// <summary>Получение номера, выбранного участка</summary>
-        /// <returns>Номер участка</returns>
         public static string GetDepartment(string department) => department.Remove(0, 38).Remove(1);
-        #endregion
 
         public static void GetSupport() => MessageBox.Show(
                 "Программа педназначена для генерации кодов манометров и QR-кодов.\n\n" +

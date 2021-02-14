@@ -6,9 +6,6 @@
 
     internal static class SaveAndReadSettings
     {
-        #region Чтение настроек
-        /// <summary>Чтение настроек</summary>
-        /// <returns>Возвращает словарь с настройками</returns>
         public static Dictionary<string, string> ReadSettings()
         {
             Dictionary<string, string> settings = new Dictionary<string, string>();
@@ -29,7 +26,6 @@
 
             return settings;
         }
-        #endregion
 
         #region Сохранение настроек
         /// <summary>Сохранение настроек</summary>
