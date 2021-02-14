@@ -204,6 +204,10 @@
     <ItemGroup>
       <MoveToLibFolder Include="$(OutputPath)*.dll ; $(OutputPath)*.pdb ; $(OutputPath)*.xml" />
     </ItemGroup>
-    <Move SourceFiles="@(MoveToLibFolder)" DestinationFolder="$(OutputPath)lib" OverwriteReadOnlyFiles="true" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>mkdir "$(TargetDir)\Libs"
+xcopy /d /s "$(SolutionDir)Libs\*.*" "$(TargetDir)\Libs"
+</PreBuildEvent>
+  </PropertyGroup>
 </Project>
