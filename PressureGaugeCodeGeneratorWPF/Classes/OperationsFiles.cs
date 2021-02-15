@@ -78,7 +78,7 @@
 
                 if (autoSetYear == true)
                 {
-                    using (StreamWriter streamWriter = new StreamWriter(path))
+                    using (var streamWriter = new StreamWriter(path))
                     {
                         string newPath = $"{Directory.GetCurrentDirectory()}\\numbers{department}_20{Data.GetYear()}.txt";
                         File.Create(newPath).Dispose();

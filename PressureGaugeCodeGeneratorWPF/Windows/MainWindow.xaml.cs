@@ -101,7 +101,7 @@
             }
             else
             {
-                using (StreamWriter streamWriter = new StreamWriter(Data.PathBaseNumbers, true))
+                using (var streamWriter = new StreamWriter(Data.PathBaseNumbers, true))
                 {
                     streamWriter.WriteLine(decodedNumber);
                 }
