@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Configuration;
     using System.Windows;
+    using PressureGaugeCodeGenerator.Data;
 
     internal static class SaveAndReadSettings
     {
@@ -63,20 +64,20 @@
 
             switch (indexFormat)
             {
-                case (int)GetData.Formats.Bmp:
+                case (int)Data.Formats.Bmp:
                     settings["BmpWidth"] = width;
                     settings["BmpHeight"] = height;
                     break;
-                case (int)GetData.Formats.Png:
+                case (int)Data.Formats.Png:
                     settings["PngWidth"] = width;
                     settings["PngHeight"] = height;
                     break;
 
-                case (int)GetData.Formats.Jpeg:
+                case (int)Data.Formats.Jpeg:
                     settings["JpegWidth"] = width;
                     settings["JpegHeight"] = height;
                     break;
-                case (int)GetData.Formats.PngBmp:
+                case (int)Data.Formats.PngBmp:
                     settings["PngBmpWidthPng"] = width;
                     settings["PngBmpHeightPng"] = height;
                     settings["PngBmpWidthBmp"] = widthPngBmp;

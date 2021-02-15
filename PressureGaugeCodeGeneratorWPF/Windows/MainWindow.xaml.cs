@@ -72,7 +72,7 @@
         {
             if (OperationsFiles.OpenFile(out string path))
             {
-                OperationsFiles.SetStartNumber(path, CheckBoxAutoSetYear.IsChecked, GetData.GetDepartment(ComboBoxDepartment.SelectedItem.ToString()), out string startNumber);
+                OperationsFiles.SetStartNumber(path, CheckBoxAutoSetYear.IsChecked, Data.GetDepartment(ComboBoxDepartment.SelectedItem.ToString()), out string startNumber);
                 TextBoxStartNumber.Text = startNumber;
                 TextBoxPath.Text = path;
                 LabelDrawNumbers.Content = OperationsFiles.DrawNumbers(path);
@@ -113,7 +113,7 @@
 
         private void ComboBoxFormatSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ComboBoxFormat.SelectedIndex == (int)GetData.Formats.PngBmp)
+            if (ComboBoxFormat.SelectedIndex == (int)Data.Formats.PngBmp)
             {
                 label_bmp.Visibility = Visibility.Visible;
                 TextBoxHeightBmp.Visibility = Visibility.Visible;
@@ -130,19 +130,19 @@
 
             switch (ComboBoxFormat.SelectedIndex)
             {
-                case (int)GetData.Formats.Bmp:
+                case (int)Data.Formats.Bmp:
                     TextBoxWidth.Text = settings["BmpWidth"];
                     TextBoxHeight.Text = settings["BmpHeight"];
                     break;
-                case (int)GetData.Formats.Png:
+                case (int)Data.Formats.Png:
                     TextBoxWidth.Text = settings["PngWidth"];
                     TextBoxHeight.Text = settings["PngHeight"];
                     break;
-                case (int)GetData.Formats.Jpeg:
+                case (int)Data.Formats.Jpeg:
                     TextBoxWidth.Text = settings["JpegWidth"];
                     TextBoxHeight.Text = settings["JpegHeight"];
                     break;
-                case (int)GetData.Formats.PngBmp:
+                case (int)Data.Formats.PngBmp:
                     TextBoxWidth.Text = settings["PngBmpWidthPng"];
                     TextBoxHeight.Text = settings["PngBmpHeightPng"];
                     TextBoxWidthBmp.Text = settings["PngBmpWidthBmp"];
@@ -171,7 +171,7 @@
 
         private void MenuItemSupport_Click(object sender, RoutedEventArgs e)
         {
-            GetData.GetSupport();
+            Data.GetSupport();
         }
 
         private void MenuItemAboutProgram_Click(object sender, RoutedEventArgs e)
@@ -187,10 +187,10 @@
                 OperationsFiles.Generate(int.Parse(TextBoxStartNumber.Text),
                                         int.Parse(TextBoxCountNumbers.Text),
                                         TextBoxPath.Text, CheckBoxAutoSetYear.IsChecked,
-                                        GetData.GetDepartment(ComboBoxDepartment.SelectedItem.ToString()));
+                                        Data.GetDepartment(ComboBoxDepartment.SelectedItem.ToString()));
                 OperationsFiles.SetStartNumber(TextBoxPath.Text,
                                                CheckBoxAutoSetYear.IsChecked,
-                                               GetData.GetDepartment(ComboBoxDepartment.SelectedItem.ToString()),
+                                               Data.GetDepartment(ComboBoxDepartment.SelectedItem.ToString()),
                                                out string startNumber);
 
                 TextBoxStartNumber.Text = startNumber;
@@ -215,29 +215,29 @@
         private void CheckBoxAutoSetYear_OnChecked(object sender, RoutedEventArgs e)
         {
             TextBoxStartNumber.Text = TextBoxStartNumber.Text != ""
-                                                              ? GetData.GetYear() + TextBoxStartNumber.Text.Remove(0, 2)
+                                                              ? Data.GetYear() + TextBoxStartNumber.Text.Remove(0, 2)
                                                               : "";
             TextBoxPath.Text = TextBoxPath.Text != ""
-                                                ? $"{Directory.GetCurrentDirectory()}\\numbers{GetData.GetDepartment(ComboBoxDepartment.SelectedItem.ToString())}_20{GetData.GetYear()}.txt"
+                                                ? $"{Directory.GetCurrentDirectory()}\\numbers{Data.GetDepartment(ComboBoxDepartment.SelectedItem.ToString())}_20{Data.GetYear()}.txt"
                                                 : "";
         }
 
         private void ComboBoxDepartment_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string path = $"{Directory.GetCurrentDirectory()}\\numbers{GetData.GetDepartment(ComboBoxDepartment.SelectedItem.ToString())}_20{GetData.GetYear()}.txt";
+            string path = $"{Directory.GetCurrentDirectory()}\\numbers{Data.GetDepartment(ComboBoxDepartment.SelectedItem.ToString())}_20{Data.GetYear()}.txt";
 
             if (Checks.CheckFullPathAndFile(path))
             {
                 OperationsFiles.SetStartNumber(TextBoxPath.Text = path,
                                                true,
-                                               GetData.GetDepartment(ComboBoxDepartment.SelectedItem.ToString()),
+                                               Data.GetDepartment(ComboBoxDepartment.SelectedItem.ToString()),
                                                out string startNumber);
                 TextBoxStartNumber.Text = startNumber;
                 return;
             }
             if (Checks.FileExist(path) && !Checks.EmptyFile(path))
             {
-                TextBoxStartNumber.Text = $"{GetData.GetYear()}{GetData.GetDepartment(ComboBoxDepartment.SelectedItem.ToString())}000001";
+                TextBoxStartNumber.Text = $"{Data.GetYear()}{Data.GetDepartment(ComboBoxDepartment.SelectedItem.ToString())}000001";
                 TextBoxPath.Text = path;
                 return;
             }
@@ -253,7 +253,7 @@
                     case MessageBoxResult.Yes:
                         using (File.Create(path))
                         {
-                            TextBoxStartNumber.Text = $"{GetData.GetYear()}{GetData.GetDepartment(ComboBoxDepartment.SelectedItem.ToString())}000001";
+                            TextBoxStartNumber.Text = $"{Data.GetYear()}{Data.GetDepartment(ComboBoxDepartment.SelectedItem.ToString())}000001";
                             TextBoxPath.Text = path;
                             MessageBox.Show($"Создан файл {path}", "Оповещение о создании файла", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
@@ -267,7 +267,7 @@
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Error);
 
-                TextBoxStartNumber.Text = $"{GetData.GetYear()}{GetData.GetDepartment(ComboBoxDepartment.SelectedItem.ToString())}000001";
+                TextBoxStartNumber.Text = $"{Data.GetYear()}{Data.GetDepartment(ComboBoxDepartment.SelectedItem.ToString())}000001";
             }
         }
 

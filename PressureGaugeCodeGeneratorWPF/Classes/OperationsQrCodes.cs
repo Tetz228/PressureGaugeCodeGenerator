@@ -102,7 +102,7 @@
         {
             number = null;
 
-            if (indexFormat == (int)GetData.Formats.PngBmp)
+            if (indexFormat == (int)Data.Formats.PngBmp)
             {
                 if (string.IsNullOrEmpty(heightBmp) || string.IsNullOrEmpty(widthBmp))
                 {

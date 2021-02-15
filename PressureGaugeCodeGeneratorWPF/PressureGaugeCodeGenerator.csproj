@@ -83,7 +83,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes\Checks.cs" />
-    <Compile Include="Classes\GetData.cs" />
     <Compile Include="Classes\OperationsFiles.cs" />
     <Compile Include="Classes\OperationsQrCodes.cs" />
     <Compile Include="Data\Data.cs" />

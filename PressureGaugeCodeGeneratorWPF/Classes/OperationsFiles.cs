@@ -68,7 +68,7 @@
             {
                 int lastNumber = int.Parse(File.ReadLines(path).Last());
                 if (autoSetYear == false ||
-                    int.Parse(GetData.GetYear()) ==
+                    int.Parse(Data.GetYear()) ==
                     int.Parse(lastNumber.ToString().Substring(0, 2)))
                 {
                     lastNumber++;
@@ -80,10 +80,10 @@
                 {
                     using (StreamWriter streamWriter = new StreamWriter(path))
                     {
-                        string newPath = $"{Directory.GetCurrentDirectory()}\\numbers{department}_20{GetData.GetYear()}.txt";
+                        string newPath = $"{Directory.GetCurrentDirectory()}\\numbers{department}_20{Data.GetYear()}.txt";
                         File.Create(newPath).Dispose();
-                        startNumber = $"{GetData.GetYear()}{department}000001";
-                        streamWriter.Write($"{GetData.GetYear()}{department}000000");
+                        startNumber = $"{Data.GetYear()}{department}000001";
+                        streamWriter.Write($"{Data.GetYear()}{department}000000");
                     }
                     MessageBox.Show($"Настал следующий год.\nПервые цифры номера теперь - {int.Parse(lastNumber.ToString().Substring(0, 2))}", "Информация",
                                     MessageBoxButton.OK,
@@ -126,9 +126,9 @@
             string startNum = startNumber.ToString();
             int year = int.Parse(startNum.Substring(0, 2));
 
-            if (autoSetYear == true && year != int.Parse(GetData.GetYear()))
+            if (autoSetYear == true && year != int.Parse(Data.GetYear()))
                 MessageBox.Show(
-                    $"Вы пытаетесь сгенерировать номера для 20{year}-го года, сейчас 20{GetData.GetYear()}-й год. Чтобы отключить проверку, снимите галочку \"Установить год автоматически\"",
+                    $"Вы пытаетесь сгенерировать номера для 20{year}-го года, сейчас 20{Data.GetYear()}-й год. Чтобы отключить проверку, снимите галочку \"Установить год автоматически\"",
                     "Предупреждение",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
